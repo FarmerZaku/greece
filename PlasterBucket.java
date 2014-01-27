@@ -1,5 +1,7 @@
 package mod.greece;
 
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,16 +51,12 @@ public class PlasterBucket extends Item {
             if (mop.typeOfHit == EnumMovingObjectType.TILE) {
                 //player.addChatMessage("Hit a tile");
             	int blockID = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
-            	int replaceID = 0;
-            	if (blockID == Block.planks.blockID) {
-            		replaceID = Greece.plasteredWood.blockID;
-            	} else if (blockID == Block.dirt.blockID) {
-            		replaceID = Greece.plasteredDirt.blockID;
-            	}
-            	if ( replaceID != 0) {
-            		world.setBlock(mop.blockX, mop.blockY, mop.blockZ, replaceID);
-            		
-            		world.markBlockForUpdate(mop.blockX, mop.blockY, mop.blockZ);
+            	int newMeta = PlasteredBlock.getPlasterID(blockID);
+            	if (newMeta != -1) {
+            		world.setBlock(mop.blockX, mop.blockY, mop.blockZ, Greece.plasteredBlock.blockID, newMeta, 2);
+            		/*System.out.println(blockID);
+            		System.out.println(Greece.plasteredBlock.blockID);
+            		System.out.println(world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));*/
             		if (!player.capabilities.isCreativeMode) {
             			//--itemStack.stackSize;
             			int old_damage = itemStack.getItemDamage();
