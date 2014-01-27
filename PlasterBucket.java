@@ -17,6 +17,8 @@ public class PlasterBucket extends Item {
 		setCreativeTab(CreativeTabs.tabMisc);
 		setUnlocalizedName("plasterBucket");
 		setTextureName("Greece:bucket_plaster");
+		//number of uses:
+		setMaxDamage(12);
 	}
 
 	/*@Override
@@ -58,7 +60,14 @@ public class PlasterBucket extends Item {
             		
             		world.markBlockForUpdate(mop.blockX, mop.blockY, mop.blockZ);
             		if (!player.capabilities.isCreativeMode) {
-            			--itemStack.stackSize;
+            			//--itemStack.stackSize;
+            			int old_damage = itemStack.getItemDamage();
+            			if ((old_damage + 1) < itemStack.getMaxDamage()) {
+            				itemStack.setItemDamage(old_damage + 1);
+            			} else {
+            				--itemStack.stackSize;
+            				player.inventory.addItemStackToInventory(new ItemStack(Item.bucketEmpty));
+            			}
             		}
             	}
                 //player.addChatMessage("Something strange happened");
