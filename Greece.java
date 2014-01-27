@@ -37,8 +37,7 @@ public class Greece {
 		//---------BLOCKS---------
 		public final static Block genericDirt = new GreekBlock(500, Material.rock, 500).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("genericDirt").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block sardOre = new GenericOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
-		public final static Block plasteredDirt = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(0.5f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("Plastered Earth").setCreativeTab(CreativeTabs.tabBlock);
-		public final static Block plasteredWood = new PlasteredBlock(503, Material.wood, Block.planks.blockID).setHardness(1f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("Plastered Wood").setCreativeTab(CreativeTabs.tabBlock);
+		public final static Block plasteredBlock = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(0.5f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("plasteredBlock").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block limestone = new GreekBlock(504, Material.rock, 504).setHardness(0.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
 		public final static Block onyxOre = new GenericOre(505, Material.rock, Greece.onyx.itemID).setTextureName("Greece:onyx_ore");
 		public final static Block thatch = new GreekBlock(506, Material.grass, 512).setHardness(0.2f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatch").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:thatch");
@@ -101,6 +100,10 @@ public class Greece {
                 GameRegistry.registerBlock(genericDirt, "genericDirt");
                 LanguageRegistry.addName(genericDirt, "DIRT");
                 MinecraftForge.setBlockHarvestLevel(genericDirt, "shovel", 3);
+                
+                GameRegistry.registerBlock(plasteredBlock, "plasteredBlock");
+                LanguageRegistry.addName(plasteredBlock, "Plastered Block");
+                MinecraftForge.setBlockHarvestLevel(plasteredBlock, "pick", 0);
                 
                 GameRegistry.registerBlock(sardOre, "sardOre");
                 LanguageRegistry.addName(sardOre, "Sard Ore");
