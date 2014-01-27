@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -66,6 +67,7 @@ public class Greece {
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
 		public final static Item drachma = new GreekItem(6005).setTextureName(GreeceInfo.NAME.toLowerCase() + ":drachma").setUnlocalizedName("drachma");
+		public final static Item marbleEye = new GreekItem(6006).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
 		
 		//---------EVENT HANDLERS - Mills---------
 		MillsEventManager millsOreManager = new MillsEventManager();
@@ -183,12 +185,15 @@ public class Greece {
                 // BRONZE SWORD
                 GameRegistry.registerItem(bronzeSword, "bronzeSword");
                 LanguageRegistry.addName(bronzeSword, "Bronze Xiphos");
-                ItemStack bronzeSwordStack = new ItemStack(bronzeSword);
+                //ItemStack bronzeSwordStack = new ItemStack(bronzeSword);
+                GameRegistry.addRecipe(new ItemStack(bronzeSword), "x", "x", "y",
+                		'x', bronzeIngot, 'y', Item.stick);
                 
-                // BRONZE ITEM
+                // BRONZE SPEAR
                 GameRegistry.registerItem(spear, "spear");
                 LanguageRegistry.addName(spear, "Doru");
-                //ItemStack spearStack = new ItemStack(spear);
+                GameRegistry.addRecipe(new ItemStack(spear), "  x", " y ", "z  ",
+                		'x', Item.ingotIron, 'y', Item.stick, 'z', bronzeIngot);
                 
                 // CHISEL
                 GameRegistry.registerItem(chisel, "chisel");
@@ -203,16 +208,34 @@ public class Greece {
                 //ItemStack silverIngotStack = new ItemStack(silverIngot);
                 GameRegistry.addSmelting(silverOre.blockID, new ItemStack(silverIngot), 1);
                 
-                // Drachma
+                // DRACHMA
                 GameRegistry.registerItem(drachma, "drachma");
                 LanguageRegistry.addName(drachma, "Drachma");
                 //ItemStack drachmaStack = new ItemStack(drachma);
                 GameRegistry.addRecipe(new ItemStack(drachma), "x", "x",
                 		'x', silverIngot);
                 
+                // MARBLE EYE
+                GameRegistry.registerItem(marbleEye, "marbleEye");
+                LanguageRegistry.addName(marbleEye, "Ship's Eye");
+                GameRegistry.addRecipe(new ItemStack(marbleEye), "a ", "bb", "cd",
+                		'a', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE), 'b', marble, 'c', new ItemStack(Item.dyePowder, 1, 1), 'd', new ItemStack(Item.dyePowder, 1, 11));
+                
                 //---------MISC - Mills---------
                 GameRegistry.registerWorldGenerator(millsOreManager);
                 GameRegistry.registerCraftingHandler(marbleCrafting);
+                
+                GameRegistry.removeBiome(BiomeGenBase.extremeHills);
+                GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
+                GameRegistry.removeBiome(BiomeGenBase.frozenRiver);
+                GameRegistry.removeBiome(BiomeGenBase.iceMountains);
+                GameRegistry.removeBiome(BiomeGenBase.icePlains);
+                GameRegistry.removeBiome(BiomeGenBase.jungle);
+                GameRegistry.removeBiome(BiomeGenBase.jungleHills);
+                GameRegistry.removeBiome(BiomeGenBase.mushroomIsland);
+                GameRegistry.removeBiome(BiomeGenBase.mushroomIslandShore);
+                GameRegistry.removeBiome(BiomeGenBase.taiga);
+                GameRegistry.removeBiome(BiomeGenBase.taigaHills);
                 
         }
        

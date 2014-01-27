@@ -20,11 +20,11 @@ public class CraftingHandler implements ICraftingHandler {
 		    		if(j.getItem() != null && j.getItem() == Greece.chisel && j.getItemDamage()+10 < j.getMaxDamage())
 		    		{
 		    			int oldDamage = j.getItemDamage(); 
-		    			ItemStack k = new ItemStack(Greece.chisel, 2);//, (j.getItemDamage() + 1));
-		    			k.setItemDamage(oldDamage + 10);
+		    			ItemStack k = new ItemStack(Greece.chisel, 2, (j.getItemDamage() + 15));
+		    			//k.setItemDamage(oldDamage + 10);
 		    			craftMatrix.setInventorySlotContents(i, k);
 		    		}
-		    		else if(j.getItem() != null && j.getItem() == Greece.chisel && j.getItemDamage()+10 >= j.getMaxDamage())
+		    		else if(j.getItem() != null && j.getItem() == Greece.chisel && j.getItemDamage()+15 >= j.getMaxDamage())
 		    			player.playSound("random.break", 1, 1);
 		    	}  
 			}
