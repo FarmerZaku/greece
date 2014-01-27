@@ -33,6 +33,8 @@ public class Greece {
 		public final static Block plasteredWood = new PlasteredBlock(503, Material.wood, Block.planks.blockID).setHardness(1f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("Plastered Wood").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block limestone = new GreekBlock(504, Material.rock, 504).setHardness(0.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
 		public final static Block onyxOre = new GenericOre(505, Material.rock, Greece.onyx.itemID).setTextureName("Greece:onyx_ore");
+		public final static Block thatch = new GreekBlock(512, Material.grass, 512).setHardness(0.2f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatch").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:thatch");
+		public final static Block thatchSlope = new ThatchSlope(513, thatch, 0).setTextureName("Greece:thatch").setHardness(0.5f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatchSlope").setCreativeTab(CreativeTabs.tabBlock);
 		EventManager oreManager = new EventManager();
 		
 		///// MILLS ADDITIONS START HERE /////
@@ -130,6 +132,14 @@ public class Greece {
                 LanguageRegistry.addName(limestone, "Limestone");
                 MinecraftForge.setBlockHarvestLevel(limestone, "pickaxe", 0);
                 
+                GameRegistry.registerBlock(thatchSlope, "thatchSlope");
+                LanguageRegistry.addName(thatchSlope, "Thatch Slope");
+                MinecraftForge.setBlockHarvestLevel(thatchSlope, "axe", 0);
+                
+                GameRegistry.registerBlock(thatch, "thatch");
+                LanguageRegistry.addName(thatch, "Thatch");
+                MinecraftForge.setBlockHarvestLevel(thatch, "axe", 0);
+                
                 //Register Items:
                 LanguageRegistry.addName(sard, "Sard");
                 GameRegistry.registerItem(sard, "sard");
@@ -142,6 +152,7 @@ public class Greece {
                 
                 //Misc
                 GameRegistry.registerWorldGenerator(oreManager);
+                proxy.registerRenderers();
                 
                 
                 ///// MILLS'S REGISTRATIONS STARTS HERE /////
@@ -227,7 +238,6 @@ public class Greece {
                 
                 // WORLD GEN
                 GameRegistry.registerWorldGenerator(millsOreManager);
-                
                 GameRegistry.registerCraftingHandler(marbleCrafting);
         }
        
