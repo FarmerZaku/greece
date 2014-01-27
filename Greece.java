@@ -30,6 +30,7 @@ public class Greece {
 		public final static Block plasteredWood = new PlasteredBlock(503, Material.wood, Block.planks.blockID).setHardness(1f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("Plastered Wood").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block limestone = new GenericBlock(504, Material.rock, 504).setHardness(0.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
 		public final static Block onyxOre = new GenericOre(505, Material.rock, Greece.onyx.itemID).setTextureName("Greece:onyx_ore");
+		public final static Block thatchSlope = new ThatchSlope(506, Block.hay.blockMaterial).setTextureName("Greece:thatch");
 		EventManager oreManager = new EventManager();
 		// The instance of your mod that Forge uses.
         @Instance("Greece")
@@ -72,6 +73,10 @@ public class Greece {
                 LanguageRegistry.addName(limestone, "Limestone");
                 MinecraftForge.setBlockHarvestLevel(limestone, "pickaxe", 0);
                 
+                GameRegistry.registerBlock(thatchSlope, "thatchSlope");
+                LanguageRegistry.addName(thatchSlope, "Thatch Slope");
+                MinecraftForge.setBlockHarvestLevel(thatchSlope, "axe", 0);
+                
                 //Register Items:
                 LanguageRegistry.addName(sard, "Sard");
                 GameRegistry.registerItem(sard, "sard");
@@ -84,6 +89,7 @@ public class Greece {
                 
                 //Misc
                 GameRegistry.registerWorldGenerator(oreManager);
+                proxy.registerRenderers();
         }
        
         @EventHandler

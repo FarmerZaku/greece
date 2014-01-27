@@ -44,8 +44,8 @@ public class PlasterBucket extends Item {
             if (mop == null)
                 return itemStack;
             
-            if (mop.typeOfHit == EnumMovingObjectType.TILE)
-                player.addChatMessage("Hit a tile");
+            if (mop.typeOfHit == EnumMovingObjectType.TILE) {
+                //player.addChatMessage("Hit a tile");
             	int blockID = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
             	int replaceID = 0;
             	if (blockID == Block.planks.blockID) {
@@ -61,10 +61,10 @@ public class PlasterBucket extends Item {
             			--itemStack.stackSize;
             		}
             	}
-            else
-                player.addChatMessage("Something strange happened");
+                //player.addChatMessage("Something strange happened");
+            }
 
-            System.out.println(mop.entityHit);
+            //System.out.println(mop.entityHit);
             
             return itemStack;
 	    }
