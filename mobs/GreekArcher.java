@@ -2,6 +2,7 @@ package mod.greece.mobs;
 
 import java.util.Calendar;
 
+import mod.greece.Greece;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -58,6 +59,10 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
             this.setCombatTask();
         }
         this.addRandomArmor();
+        //in the future we should set some of the archer bandits to type 1 (fires fire arrows) in sieges and town assaults
+        //if (this.rand.nextInt(4) == 0) {
+        //	this.setBanditType(1);
+        //}
     }
 
     protected void applyEntityAttributes()
@@ -84,7 +89,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     {
         if (super.attackEntityAsMob(par1Entity))
         {
-            if (this.getSkeletonType() == 1 && par1Entity instanceof EntityLivingBase)
+            if (this.getBanditType() == 1 && par1Entity instanceof EntityLivingBase)
             {
                 ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.wither.id, 200));
             }
@@ -143,26 +148,12 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
             }
         }
 
-        if (this.worldObj.isRemote && this.getSkeletonType() == 1)
+        if (this.worldObj.isRemote && this.getBanditType() == 1)
         {
             this.setSize(0.72F, 2.34F);
         }
 
         super.onLivingUpdate();
-    }
-
-    /**
-     * Handles updating while being ridden by an entity
-     */
-    public void updateRidden()
-    {
-        super.updateRidden();
-
-        if (this.ridingEntity instanceof EntityCreature)
-        {
-            EntityCreature entitycreature = (EntityCreature)this.ridingEntity;
-            this.renderYawOffset = entitycreature.renderYawOffset;
-        }
     }
 
     /**
@@ -208,13 +199,14 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
         {
             this.dropItem(Item.arrow.itemID, 1);
         }
+        this.dropItem(Greece.drachma.itemID, 5);
     }
 
     protected void dropRareDrop(int par1)
     {
-        if (this.getSkeletonType() == 1)
+        if (this.getBanditType() == 1)
         {
-            this.entityDropItem(new ItemStack(Item.skull.itemID, 1, 1), 0.0F);
+            this.entityDropItem(new ItemStack(Item.ingotGold, 1, 1), 0.0F);
         }
     }
 
@@ -265,19 +257,9 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     {
         par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
 
-        if (this.worldObj.provider instanceof WorldProviderHell && this.getRNG().nextInt(5) > 0)
-        {
-            this.tasks.addTask(4, this.aiAttackOnCollide);
-            this.setSkeletonType(1);
-            this.setCurrentItemOrArmor(0, new ItemStack(Item.swordStone));
-            this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(4.0D);
-        }
-        else
-        {
-            this.tasks.addTask(4, this.aiArrowAttack);
-            this.addRandomArmor();
-            //this.enchantEquipment();
-        }
+        this.tasks.addTask(4, this.aiArrowAttack);
+        this.addRandomArmor();
+        //this.enchantEquipment();
 
         this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * this.worldObj.getLocationTensionFactor(this.posX, this.posY, this.posZ));
 
@@ -334,7 +316,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
             entityarrow.setKnockbackStrength(j);
         }
 
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0 || this.getSkeletonType() == 1)
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0 || this.getBanditType() == 1)
         {
             entityarrow.setFire(100);
         }
@@ -346,7 +328,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Return this skeleton's type.
      */
-    public int getSkeletonType()
+    public int getBanditType()
     {
         return this.dataWatcher.getWatchableObjectByte(13);
     }
@@ -354,7 +336,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Set this skeleton's type.
      */
-    public void setSkeletonType(int par1)
+    public void setBanditType(int par1)
     {
         this.dataWatcher.updateObject(13, Byte.valueOf((byte)par1));
         this.isImmuneToFire = par1 == 1;
@@ -376,10 +358,10 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.hasKey("SkeletonType"))
+        if (par1NBTTagCompound.hasKey("BanditType"))
         {
-            byte b0 = par1NBTTagCompound.getByte("SkeletonType");
-            this.setSkeletonType(b0);
+            byte b0 = par1NBTTagCompound.getByte("BanditType");
+            this.setBanditType(b0);
         }
 
         this.setCombatTask();
@@ -391,7 +373,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setByte("SkeletonType", (byte)this.getSkeletonType());
+        par1NBTTagCompound.setByte("BanditType", (byte)this.getBanditType());
     }
 
     /**

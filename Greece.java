@@ -77,7 +77,6 @@ public class Greece {
 		public final static Item marbleEye = new GreekItem(6006).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
 		
 		//---------EVENT HANDLERS - Mills---------
-		MillsEventManager millsOreManager = new MillsEventManager();
 		CraftingHandler chiselCrafting = new CraftingHandler();
 		
 		// The instance of your mod that Forge uses.
@@ -144,7 +143,7 @@ public class Greece {
                 GameRegistry.registerItem(plasterBucket, "plasterBucket");
                 
                 // Misc
-        		MinecraftForge.EVENT_BUS.register(new EventHandlingClass());
+        		MinecraftForge.EVENT_BUS.register(new GreekEventHandler());
                 GameRegistry.registerWorldGenerator(oreManager);
                 proxy.registerRenderers();
                 
@@ -245,7 +244,6 @@ public class Greece {
                 		'a', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE), 'b', marble, 'c', new ItemStack(Item.dyePowder, 1, 1), 'd', new ItemStack(Item.dyePowder, 1, 11));
                 
                 //---------MISC - Mills---------
-                GameRegistry.registerWorldGenerator(millsOreManager);
                 GameRegistry.registerCraftingHandler(chiselCrafting);
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
