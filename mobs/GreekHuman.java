@@ -3,9 +3,8 @@ package mod.greece.mobs;
 import java.util.Calendar;
 import java.util.UUID;
 
+import mod.greece.Greece;
 import net.minecraft.block.Block;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
@@ -22,7 +21,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.monster.EntityMob;
@@ -31,17 +29,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDummyContainer;
-import net.minecraftforge.event.Event.Result;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -246,7 +239,7 @@ public class GreekHuman extends EntityMob
      */
     protected int getDropItemId()
     {
-        return Item.rottenFlesh.itemID;
+        return Greece.drachma.itemID;
     }
 
     /**
@@ -262,7 +255,7 @@ public class GreekHuman extends EntityMob
         switch (this.rand.nextInt(3))
         {
             case 0:
-                this.dropItem(Item.ingotIron.itemID, 1);
+                this.dropItem(Greece.bronzeIngot.itemID, 1);
                 break;
             case 1:
                 this.dropItem(Item.carrot.itemID, 1);

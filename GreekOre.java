@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class GreekOre extends Block {
-
+	
 	public GreekOre(int id, Material material) {
 		super(id, material);
 		
