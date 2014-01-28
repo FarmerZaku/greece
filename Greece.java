@@ -70,7 +70,7 @@ public class Greece {
 		
 		//---------EVENT HANDLERS - Mills---------
 		MillsEventManager millsOreManager = new MillsEventManager();
-		CraftingHandler marbleCrafting = new CraftingHandler();
+		CraftingHandler chiselCrafting = new CraftingHandler();
 		
 		// The instance of your mod that Forge uses.
         @Instance("Greece")
@@ -226,7 +226,7 @@ public class Greece {
                 
                 //---------MISC - Mills---------
                 GameRegistry.registerWorldGenerator(millsOreManager);
-                GameRegistry.registerCraftingHandler(marbleCrafting);
+                GameRegistry.registerCraftingHandler(chiselCrafting);
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
                 GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
