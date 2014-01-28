@@ -1,8 +1,14 @@
 package mod.greece;
  
+import mod.greece.mobs.GreekHuman;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityEggInfo;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +24,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
  
@@ -136,8 +143,11 @@ public class Greece {
                 GameRegistry.registerItem(plasterBucket, "plasterBucket");
                 
                 // Misc
+        		MinecraftForge.EVENT_BUS.register(new EventHandlingClass());
                 GameRegistry.registerWorldGenerator(oreManager);
                 proxy.registerRenderers();
+                registerEntity(GreekHuman.class, "Human", 0xefaf00, 0xaa00aa);
+                LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Human");
                 
                 //---------REGISTER BLOCKS - Mills---------
                 // MARBLE
@@ -247,4 +257,16 @@ public class Greece {
                 // Stub Method
         }
        
+        public void registerEntity(Class<? extends Entity> entityClass, String entityName, int bkEggColor, int fgEggColor) {
+            int id = EntityRegistry.findGlobalUniqueEntityId();
+
+            EntityRegistry.registerGlobalEntityID(entityClass, entityName, id);
+            EntityList.entityEggs.put(Integer.valueOf(id), new EntityEggInfo(id, bkEggColor, fgEggColor));
+        }
+
+	    public void addSpawn(Class<? extends EntityLiving> entityClass, int spawnProb, int min, int max, BiomeGenBase[] biomes) {
+	            if (spawnProb > 0) {
+	                    EntityRegistry.addSpawn(entityClass, spawnProb, min, max, EnumCreatureType.creature, biomes);
+	            }
+	    }
 }
