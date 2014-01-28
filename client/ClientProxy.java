@@ -1,6 +1,7 @@
 package mod.greece.client;
  
 import mod.greece.CommonProxy;
+import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import mod.greece.mobs.RenderHuman;
 import net.minecraft.client.model.ModelBiped;
@@ -14,6 +15,7 @@ public class ClientProxy extends CommonProxy {
         	//ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySlope.class, new TileEntitySlopeRenderer());
         	//MinecraftForgeClient.registerItemRenderer(Greece.thatchSlope.blockID, new ItemSlopeRenderer());
         	RenderingRegistry.registerEntityRenderingHandler(GreekHuman.class, new RenderHuman(new ModelBiped(), 0.5f));
+        	RenderingRegistry.registerEntityRenderingHandler(GreekArcher.class, new RenderHuman(new ModelBiped(), 0.5f));
         }
        
 }

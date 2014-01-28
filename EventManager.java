@@ -2,6 +2,7 @@ package mod.greece;
  
 import java.util.Random;
  
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -21,7 +22,8 @@ public class EventManager implements IWorldGenerator {
 		int iOffsetX, iOffsetY;
 		int jOffsetX, jOffsetY;
 		int kOffsetX, kOffsetY;
-		int lOffsetX, lOffsetY;
+		int marbleOffsetX, marbleOffsetY;
+		int limestoneOffsetX, limestoneOffsetY;
 		
 		public EventManager() {
 			Random temp_rand = new Random();
@@ -49,8 +51,10 @@ public class EventManager implements IWorldGenerator {
 			jOffsetY = temp_rand.nextInt(600)-300;
 			kOffsetX = temp_rand.nextInt(600)-300;
 			kOffsetY = temp_rand.nextInt(600)-300;
-			lOffsetX = temp_rand.nextInt(600)-300;
-			lOffsetY = temp_rand.nextInt(600)-300;
+			marbleOffsetX = temp_rand.nextInt(600)-300;
+			marbleOffsetY = temp_rand.nextInt(600)-300;
+			limestoneOffsetX = temp_rand.nextInt(600)-300;
+			limestoneOffsetY = temp_rand.nextInt(600)-300;
 		}
 	
         @Override
@@ -106,14 +110,16 @@ public class EventManager implements IWorldGenerator {
         	} else if (type == "k") {
         		offset_x = kOffsetX;
         		offset_y = kOffsetY;
-        	} else if (type == "l") {
-        		offset_x = lOffsetX;
-        		offset_y = lOffsetY;
-        	} else if (type == "limestone") {
-        		offset_x = lOffsetX;
-        		offset_y = lOffsetY;
-        		threshold = 0;
+        	} else if (type == "marble") {
+        		offset_x = marbleOffsetX;
+        		offset_y = marbleOffsetY;
+        		threshold = 0.1f;
         		frequency = 3f;
+        	} else if (type == "limestone") {
+        		offset_x = limestoneOffsetX;
+        		offset_y = limestoneOffsetY;
+        		threshold = 0;
+        		frequency = 5f;
         	}
         	
         	if ((Math.sin(chunk_x*frequency + offset_x) > threshold) && (Math.sin(chunk_y*frequency + offset_y) > threshold)) {
@@ -126,6 +132,10 @@ public class EventManager implements IWorldGenerator {
         }
  
         private void generateSurface(World world, Random random, int x, int z) {
+    		this.addOreSpawn(Greece.silverOre, world, random, x, z, 16, 16, 10+random.nextInt(20), 10, 15, 160);
+    		this.addOreSpawn(Greece.copperOre, world, random, x, z, 16, 16, 3+random.nextInt(20), 20, 15, 160);
+    		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 3+random.nextInt(20), 20, 15, 160);
+    		
         	if (isInRegion("sard", x, z)) {
                 this.addOreSpawn(Greece.sardOre, world, random, x, z, 16, 16, 3+random.nextInt(8), 640, 15, 160);
         	}
@@ -162,12 +172,11 @@ public class EventManager implements IWorldGenerator {
         	if (isInRegion("k", x, z)) {
                 this.addOreSpawn(Greece.sardOre, world, random, x, z, 16, 16, 3+random.nextInt(8), 640, 15, 160);
         	}
-        	if (isInRegion("l", x, z)) {
-                this.addOreSpawn(Greece.sardOre, world, random, x, z, 16, 16, 3+random.nextInt(8), 640, 15, 160);
-        	}
         	if (isInRegion("limestone", x, z)) {
                 this.addStoneSpawn(Greece.limestone, world, random, x, z, 16, 16, 15, 20, 40, 240);
         	}
+        	//Add in marble any place higher than 64
+        	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 64, 240);
         }
  
         private void generateNether(World world, Random random, int x, int z) {
