@@ -1,6 +1,5 @@
 package mod.greece;
  
-<<<<<<< HEAD
 import static net.minecraft.world.biome.BiomeGenBase.forest;
 import static net.minecraft.world.biome.BiomeGenBase.forestHills;
 import static net.minecraft.world.biome.BiomeGenBase.jungle;
@@ -12,9 +11,7 @@ import static net.minecraft.world.biome.BiomeGenBase.taigaHills;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-=======
 import mod.greece.mobs.GreekArcher;
->>>>>>> master
 import mod.greece.mobs.GreekHuman;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
