@@ -1,5 +1,6 @@
 package mod.greece;
  
+import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -145,8 +146,17 @@ public class Greece {
         		MinecraftForge.EVENT_BUS.register(new EventHandlingClass());
                 GameRegistry.registerWorldGenerator(oreManager);
                 proxy.registerRenderers();
-                registerEntity(GreekHuman.class, "Human", 0xefaf00, 0xaa00aa);
-                LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Human");
+                
+                registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
+                LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Bandit");
+                
+                registerEntity(GreekArcher.class, "ArcherBandit", 0xe00abcd, 0x0abcd0);
+                LanguageRegistry.instance().addStringLocalization("entity.GreekArcher.name", "ArcherBandit");
+                
+                //EntityRegistry.registerModEntity(GreekHuman.class, "Bandit", 20, this, 40, 3, true);
+                //EntityRegistry.addSpawn(GreekHuman.class, 50, 5, 10, EnumCreatureType.monster, BiomeGenBase.beach, BiomeGenBase.extremeHills,
+                //        BiomeGenBase.extremeHillsEdge, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.jungle, BiomeGenBase.jungleHills,
+                //        BiomeGenBase.mushroomIsland, BiomeGenBase.mushroomIslandShore, BiomeGenBase.ocean, BiomeGenBase.plains, BiomeGenBase.river, BiomeGenBase.swampland);
                 
                 //---------REGISTER BLOCKS - Mills---------
                 // MARBLE
