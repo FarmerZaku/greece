@@ -1,5 +1,16 @@
 package mod.greece;
  
+import static net.minecraft.world.biome.BiomeGenBase.forest;
+import static net.minecraft.world.biome.BiomeGenBase.forestHills;
+import static net.minecraft.world.biome.BiomeGenBase.jungle;
+import static net.minecraft.world.biome.BiomeGenBase.jungleHills;
+import static net.minecraft.world.biome.BiomeGenBase.plains;
+import static net.minecraft.world.biome.BiomeGenBase.taiga;
+import static net.minecraft.world.biome.BiomeGenBase.taigaHills;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import mod.greece.mobs.GreekHuman;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,6 +24,7 @@ import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -127,10 +139,22 @@ public class Greece {
                 GameRegistry.registerBlock(thatchSlope, "thatchSlope");
                 LanguageRegistry.addName(thatchSlope, "Thatch Slope");
                 MinecraftForge.setBlockHarvestLevel(thatchSlope, "axe", 0);
+                GameRegistry.addRecipe(new ItemStack(thatchSlope), "x  ", "yx ", "yyx",
+                		'x', Item.wheat, 'y', Item.stick);
+                GameRegistry.addRecipe(new ItemStack(thatchSlope), "x  ", "yx ", "yyx",
+                		'x', Item.reed, 'y', Item.stick);
+                GameRegistry.addRecipe(new ItemStack(thatchSlope), "x  ", "yx ", "yyx",
+                		'x', Block.grass, 'y', Item.stick);
                 
                 GameRegistry.registerBlock(thatch, "thatch");
                 LanguageRegistry.addName(thatch, "Thatch");
                 MinecraftForge.setBlockHarvestLevel(thatch, "axe", 0);
+                GameRegistry.addRecipe(new ItemStack(thatch), "xxx", "yyy",
+                		'x', Item.wheat, 'y', Item.stick);
+                GameRegistry.addRecipe(new ItemStack(thatch), "xxx", "yyy",
+                		'x', Item.reed, 'y', Item.stick);
+                GameRegistry.addRecipe(new ItemStack(thatch), "xxx", "yyy",
+                		'x', Block.grass, 'y', Item.stick);
                 
                 //---------REGISTER ITEMS---------
                 LanguageRegistry.addName(sard, "Sard");
@@ -249,6 +273,8 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIslandShore);
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
                 GameRegistry.removeBiome(BiomeGenBase.taigaHills);
+                
+                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills));
                 
         }
        
