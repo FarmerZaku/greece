@@ -4,8 +4,12 @@ import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 public class GreekEventHandler {
     @ForgeSubscribe
@@ -31,5 +35,16 @@ public class GreekEventHandler {
                 oldSkele.setDead();
             }
         }
+    }
+    @ForgeSubscribe
+    public void onPlayerInteract(AttackEntityEvent event) {
+    	World world = MinecraftServer.getServer().worldServerForDimension(event.entityPlayer.dimension);
+    	ItemStack cur_item = event.entityPlayer.getCurrentEquippedItem();
+    	if (cur_item.getItem() instanceof GreekSword) {
+    		if (!world.isRemote) {
+    			cur_item.getItem().onPlayerStoppedUsing(cur_item, world, event.entityPlayer, cur_item.getItem().getMaxItemUseDuration(cur_item));
+    		}
+    		event.setCanceled(true);
+    	}
     }
 }

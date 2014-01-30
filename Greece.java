@@ -2,11 +2,7 @@ package mod.greece;
  
 import static net.minecraft.world.biome.BiomeGenBase.forest;
 import static net.minecraft.world.biome.BiomeGenBase.forestHills;
-import static net.minecraft.world.biome.BiomeGenBase.jungle;
-import static net.minecraft.world.biome.BiomeGenBase.jungleHills;
 import static net.minecraft.world.biome.BiomeGenBase.plains;
-import static net.minecraft.world.biome.BiomeGenBase.taiga;
-import static net.minecraft.world.biome.BiomeGenBase.taigaHills;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +11,7 @@ import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityEggInfo;
@@ -29,6 +26,10 @@ import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.lwjgl.input.Keyboard;
+
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -81,8 +82,10 @@ public class Greece {
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
-		public final Item bronzeSword = new GreekSword(6001, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final Item spear = new GreekSword(6002, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
+		public final Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2, 1, 7, 35)
+			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
+		public final Item spear = new GreekSword(6002, bronze, 0.03f, 3, 1, 5, 35)
+			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
 		public final static Item drachma = new GreekItem(6005).setTextureName(GreeceInfo.NAME.toLowerCase() + ":drachma").setUnlocalizedName("drachma");
@@ -167,9 +170,19 @@ public class Greece {
                 GameRegistry.registerItem(plasterBucket, "plasterBucket");
                 
                 // Misc
+                // Register the event handler, so we can catch events like zombies spawning and do stuff, like replacing
+                // the zombies with bandits.
         		MinecraftForge.EVENT_BUS.register(new GreekEventHandler());
                 GameRegistry.registerWorldGenerator(oreManager);
                 proxy.registerRenderers();
+                
+                // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
+                // keys are pressed, like block or whatever
+                KeyBinding[] key = {new KeyBinding("Block", Keyboard.KEY_LCONTROL)};
+	           	boolean[] repeat = {false};
+	           	KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key, repeat));
+	           	KeyBinding[] key2 = {new KeyBinding("Blocka", Keyboard.KEY_L)};
+	           	KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key2, repeat));
                 
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Bandit");
