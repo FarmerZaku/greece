@@ -2,11 +2,7 @@ package mod.greece;
  
 import static net.minecraft.world.biome.BiomeGenBase.forest;
 import static net.minecraft.world.biome.BiomeGenBase.forestHills;
-import static net.minecraft.world.biome.BiomeGenBase.jungle;
-import static net.minecraft.world.biome.BiomeGenBase.jungleHills;
 import static net.minecraft.world.biome.BiomeGenBase.plains;
-import static net.minecraft.world.biome.BiomeGenBase.taiga;
-import static net.minecraft.world.biome.BiomeGenBase.taigaHills;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,6 +62,9 @@ public class Greece {
 		//---------EVENT HANDLERS---------
 		EventManager oreManager = new EventManager(); // Matthew's ore generator
 		
+		//---------FOOD - Mills---------
+		public static Item olives = new GreekFood(6500, 2, 0.5f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":olives").setUnlocalizedName("olives");
+		
 		//---------BLOCKS - Mills---------
 		public final static Block marble = new GreekOre(600, Material.rock).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble").setUnlocalizedName("marble");
 		public final static Block silverOre = new GreekOre(601, Material.rock).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ore").setUnlocalizedName("silverOre");
@@ -76,8 +75,16 @@ public class Greece {
 		.setHardness(4.0f)
 		.setStepSound(Block.soundStoneFootstep)
 		.setUnlocalizedName("marbleBrick")
-		.setCreativeTab(CreativeTabs.tabBlock)
 		.setTextureName(GreeceInfo.NAME.toLowerCase() + ":marblebrick");
+		public final static Block oliveLeaves = new GreekBlockLeaves(606, 0).setUnlocalizedName("oliveLeaves").setTextureName(GreeceInfo.NAME.toLowerCase() + ":leaves_olive")
+				.setHardness(1f)
+				.setLightOpacity(100)
+				.setStepSound(Block.soundGrassFootstep);
+		public final static Block oliveLeavesRipe = new GreekBlockLeaves(607, 1).setUnlocalizedName("oliveLeavesRipe").setTextureName(GreeceInfo.NAME.toLowerCase() + ":leaves_olive_ripe")
+				.setHardness(1f)
+				.setLightOpacity(100)
+				.setStepSound(Block.soundGrassFootstep);
+		public final static Block oliveWood = new MultiTextureBlock(608, Material.wood, "logs").setUnlocalizedName("oliveWood");
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
@@ -90,6 +97,7 @@ public class Greece {
 		
 		//---------EVENT HANDLERS - Mills---------
 		CraftingHandler chiselCrafting = new CraftingHandler();
+		TreeManager treeManager = new TreeManager();
 		
 		// The instance of your mod that Forge uses.
         @Instance("Greece")
@@ -169,7 +177,7 @@ public class Greece {
                 // Misc
         		MinecraftForge.EVENT_BUS.register(new GreekEventHandler());
                 GameRegistry.registerWorldGenerator(oreManager);
-                proxy.registerRenderers();
+                //proxy.registerRenderers();
                 
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Bandit");
@@ -220,6 +228,20 @@ public class Greece {
                 
                 ItemStack copperTinStack = new ItemStack(copperTin, 2);
                 GameRegistry.addShapelessRecipe(copperTinStack, copperOre, tinOre);
+                
+                // OLIVE LEAVES
+                GameRegistry.registerBlock(oliveLeaves, "oliveLeaves");
+                LanguageRegistry.addName(oliveLeaves, "Olive Branches");
+                //MinecraftForge.setBlockHarvestLevel(oliveLeaves, "shears", 1);
+                
+                // OLIVE LEAVES RIPE
+                GameRegistry.registerBlock(oliveLeavesRipe, "oliveLeavesRipe");
+                LanguageRegistry.addName(oliveLeavesRipe, "Ripe Olive Branches");
+                
+                // OLIVE WOOD
+                GameRegistry.registerBlock(oliveWood, "oliveWood");
+                LanguageRegistry.addName(oliveWood, "Olive Wood");
+                MinecraftForge.setBlockHarvestLevel(oliveWood, "axe", 0);
        
                 //---------REGISTER ITEMS - Mills---------
                 // BRONZE INGOT
@@ -267,8 +289,13 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(marbleEye), "a ", "bb", "cd",
                 		'a', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE), 'b', marble, 'c', new ItemStack(Item.dyePowder, 1, 1), 'd', new ItemStack(Item.dyePowder, 1, 11));
                 
+                // REGISTER FOOD
+                GameRegistry.registerItem(olives, "olives");
+                LanguageRegistry.addName(olives, "Olives");
+                
                 //---------MISC - Mills---------
                 GameRegistry.registerCraftingHandler(chiselCrafting);
+                GameRegistry.registerWorldGenerator(treeManager);
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
                 GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
