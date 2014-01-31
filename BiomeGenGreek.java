@@ -8,13 +8,24 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenDesertWells;
 
 public class BiomeGenGreek extends BiomeGenBase {
-	    public BiomeGenGreek(int par1, boolean extraStone)
+	    public BiomeGenGreek(int par1, int topid, int fillid)
 	    {
 	        super(par1);
 	        //this.spawnableCreatureList.clear();
 	        //this.topBlock = (byte)Block.blockIron.blockID;
-	        if (extraStone) {
-	        	this.fillerBlock = (byte)Block.stone.blockID;
+	        if (topid != -1) {
+	        	if (topid <= 255) {
+	        		this.topBlock = (byte)topid;
+	        	} else {
+	        		System.out.println("Biome generator BiomeGenGreek received invalid top block id " + topid + ": too high (>255)");
+	        	}
+	        }
+	        if (fillid != -1) {
+	        	if (fillid <= 255) {
+		        	this.fillerBlock = (byte)fillid;
+	        	} else {
+	        		System.out.println("Biome generator BiomeGenGreek received invalid fill block id " + fillid + ": too high (>255)");
+	        	}
 	        }
 	        this.theBiomeDecorator.treesPerChunk=1;
 	        this.theBiomeDecorator.clayPerChunk=3;

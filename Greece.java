@@ -57,12 +57,13 @@ public class Greece {
 			
 		//---------BLOCKS---------
 		public final static Block genericDirt = new GreekBlock(500, Material.rock, 500).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("genericDirt").setCreativeTab(CreativeTabs.tabBlock);
-		public final static Block sardOre = new GenericOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
+		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
 		public final static Block plasteredBlock = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(0.5f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("plasteredBlock").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block limestone = new GreekBlock(504, Material.rock, 504).setHardness(0.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
-		public final static Block onyxOre = new GenericOre(505, Material.rock, Greece.onyx.itemID).setTextureName("Greece:onyx_ore");
+		public final static Block onyxOre = new GreekOre(505, Material.rock, Greece.onyx.itemID).setTextureName("Greece:onyx_ore");
 		public final static Block thatch = new GreekBlock(506, Material.grass, 512).setHardness(0.2f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatch").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:thatch");
 		public final static Block thatchSlope = new ThatchSlope(507, thatch, 0).setTextureName("Greece:thatch").setHardness(0.5f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatchSlope").setCreativeTab(CreativeTabs.tabBlock);
+		public final static Block granite = new GreekBlock(508, Material.rock, 508).setHardness(0.9f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("granite").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:granite");
 		
 		//---------EVENT HANDLERS---------
 		EventManager oreManager = new EventManager(); // Matthew's ore generator
@@ -71,11 +72,11 @@ public class Greece {
 		public static Item olives = new GreekFood(6500, 2, 0.5f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":olives").setUnlocalizedName("olives");
 		
 		//---------BLOCKS - Mills---------
-		public final static Block marble = new GreekOre(600, Material.rock).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble").setUnlocalizedName("marble");
-		public final static Block silverOre = new GreekOre(601, Material.rock).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ore").setUnlocalizedName("silverOre");
-		public final static Block copperOre = new GreekOre(602, Material.rock).setTextureName(GreeceInfo.NAME.toLowerCase() + ":copper_ore").setUnlocalizedName("copperOre");
-		public final static Block tinOre = new GreekOre(603, Material.rock).setTextureName(GreeceInfo.NAME.toLowerCase() + ":tin_ore").setUnlocalizedName("tinOre");
-		public final static Block copperTin = new GreekOre(604, Material.rock).setTextureName(GreeceInfo.NAME.toLowerCase() + ":copper_tin").setUnlocalizedName("copperTin");
+		public final static Block marble = new GreekOre(600, Material.rock, 600).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble").setUnlocalizedName("marble");
+		public final static Block silverOre = new GreekOre(601, Material.rock, 601).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ore").setUnlocalizedName("silverOre");
+		public final static Block copperOre = new GreekOre(602, Material.rock, 602).setTextureName(GreeceInfo.NAME.toLowerCase() + ":copper_ore").setUnlocalizedName("copperOre");
+		public final static Block tinOre = new GreekOre(603, Material.rock, 603).setTextureName(GreeceInfo.NAME.toLowerCase() + ":tin_ore").setUnlocalizedName("tinOre");
+		public final static Block copperTin = new GreekOre(604, Material.rock, 604).setTextureName(GreeceInfo.NAME.toLowerCase() + ":copper_tin").setUnlocalizedName("copperTin");
 		public final static Block marbleBrick = new GreekBlock(605, Material.rock)
 		.setHardness(4.0f)
 		.setStepSound(Block.soundStoneFootstep)
@@ -117,6 +118,7 @@ public class Greece {
         //---------------BIOMES-----------------
 		public static BiomeGenBase limeCliffsBiome;
 		public static BiomeGenBase tinIslesBiome;
+		public static BiomeGenBase graniteMountainsBiome;
 		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
@@ -150,6 +152,10 @@ public class Greece {
                 GameRegistry.registerBlock(limestone, "limestone");
                 LanguageRegistry.addName(limestone, "Limestone");
                 MinecraftForge.setBlockHarvestLevel(limestone, "pickaxe", 0);
+                
+                GameRegistry.registerBlock(granite, "granite");
+                LanguageRegistry.addName(granite, "Granite");
+                MinecraftForge.setBlockHarvestLevel(granite, "pickaxe", 2);
                 
                 GameRegistry.registerBlock(thatchSlope, "thatchSlope");
                 LanguageRegistry.addName(thatchSlope, "Thatch Slope");
@@ -317,11 +323,14 @@ public class Greece {
                 //---------BIOMES & WORLDGEN-----------
                 GameRegistry.registerWorldGenerator(oreManager);
                 
-                limeCliffsBiome = new BiomeGenGreek(66, true).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
+                limeCliffsBiome = new BiomeGenGreek(66, -1, Block.stone.blockID).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
                 GameRegistry.addBiome(limeCliffsBiome);
                 
-                tinIslesBiome = new BiomeGenGreek(67, true).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
+                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
                 GameRegistry.addBiome(tinIslesBiome);
+                
+                graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
+                GameRegistry.addBiome(graniteMountainsBiome);
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
                 GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
@@ -335,7 +344,7 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
                 GameRegistry.removeBiome(BiomeGenBase.taigaHills);
                 
-                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, tinIslesBiome));
+                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, graniteMountainsBiome, forestHills, limeCliffsBiome, tinIslesBiome));
                 
         }
        

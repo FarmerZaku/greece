@@ -174,21 +174,27 @@ public class EventManager implements IWorldGenerator {
         	//if (isInRegion("limestone", x, z)) {
             //    this.addStoneSpawn(Greece.limestone, world, random, x, z, 16, 16, 15, 20, 40, 240);
         	//}
+        	boolean addMarble = true;
         	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.limeCliffsBiome.biomeID) {
         		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
         		this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 10, 40, 55);
-        	} else {
-        		//Add in marble any place higher than 64
-            	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
+        		addMarble = false;
         	}
         	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.tinIslesBiome.biomeID) {
         		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 8+random.nextInt(15), 80, 15, 160);
         		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
+        		addMarble = false;
         	} else {
         		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 3+random.nextInt(10), 4, 15, 160);
         	}
-        	//Add in marble any place higher than 64
-        	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
+        	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.graniteMountainsBiome.biomeID) {
+        		this.replaceStone(Greece.granite.blockID, world, x, z, random);
+        		addMarble = false;
+        	}
+        	if (addMarble) {
+	     		//Add in marble any place higher than 64
+	         	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
+        	}
         }
  
         private void generateNether(World world, Random random, int x, int z) {
