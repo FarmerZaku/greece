@@ -2,6 +2,7 @@ package mod.greece;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -62,6 +63,9 @@ public class GreekSword extends ItemSword {
 	    @Override
 	    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int chargeVal)
 	    {
+	    	if (player.isDead) {
+	    		return;
+	    	}
 	    	//System.out.println("Released!");
 	        int maxCharge = this.getMaxItemUseDuration(itemStack);
 	        int chargeTime = this.getMaxItemUseDuration(itemStack) - chargeVal;
@@ -96,7 +100,9 @@ public class GreekSword extends ItemSword {
             		System.out.println("Gonna damage: " + damage);
             		EntityLiving target = ((EntityLiving) entities_hit.get(i));
             		MovingObjectPosition mop = this.getMovingObjectPositionFromPlayer(world, player, false);
-            		if (mop == null || player.getDistanceSq(target.posX, target.posY, target.posZ) < player.getDistanceSq(mop.blockX, mop.blockY, mop.blockZ)) {
+            		int mopID = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
+            		if (mop == null || player.getDistanceSq(target.posX, target.posY, target.posZ) < player.getDistanceSq(mop.blockX, mop.blockY, mop.blockZ)
+            				|| mopID == Block.waterMoving.blockID || mopID == Block.waterStill.blockID) {
                 		Vec3 to_target = player.getPosition(0);
                 		to_target.xCoord -= target.posX;
                 		to_target.yCoord -= target.posY;

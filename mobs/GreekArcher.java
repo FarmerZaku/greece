@@ -53,7 +53,8 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3);
+        
         if (par1World != null && !par1World.isRemote)
         {
             this.setCombatTask();
