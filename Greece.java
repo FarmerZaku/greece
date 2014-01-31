@@ -118,11 +118,8 @@ public class Greece {
         //---------------BIOMES-----------------
 		public static BiomeGenBase limeCliffsBiome;
 		public static BiomeGenBase tinIslesBiome;
-<<<<<<< HEAD
 		public static BiomeGenBase korinthiaBiome;
-=======
 		public static BiomeGenBase graniteMountainsBiome;
->>>>>>> master
 		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
@@ -325,26 +322,18 @@ public class Greece {
                 //---------BIOMES & WORLDGEN-----------
                 GameRegistry.registerWorldGenerator(oreManager);
                 
-<<<<<<< HEAD
                 // last two parameters: grass color, tree leaf color. Pass in null for default color.
-                limeCliffsBiome = new BiomeGenGreek(66, true, null, null).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
+                limeCliffsBiome = new BiomeGenGreek(66, -1, Block.stone.blockID, null, null).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
                 GameRegistry.addBiome(limeCliffsBiome);
                 
-                tinIslesBiome = new BiomeGenGreek(67, true, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
+                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
                 GameRegistry.addBiome(tinIslesBiome);
                 
-                korinthiaBiome = new BiomeGenGreek(68, true, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
-                GameRegistry.addBiome(korinthiaBiome); //13878634
-=======
-                limeCliffsBiome = new BiomeGenGreek(66, -1, Block.stone.blockID).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
-                GameRegistry.addBiome(limeCliffsBiome);
-                
-                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
-                GameRegistry.addBiome(tinIslesBiome);
-                
-                graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
+                graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID, null, null).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
                 GameRegistry.addBiome(graniteMountainsBiome);
->>>>>>> master
+                
+                korinthiaBiome = new BiomeGenGreek(69, -1, Block.grass.blockID, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
+                GameRegistry.addBiome(korinthiaBiome); //13878634
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
                 GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
@@ -356,20 +345,13 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIsland);
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIslandShore);
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
-<<<<<<< HEAD
-                GameRegistry.removeBiome(BiomeGenBase.taigaHills);                
-=======
-                GameRegistry.removeBiome(BiomeGenBase.taigaHills);
-                
-                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, graniteMountainsBiome, forestHills, limeCliffsBiome, tinIslesBiome));
-                
->>>>>>> master
+                GameRegistry.removeBiome(BiomeGenBase.taigaHills);                                
         }
        
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
         	// this determines where you can spawn... I think.
-        	WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, tinIslesBiome, korinthiaBiome));
+        	WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, graniteMountainsBiome, tinIslesBiome, korinthiaBiome));
         }
        
         public void registerEntity(Class<? extends Entity> entityClass, String entityName, int bkEggColor, int fgEggColor) {
