@@ -82,9 +82,9 @@ public class Greece {
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
-		public final Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2, 1, 7, 35)
+		public final Item bronzeSword = new GreekSword(6001, bronze, 0.09f, 2, 1, 7, 35)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final Item spear = new GreekSword(6002, bronze, 0.03f, 3, 1, 5, 35)
+		public final Item spear = new GreekSword(6002, bronze, 0.05f, 3, 1, 5, 35)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
@@ -102,6 +102,8 @@ public class Greece {
         @SidedProxy(clientSide="mod.greece.client.ClientProxy", serverSide="mod.greece.CommonProxy")
         public static CommonProxy proxy;
        
+		public static BiomeGenBase greekBiome;
+		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
                 // Stub Method
@@ -175,6 +177,8 @@ public class Greece {
         		MinecraftForge.EVENT_BUS.register(new GreekEventHandler());
                 GameRegistry.registerWorldGenerator(oreManager);
                 proxy.registerRenderers();
+                greekBiome = new BiomeGenGreek(66, true).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);
+                GameRegistry.addBiome(greekBiome);
                 
                 // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
                 // keys are pressed, like block or whatever
@@ -295,7 +299,7 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
                 GameRegistry.removeBiome(BiomeGenBase.taigaHills);
                 
-                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills));
+                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, greekBiome));
                 
         }
        

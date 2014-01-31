@@ -172,11 +172,14 @@ public class EventManager implements IWorldGenerator {
         	if (isInRegion("k", x, z)) {
                 this.addOreSpawn(Greece.sardOre, world, random, x, z, 16, 16, 3+random.nextInt(8), 640, 15, 160);
         	}
-        	if (isInRegion("limestone", x, z)) {
-                this.addStoneSpawn(Greece.limestone, world, random, x, z, 16, 16, 15, 20, 40, 240);
+        	//if (isInRegion("limestone", x, z)) {
+            //    this.addStoneSpawn(Greece.limestone, world, random, x, z, 16, 16, 15, 20, 40, 240);
+        	//}
+        	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.greekBiome.biomeID) {
+        		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
         	}
         	//Add in marble any place higher than 64
-        	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 64, 240);
+        	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
         }
  
         private void generateNether(World world, Random random, int x, int z) {
@@ -249,6 +252,20 @@ public void addStoneSpawn(Block block, World world, Random random, int blockXPos
              int posY = minY + random.nextInt(diffBtwnMinMaxY);
              int posZ = blockZPos + random.nextInt(maxZ);
              generator.generate(world, random, posX, posY, posZ);
+      }
+}
+public void replaceStone(int blockID, World world, int chunkX, int chunkZ, Random random)//, Random random, int blockXPos, int blockZPos, int maxX, int maxZ, int radius, int chancesToSpawn, int minY, int maxY)
+{
+	double worldHeight = world.getHeight();
+      for (int x = chunkX; x < chunkX+16; ++x) {
+    	  for (int z = chunkZ; z < chunkZ+16; ++z) {
+    		  for (int y = 36 + random.nextInt(8); y < worldHeight; ++y) {
+    			  if (world.getBlockId(x, y, z) == Block.stone.blockID) {
+    				 // world.setBlock(x, y, z, blockID);
+    				  world.setBlock(x, y, z, blockID, 0, 2);
+    			  }
+    		  }
+    	  }
       }
 }
  
