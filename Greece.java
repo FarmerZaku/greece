@@ -93,9 +93,9 @@ public class Greece {
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
-		public final Item bronzeSword = new GreekSword(6001, bronze, 0.09f, 3, 1, 7, 35)
+		public final Item bronzeSword = new GreekSword(6001, bronze, 0.09f, 2.3, 1, 7, 35)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final Item spear = new GreekSword(6002, bronze, 0.05f, 4, 1, 5, 35)
+		public final Item spear = new GreekSword(6002, bronze, 0.05f, 3.3, 1, 5, 35)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
@@ -114,7 +114,9 @@ public class Greece {
         @SidedProxy(clientSide="mod.greece.client.ClientProxy", serverSide="mod.greece.CommonProxy")
         public static CommonProxy proxy;
        
-		public static BiomeGenBase greekBiome;
+        //---------------BIOMES-----------------
+		public static BiomeGenBase limeCliffsBiome;
+		public static BiomeGenBase tinIslesBiome;
 		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
@@ -132,11 +134,7 @@ public class Greece {
                 GameRegistry.addSmelting(limestone.blockID, new ItemStack(lime), 1);
                 GameRegistry.addShapelessRecipe(new ItemStack(plasterBucket), new ItemStack(lime), new ItemStack(Block.sand), new ItemStack(Item.bucketWater));
                 
-                //---------REGISTER BLOCKS---------
-                GameRegistry.registerBlock(genericDirt, "genericDirt");
-                LanguageRegistry.addName(genericDirt, "DIRT");
-                MinecraftForge.setBlockHarvestLevel(genericDirt, "shovel", 3);
-                
+                //---------REGISTER BLOCKS---------                
                 GameRegistry.registerBlock(plasteredBlock, "plasteredBlock");
                 LanguageRegistry.addName(plasteredBlock, "Plastered Block");
                 MinecraftForge.setBlockHarvestLevel(plasteredBlock, "pick", 0);
@@ -183,28 +181,24 @@ public class Greece {
                 LanguageRegistry.addName(plasterBucket, "Plaster Bucket");
                 GameRegistry.registerItem(plasterBucket, "plasterBucket");
                 
-                // Misc
-                // Register the event handler, so we can catch events like zombies spawning and do stuff, like replacing
-                // the zombies with bandits.
-        		MinecraftForge.EVENT_BUS.register(new GreekEventHandler());
-                GameRegistry.registerWorldGenerator(oreManager);
-                proxy.registerRenderers();
-                greekBiome = new BiomeGenGreek(66, true).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);
-                GameRegistry.addBiome(greekBiome);
-                
                 // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
                 // keys are pressed, like block or whatever
-                KeyBinding[] key = {new KeyBinding("Block", Keyboard.KEY_LCONTROL)};
-	           	boolean[] repeat = {false};
-	           	KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key, repeat));
-	           	KeyBinding[] key2 = {new KeyBinding("Blocka", Keyboard.KEY_L)};
-	           	KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key2, repeat));
+                //KeyBinding[] key = {new KeyBinding("Block", Keyboard.KEY_LCONTROL)};
+	           	//boolean[] repeat = {false};
+	           	//KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key, repeat));
+	           	//KeyBinding[] key2 = {new KeyBinding("Blocka", Keyboard.KEY_L)};
+	           	//KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key2, repeat));
                 
+                //------------ENTITIES---------------
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Bandit");
                 
                 registerEntity(GreekArcher.class, "ArcherBandit", 0xe00abcd, 0x0abcd0);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekArcher.name", "ArcherBandit");
+                
+                // Register the event handler, so we can catch events like zombies spawning and do stuff, like replacing
+                // the zombies with bandits.
+        		MinecraftForge.EVENT_BUS.register(new GreekEventHandler());
                 
                 //EntityRegistry.registerModEntity(GreekHuman.class, "Bandit", 20, this, 40, 3, true);
                 //EntityRegistry.addSpawn(GreekHuman.class, 50, 5, 10, EnumCreatureType.monster, BiomeGenBase.beach, BiomeGenBase.extremeHills,
@@ -318,6 +312,17 @@ public class Greece {
                 GameRegistry.registerCraftingHandler(chiselCrafting);
                 GameRegistry.registerWorldGenerator(treeManager);
                 
+                
+                
+                //---------BIOMES & WORLDGEN-----------
+                GameRegistry.registerWorldGenerator(oreManager);
+                
+                limeCliffsBiome = new BiomeGenGreek(66, true).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
+                GameRegistry.addBiome(limeCliffsBiome);
+                
+                tinIslesBiome = new BiomeGenGreek(67, true).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
+                GameRegistry.addBiome(tinIslesBiome);
+                
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
                 GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
                 GameRegistry.removeBiome(BiomeGenBase.frozenRiver);
@@ -330,7 +335,7 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
                 GameRegistry.removeBiome(BiomeGenBase.taigaHills);
                 
-                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, greekBiome));
+                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, tinIslesBiome));
                 
         }
        

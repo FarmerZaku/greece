@@ -18,6 +18,7 @@ public class BiomeGenGreek extends BiomeGenBase {
 	        }
 	        this.theBiomeDecorator.treesPerChunk=1;
 	        this.theBiomeDecorator.clayPerChunk=3;
+	        this.theBiomeDecorator.reedsPerChunk=0;
 	        //this.theBiomeDecorator.deadBushPerChunk = 2;
 	        //this.theBiomeDecorator.reedsPerChunk = 50;
 	        //this.theBiomeDecorator.cactiPerChunk = 10;

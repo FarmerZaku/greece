@@ -134,7 +134,6 @@ public class EventManager implements IWorldGenerator {
         private void generateSurface(World world, Random random, int x, int z) {
     		this.addOreSpawn(Greece.silverOre, world, random, x, z, 16, 16, 10+random.nextInt(20), 10, 15, 160);
     		this.addOreSpawn(Greece.copperOre, world, random, x, z, 16, 16, 3+random.nextInt(20), 20, 15, 160);
-    		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 3+random.nextInt(20), 20, 15, 160);
     		
         	if (isInRegion("sard", x, z)) {
                 this.addOreSpawn(Greece.sardOre, world, random, x, z, 16, 16, 3+random.nextInt(8), 640, 15, 160);
@@ -175,8 +174,18 @@ public class EventManager implements IWorldGenerator {
         	//if (isInRegion("limestone", x, z)) {
             //    this.addStoneSpawn(Greece.limestone, world, random, x, z, 16, 16, 15, 20, 40, 240);
         	//}
-        	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.greekBiome.biomeID) {
+        	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.limeCliffsBiome.biomeID) {
         		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
+        		this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 10, 40, 55);
+        	} else {
+        		//Add in marble any place higher than 64
+            	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
+        	}
+        	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.tinIslesBiome.biomeID) {
+        		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 8+random.nextInt(15), 80, 15, 160);
+        		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
+        	} else {
+        		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 3+random.nextInt(10), 4, 15, 160);
         	}
         	//Add in marble any place higher than 64
         	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);

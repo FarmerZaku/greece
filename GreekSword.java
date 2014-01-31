@@ -73,6 +73,7 @@ public class GreekSword extends ItemSword {
 	        int damageDiff = maxDamage - minDamage;
 	        double damage = ((double)chargeTime / (double)fullCharge) * (double)damageDiff + (double)minDamage;
 	        
+	        player.swingItem();
 	        
             if (!world.isRemote)
             {
