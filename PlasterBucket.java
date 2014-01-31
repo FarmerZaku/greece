@@ -1,10 +1,9 @@
 package mod.greece;
 
-import java.util.Arrays;
-
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumMovingObjectType;
@@ -13,6 +12,10 @@ import net.minecraft.world.World;
 
 public class PlasterBucket extends Item {
 
+	private EntityPlayer tempPlayer;
+	private ItemStack tempItem;
+	private int droppedTime=-1;
+	
 	public PlasterBucket(int id) {
 		super(id);
 		setMaxStackSize(64);
@@ -38,6 +41,52 @@ public class PlasterBucket extends Item {
 		return false;
 	}*/
 	
+	/**
+     * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
+     * update it's contents.
+     *//*
+	@Override
+    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+		if (this.droppedTime != -1) {
+			this.droppedTime--;
+			if (this.droppedTime == 0) {
+				this.droppedTime = -1;
+				InventoryPlayer inv = this.tempPlayer.inventory;
+				for (int i = 0; i < inv.mainInventory.length; ++i) {
+					if (inv.mainInventory[i] == this.tempItem) {
+						this.tempPlayer.dropPlayerItemWithRandomChoice(this.tempItem, false);
+						this.tempPlayer.inventory.mainInventory[i]=null;
+						System.out.println("Dropped Item");
+						return;
+					}
+				}
+			}
+		}
+	}
+	
+    *//**
+     * Called when a player drops the item into the world,
+     * returning false from this will prevent the item from
+     * being removed from the players inventory and spawning
+     * in the world
+     *
+     * @param player The player that dropped the item
+     * @param item The item stack, before the item is removed.
+     *//*
+	@Override
+    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+    {
+		if (GreekKeyBind.keyPressed) {
+			this.droppedTime=100;
+			this.tempPlayer=player;
+			this.tempItem=item;
+			System.out.println("LOL NOPE");
+	        return false;
+		} else {
+			return true;
+		}
+		
+    }*/
 	@Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
 	  {
@@ -45,6 +94,7 @@ public class PlasterBucket extends Item {
 			  return itemStack;
 		  }
             MovingObjectPosition mop = this.getMovingObjectPositionFromPlayer(world, player, false);
+            
             if (mop == null)
                 return itemStack;
             
