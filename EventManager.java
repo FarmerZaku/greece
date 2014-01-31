@@ -134,7 +134,6 @@ public class EventManager implements IWorldGenerator {
         private void generateSurface(World world, Random random, int x, int z) {
     		this.addOreSpawn(Greece.silverOre, world, random, x, z, 16, 16, 10+random.nextInt(20), 10, 15, 160);
     		this.addOreSpawn(Greece.copperOre, world, random, x, z, 16, 16, 3+random.nextInt(20), 20, 15, 160);
-    		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 3+random.nextInt(20), 20, 15, 160);
     		
         	if (isInRegion("sard", x, z)) {
                 this.addOreSpawn(Greece.sardOre, world, random, x, z, 16, 16, 3+random.nextInt(8), 640, 15, 160);
@@ -172,11 +171,24 @@ public class EventManager implements IWorldGenerator {
         	if (isInRegion("k", x, z)) {
                 this.addOreSpawn(Greece.sardOre, world, random, x, z, 16, 16, 3+random.nextInt(8), 640, 15, 160);
         	}
-        	if (isInRegion("limestone", x, z)) {
-                this.addStoneSpawn(Greece.limestone, world, random, x, z, 16, 16, 15, 20, 40, 240);
+        	//if (isInRegion("limestone", x, z)) {
+            //    this.addStoneSpawn(Greece.limestone, world, random, x, z, 16, 16, 15, 20, 40, 240);
+        	//}
+        	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.limeCliffsBiome.biomeID) {
+        		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
+        		this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 10, 40, 55);
+        	} else {
+        		//Add in marble any place higher than 64
+            	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
+        	}
+        	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.tinIslesBiome.biomeID) {
+        		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 8+random.nextInt(15), 80, 15, 160);
+        		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
+        	} else {
+        		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 3+random.nextInt(10), 4, 15, 160);
         	}
         	//Add in marble any place higher than 64
-        	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 64, 240);
+        	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
         }
  
         private void generateNether(World world, Random random, int x, int z) {
@@ -249,6 +261,20 @@ public void addStoneSpawn(Block block, World world, Random random, int blockXPos
              int posY = minY + random.nextInt(diffBtwnMinMaxY);
              int posZ = blockZPos + random.nextInt(maxZ);
              generator.generate(world, random, posX, posY, posZ);
+      }
+}
+public void replaceStone(int blockID, World world, int chunkX, int chunkZ, Random random)//, Random random, int blockXPos, int blockZPos, int maxX, int maxZ, int radius, int chancesToSpawn, int minY, int maxY)
+{
+	double worldHeight = world.getHeight();
+      for (int x = chunkX; x < chunkX+16; ++x) {
+    	  for (int z = chunkZ; z < chunkZ+16; ++z) {
+    		  for (int y = 36 + random.nextInt(8); y < worldHeight; ++y) {
+    			  if (world.getBlockId(x, y, z) == Block.stone.blockID) {
+    				 // world.setBlock(x, y, z, blockID);
+    				  world.setBlock(x, y, z, blockID, 0, 2);
+    			  }
+    		  }
+    	  }
       }
 }
  
