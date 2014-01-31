@@ -87,7 +87,7 @@ public class Greece {
 				.setStepSound(Block.soundGrassFootstep);
 		public final static Block oliveLeavesRipe = new GreekBlockLeaves(607, 1).setUnlocalizedName("oliveLeavesRipe").setTextureName(GreeceInfo.NAME.toLowerCase() + ":leaves_olive_ripe")
 				.setHardness(1f)
-				.setLightOpacity(100)
+				.setLightOpacity(10)
 				.setStepSound(Block.soundGrassFootstep);
 		public final static Block oliveWood = new MultiTextureBlock(608, Material.wood, "logs").setUnlocalizedName("oliveWood");
 		
@@ -117,6 +117,7 @@ public class Greece {
         //---------------BIOMES-----------------
 		public static BiomeGenBase limeCliffsBiome;
 		public static BiomeGenBase tinIslesBiome;
+		public static BiomeGenBase korinthiaBiome;
 		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
@@ -310,18 +311,20 @@ public class Greece {
                 
                 //---------MISC - Mills---------
                 GameRegistry.registerCraftingHandler(chiselCrafting);
-                GameRegistry.registerWorldGenerator(treeManager);
-                
-                
+                GameRegistry.registerWorldGenerator(treeManager);             
                 
                 //---------BIOMES & WORLDGEN-----------
                 GameRegistry.registerWorldGenerator(oreManager);
                 
-                limeCliffsBiome = new BiomeGenGreek(66, true).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
+                // last two parameters: grass color, tree leaf color. Pass in null for default color.
+                limeCliffsBiome = new BiomeGenGreek(66, true, null, null).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
                 GameRegistry.addBiome(limeCliffsBiome);
                 
-                tinIslesBiome = new BiomeGenGreek(67, true).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
+                tinIslesBiome = new BiomeGenGreek(67, true, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
                 GameRegistry.addBiome(tinIslesBiome);
+                
+                korinthiaBiome = new BiomeGenGreek(68, true, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
+                GameRegistry.addBiome(korinthiaBiome); //13878634
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
                 GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
@@ -333,15 +336,13 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIsland);
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIslandShore);
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
-                GameRegistry.removeBiome(BiomeGenBase.taigaHills);
-                
-                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, tinIslesBiome));
-                
+                GameRegistry.removeBiome(BiomeGenBase.taigaHills);                
         }
        
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
-                // Stub Method
+        	// this determines where you can spawn... I think.
+        	WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, tinIslesBiome, korinthiaBiome));
         }
        
         public void registerEntity(Class<? extends Entity> entityClass, String entityName, int bkEggColor, int fgEggColor) {

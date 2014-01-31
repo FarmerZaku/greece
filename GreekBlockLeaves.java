@@ -45,9 +45,10 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
     @SideOnly(Side.CLIENT)
     public int getBlockColor()
     {
-        double d0 = 0.5D;
-        double d1 = 1.0D;
-        return ColorizerFoliage.getFoliageColor(d0, d1);
+        //double d0 = 0.5D;
+        //double d1 = 1.0D;
+        //return ColorizerFoliage.getFoliageColor(d0, d1);
+        return 12433259;
     }
 
     @SideOnly(Side.CLIENT)
@@ -57,7 +58,8 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
      */
     public int getRenderColor(int par1)
     {
-        return ColorizerFoliage.getFoliageColorBirch();
+        //return ColorizerFoliage.getFoliageColorBirch();
+    	return 12433259;
     }
 
     @SideOnly(Side.CLIENT)
@@ -68,8 +70,8 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
      */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        return ColorizerFoliage.getFoliageColorBirch();
-        
+        //return ColorizerFoliage.getFoliageColorBirch();
+    	return 12433259;
     }
 
     /**
