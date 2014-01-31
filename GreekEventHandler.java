@@ -2,6 +2,7 @@ package mod.greece;
 
 import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,16 @@ public class GreekEventHandler {
                 	event.world.spawnEntityInWorld(newHuman);
                 }
                 oldSkele.setDead();
+            //Replace every spawning creeper with an archer bandit with flaming arrows
+            } else if (event.entityLiving instanceof EntityCreeper) {
+                EntityCreeper oldCreep = (EntityCreeper)event.entityLiving;
+                GreekArcher newHuman = new GreekArcher(event.world);
+                newHuman.setBanditType(1);
+                newHuman.setLocationAndAngles(oldCreep.posX, oldCreep.posY, oldCreep.posZ, oldCreep.rotationYaw, oldCreep.rotationPitch);
+                if (newHuman.getCanSpawnHere()) {
+                	event.world.spawnEntityInWorld(newHuman);
+                }
+                oldCreep.setDead();
             }
         }
     }
@@ -40,7 +51,7 @@ public class GreekEventHandler {
     public void onPlayerInteract(AttackEntityEvent event) {
     	World world = MinecraftServer.getServer().worldServerForDimension(event.entityPlayer.dimension);
     	ItemStack cur_item = event.entityPlayer.getCurrentEquippedItem();
-    	if (cur_item.getItem() instanceof GreekSword) {
+    	if (cur_item == null || cur_item.getItem() instanceof GreekSword) {
     		if (!world.isRemote) {
     			cur_item.getItem().onPlayerStoppedUsing(cur_item, world, event.entityPlayer, cur_item.getItem().getMaxItemUseDuration(cur_item));
     		}

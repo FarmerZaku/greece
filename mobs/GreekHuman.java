@@ -65,6 +65,10 @@ public class GreekHuman extends EntityMob
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
+        //this.moveForward = 0.8f;
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3);
+        //this.moveStrafing = 0.8f;
+        
         this.addRandomArmor();
     }
 
