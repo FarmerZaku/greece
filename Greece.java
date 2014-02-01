@@ -48,6 +48,7 @@ public class Greece {
 	
 		//---------MATERIALS---------
 		public static EnumToolMaterial bronze = EnumHelper.addToolMaterial("Bronze", 2, 200, 5.0F, 2.0F, 12);
+		public static EnumToolMaterial clay = EnumHelper.addToolMaterial("Clay", 1, 100, 3.0F, 0.5F, 12);
 	
 		//---------ITEMS---------
 		private final static Item plasterBucket = new PlasterBucket(5000);
@@ -102,6 +103,8 @@ public class Greece {
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
 		public final static Item drachma = new GreekItem(6005).setTextureName(GreeceInfo.NAME.toLowerCase() + ":drachma").setUnlocalizedName("drachma");
 		public final static Item marbleEye = new GreekItem(6006).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
+		public final static Item unfiredBakingCover = new GreekItem(6007).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover_unfired").setUnlocalizedName("unfiredBakingCover");
+		public final static Item bakingCover = new GreekItem(6008, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
 		
 		//---------EVENT HANDLERS - Mills---------
 		CraftingHandler chiselCrafting = new CraftingHandler();
@@ -310,6 +313,17 @@ public class Greece {
                 LanguageRegistry.addName(marbleEye, "Ship's Eye");
                 GameRegistry.addRecipe(new ItemStack(marbleEye), "a ", "bb", "cd",
                 		'a', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE), 'b', marble, 'c', new ItemStack(Item.dyePowder, 1, 1), 'd', new ItemStack(Item.dyePowder, 1, 11));
+                
+                // BAKING COVER
+                GameRegistry.registerItem(unfiredBakingCover, "unfiredBakingCover");
+                LanguageRegistry.addName(unfiredBakingCover, "UnFired Baking Cover");
+                GameRegistry.addRecipe(new ItemStack(unfiredBakingCover), " a ", "aaa", "a a",
+                		'a', Item.clay);
+                
+                GameRegistry.registerItem(bakingCover, "bakingCover");
+                LanguageRegistry.addName(bakingCover, "Baking Cover");
+                GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(bakingCover), 1);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat);
                 
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
