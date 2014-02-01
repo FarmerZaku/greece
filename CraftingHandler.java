@@ -17,36 +17,22 @@ public class CraftingHandler implements ICraftingHandler {
 		    	if(craftMatrix.getStackInSlot(i) != null)
 		    	{
 		    		ItemStack j = craftMatrix.getStackInSlot(i);
-		    		if(j.getItem() != null && j.getItem() == Greece.chisel && j.getItemDamage()+10 < j.getMaxDamage())
+		    		if(j.getItem() != null && (j.getItem() == Greece.chisel || j.getItem() == Greece.bakingCover) && j.getItemDamage()+10 < j.getMaxDamage())
 		    		{
 		    			int oldDamage = j.getItemDamage(); 
 		    			ItemStack k;
-		    			k = new ItemStack(Greece.chisel, 2, (j.getItemDamage() + 15));
+		    			if (j.getItem() == Greece.chisel) {
+		    				k = new ItemStack(Greece.chisel, 2, (j.getItemDamage() + 15));
+		    			}
+		    			else {
+		    				k = new ItemStack(Greece.bakingCover, 2, (j.getItemDamage() + 10));
+		    			}
 		    			//k.setItemDamage(oldDamage + 10);
 		    			craftMatrix.setInventorySlotContents(i, k);
 		    		}
-		    		else if(j.getItem() != null && j.getItem() == Greece.chisel && j.getItemDamage()+15 >= j.getMaxDamage()) {
+		    		else if(j.getItem() != null && (j.getItem() == Greece.chisel || j.getItem() == Greece.bakingCover) && j.getItemDamage()+15 >= j.getMaxDamage())
 		    			player.playSound("random.break", 1, 1);
-		    			
-		    		//Since the hot baking cover won't break, just get cold, it has its own section now
-		    		} else if (j.getItem() != null && j.getItem() == Greece.hotBakingCover)
-		    		{
-		    			int oldDamage = j.getItemDamage(); 
-		    			ItemStack k;
-		    			k = new ItemStack(Greece.hotBakingCover, 1, (j.getItemDamage() + 30));
-		    			
-		    			//Put the hot baking cover in the first empty player inventory slot. This is because the onUpdate
-		    			//function doesn't run while it is in the crafting grid, so it never cools. This means you can use
-		    			//it for as much bread as you want without worrying about it cooling. So we put it in the inventory
-		    			//to make it update between each crafting.
-		    			int firstOpen = player.inventory.getFirstEmptyStack();
-		    			if (firstOpen != -1) {
-		    				player.inventory.setInventorySlotContents(firstOpen, k);
-		    			} else {
-		    				player.dropPlayerItem(k);
-		    			}
-		    		}
-		    	}
+		    	}  
 			}
 	}
 
