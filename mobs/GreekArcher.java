@@ -66,12 +66,14 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
         //}
     }
 
+    @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.25D);
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
@@ -81,11 +83,13 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Returns true if the newer Entity AI code should be run
      */
+    @Override
     public boolean isAIEnabled()
     {
         return true;
     }
 
+    @Override
     public boolean attackEntityAsMob(Entity par1Entity)
     {
         if (super.attackEntityAsMob(par1Entity))
@@ -106,60 +110,63 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Get this Entity's EnumCreatureAttribute
      */
+    @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEFINED;
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    public void onLivingUpdate()
-    {
-        if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
-        {
-            float f = this.getBrightness(1.0F);
-
-            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
-            {
-                boolean flag = true;
-                ItemStack itemstack = this.getCurrentItemOrArmor(4);
-
-                if (itemstack != null)
-                {
-                    if (itemstack.isItemStackDamageable())
-                    {
-                        itemstack.setItemDamage(itemstack.getItemDamageForDisplay() + this.rand.nextInt(2));
-
-                        if (itemstack.getItemDamageForDisplay() >= itemstack.getMaxDamage())
-                        {
-                            this.renderBrokenItemStack(itemstack);
-                            this.setCurrentItemOrArmor(4, (ItemStack)null);
-                        }
-                    }
-
-                    flag = false;
-                }
-
-                if (flag)
-                {
-                    this.setFire(8);
-                }
-            }
-        }
-
-        if (this.worldObj.isRemote && this.getBanditType() == 1)
-        {
-            this.setSize(0.72F, 2.34F);
-        }
-
-        super.onLivingUpdate();
-    }
+//    /**
+//     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+//     * use this to react to sunlight and start to burn.
+//     */
+//    @Override
+//    public void onLivingUpdate()
+//    {
+//        if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
+//        {
+//            float f = this.getBrightness(1.0F);
+//
+//            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
+//            {
+//                boolean flag = true;
+//                ItemStack itemstack = this.getCurrentItemOrArmor(4);
+//
+//                if (itemstack != null)
+//                {
+//                    if (itemstack.isItemStackDamageable())
+//                    {
+//                        itemstack.setItemDamage(itemstack.getItemDamageForDisplay() + this.rand.nextInt(2));
+//
+//                        if (itemstack.getItemDamageForDisplay() >= itemstack.getMaxDamage())
+//                        {
+//                            this.renderBrokenItemStack(itemstack);
+//                            this.setCurrentItemOrArmor(4, (ItemStack)null);
+//                        }
+//                    }
+//
+//                    flag = false;
+//                }
+//
+//                if (flag)
+//                {
+//                    this.setFire(8);
+//                }
+//            }
+//        }
+//
+//        if (this.worldObj.isRemote && this.getBanditType() == 1)
+//        {
+//            this.setSize(0.72F, 2.34F);
+//        }
+//
+//        super.onLivingUpdate();
+//    }
 
     /**
      * Called when the mob's health reaches 0.
      */
+    @Override
     public void onDeath(DamageSource par1DamageSource)
     {
         super.onDeath(par1DamageSource);
@@ -180,6 +187,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Returns the item ID for the item the mob drops on death.
      */
+    @Override
     protected int getDropItemId()
     {
         return Item.arrow.itemID;
@@ -189,6 +197,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
      * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
      * par2 - Level of Looting used to kill this mob.
      */
+    @Override
     protected void dropFewItems(boolean par1, int par2)
     {
         int j;
@@ -203,6 +212,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
         this.dropItem(Greece.drachma.itemID, 5);
     }
 
+    @Override
     protected void dropRareDrop(int par1)
     {
         if (this.getBanditType() == 1)
@@ -214,6 +224,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Makes entity wear random armor based on difficulty
      */
+    @Override
     protected void addRandomArmor()
     {
     	//if (this.rand.nextFloat() < 0.15F * this.worldObj.getLocationTensionFactor(this.posX, this.posY, this.posZ))
@@ -254,6 +265,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
         this.setCurrentItemOrArmor(0, new ItemStack(Item.bow));
     }
 
+    @Override
     public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
         par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
@@ -300,6 +312,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Attack the specified entity using a ranged attack.
      */
+    @Override
     public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
     {
         EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 1.6F, (float)(14 - this.worldObj.difficultySetting * 4));
@@ -355,6 +368,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
@@ -371,6 +385,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
@@ -380,6 +395,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Sets the held item, or an armor slot. Slot 0 is held item. Slot 1-4 is armor. Params: Item, slot
      */
+    @Override
     public void setCurrentItemOrArmor(int par1, ItemStack par2ItemStack)
     {
         super.setCurrentItemOrArmor(par1, par2ItemStack);
@@ -393,6 +409,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
     /**
      * Returns the Y Offset of this entity.
      */
+    @Override
     public double getYOffset()
     {
         return super.getYOffset() - 0.5D;

@@ -72,6 +72,7 @@ public class GreekHuman extends EntityMob
         this.addRandomArmor();
     }
 
+    @Override
     protected boolean isValidLightLevel()
     {
         int i = MathHelper.floor_double(this.posX);
@@ -98,6 +99,7 @@ public class GreekHuman extends EntityMob
         }
     }
     
+    @Override  
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -107,6 +109,7 @@ public class GreekHuman extends EntityMob
         this.getAttributeMap().func_111150_b(field_110186_bp).setAttribute(this.rand.nextDouble() * ForgeDummyContainer.zombieSummonBaseChance);
     }
 
+    @Override
     protected void entityInit()
     {
         super.entityInit();
@@ -118,6 +121,7 @@ public class GreekHuman extends EntityMob
     /**
      * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
      */
+    @Override
     public int getTotalArmorValue()
     {
         int i = super.getTotalArmorValue() + 2;
@@ -133,6 +137,7 @@ public class GreekHuman extends EntityMob
     /**
      * Returns true if the newer Entity AI code should be run
      */
+    @Override
     protected boolean isAIEnabled()
     {
         return true;
@@ -141,6 +146,7 @@ public class GreekHuman extends EntityMob
     /**
      * If Animal, checks if the age timer is negative
      */
+    @Override
     public boolean isChild()
     {
         return false;
@@ -150,6 +156,7 @@ public class GreekHuman extends EntityMob
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
+    @Override
     public void onLivingUpdate()
     {
         /*if (this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isChild())
@@ -190,6 +197,7 @@ public class GreekHuman extends EntityMob
     /**
      * Called when the entity is attacked.
      */
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         if (!super.attackEntityFrom(par1DamageSource, par2))
@@ -221,11 +229,13 @@ public class GreekHuman extends EntityMob
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
     }
 
+    @Override
     public boolean attackEntityAsMob(Entity par1Entity)
     {
         boolean flag = super.attackEntityAsMob(par1Entity);
@@ -241,6 +251,7 @@ public class GreekHuman extends EntityMob
     /**
      * Returns the item ID for the item the mob drops on death.
      */
+    @Override
     protected int getDropItemId()
     {
         return Greece.drachma.itemID;
@@ -249,11 +260,13 @@ public class GreekHuman extends EntityMob
     /**
      * Get this Entity's EnumCreatureAttribute
      */
+    @Override
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEFINED;
     }
 
+    @Override
     protected void dropRareDrop(int par1)
     {
         switch (this.rand.nextInt(3))
@@ -272,6 +285,7 @@ public class GreekHuman extends EntityMob
     /**
      * Makes entity wear random armor based on difficulty
      */
+    @Override
     protected void addRandomArmor()
     {
     	//if (this.rand.nextFloat() < 0.15F * this.worldObj.getLocationTensionFactor(this.posX, this.posY, this.posZ))
@@ -323,6 +337,7 @@ public class GreekHuman extends EntityMob
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
@@ -331,6 +346,7 @@ public class GreekHuman extends EntityMob
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
@@ -339,6 +355,7 @@ public class GreekHuman extends EntityMob
     /**
      * This method gets called when the entity kills another one.
      */
+    @Override
     public void onKillEntity(EntityLivingBase par1EntityLivingBase)
     {
         super.onKillEntity(par1EntityLivingBase);
@@ -360,6 +377,7 @@ public class GreekHuman extends EntityMob
         }
     }
 
+    @Override
     public EntityLivingData onSpawnWithEgg(EntityLivingData par1EntityLivingData)
     {
         Object par1EntityLivingData1 = super.onSpawnWithEgg(par1EntityLivingData);
@@ -395,12 +413,14 @@ public class GreekHuman extends EntityMob
     /**
      * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
      */
+    @Override
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
         return false;
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void handleHealthUpdate(byte par1)
     {
         if (par1 == 16)

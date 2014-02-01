@@ -13,7 +13,7 @@ import cpw.mods.fml.common.TickType;
 class GreekKeyBind extends KeyHandler
 {
 	 private EnumSet tickTypes = EnumSet.of(TickType.CLIENT);
-	 public static boolean keyPressed = false;
+	 public static boolean blockPressed = false;
 	
 	 public GreekKeyBind(KeyBinding[] keyBindings, boolean[] repeatings)
 	 {
@@ -27,18 +27,26 @@ class GreekKeyBind extends KeyHandler
 	 @Override
 	 public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
 	 {
-		 this.keyPressed = true;
-		 System.out.println("Key Pressed");
+		 
+		 if (kb.keyDescription == "Block") {
+			 this.blockPressed = true;
+		 }
+		 //this.keyDown[kb.keyCode] = true;
+		 //System.out.println("Key Pressed");
 	 }
 	 @Override
 	 public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd)
 	 {
-		 this.keyPressed = false;
-		 System.out.println("Key Released");
+		 this.blockPressed = false;
+		 //System.out.println("Key Released");
 	 }
 	 @Override
 	 public EnumSet<TickType> ticks()
 	 {
 		 return tickTypes;
+	 }
+	 
+	 public boolean getKey(int keyCode) {
+		 return keyDown[keyCode];
 	 }
 }
