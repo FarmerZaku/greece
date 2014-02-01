@@ -116,52 +116,52 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
         return EnumCreatureAttribute.UNDEFINED;
     }
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-    public void onLivingUpdate()
-    {
-        if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
-        {
-            float f = this.getBrightness(1.0F);
-
-            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
-            {
-                boolean flag = true;
-                ItemStack itemstack = this.getCurrentItemOrArmor(4);
-
-                if (itemstack != null)
-                {
-                    if (itemstack.isItemStackDamageable())
-                    {
-                        itemstack.setItemDamage(itemstack.getItemDamageForDisplay() + this.rand.nextInt(2));
-
-                        if (itemstack.getItemDamageForDisplay() >= itemstack.getMaxDamage())
-                        {
-                            this.renderBrokenItemStack(itemstack);
-                            this.setCurrentItemOrArmor(4, (ItemStack)null);
-                        }
-                    }
-
-                    flag = false;
-                }
-
-                if (flag)
-                {
-                    this.setFire(8);
-                }
-            }
-        }
-
-        if (this.worldObj.isRemote && this.getBanditType() == 1)
-        {
-            this.setSize(0.72F, 2.34F);
-        }
-
-        super.onLivingUpdate();
-    }
+//    /**
+//     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+//     * use this to react to sunlight and start to burn.
+//     */
+//    @Override
+//    public void onLivingUpdate()
+//    {
+//        if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
+//        {
+//            float f = this.getBrightness(1.0F);
+//
+//            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
+//            {
+//                boolean flag = true;
+//                ItemStack itemstack = this.getCurrentItemOrArmor(4);
+//
+//                if (itemstack != null)
+//                {
+//                    if (itemstack.isItemStackDamageable())
+//                    {
+//                        itemstack.setItemDamage(itemstack.getItemDamageForDisplay() + this.rand.nextInt(2));
+//
+//                        if (itemstack.getItemDamageForDisplay() >= itemstack.getMaxDamage())
+//                        {
+//                            this.renderBrokenItemStack(itemstack);
+//                            this.setCurrentItemOrArmor(4, (ItemStack)null);
+//                        }
+//                    }
+//
+//                    flag = false;
+//                }
+//
+//                if (flag)
+//                {
+//                    this.setFire(8);
+//                }
+//            }
+//        }
+//
+//        if (this.worldObj.isRemote && this.getBanditType() == 1)
+//        {
+//            this.setSize(0.72F, 2.34F);
+//        }
+//
+//        super.onLivingUpdate();
+//    }
 
     /**
      * Called when the mob's health reaches 0.

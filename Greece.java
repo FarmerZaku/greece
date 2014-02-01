@@ -52,6 +52,7 @@ public class Greece {
 	
 		//---------MATERIALS---------
 		public static EnumToolMaterial bronze = EnumHelper.addToolMaterial("Bronze", 2, 200, 5.0F, 2.0F, 12);
+		public static EnumToolMaterial copper = EnumHelper.addToolMaterial("Copper", 1, 100, 3.0F, 1.0F, 18);
 	
 		//---------ITEMS---------
 		private final static Item plasterBucket = new PlasterBucket(5000);
@@ -59,7 +60,15 @@ public class Greece {
 		private final static Item lime = new GenericItem(5002).setTextureName("Greece:lime").setUnlocalizedName("lime");
 		private final static Item onyx = new GenericItem(5003).setTextureName("Greece:onyx").setUnlocalizedName("onyx");
 		public final static Item shield = new GreekShield(5004, bronze).setTextureName("Greece:shield").setUnlocalizedName("shield");
-			
+		public final static Item bronzePick = new GreekPickaxe(5005, bronze).setTextureName("Greece:bronzePick").setUnlocalizedName("bronzePick");
+		public final static Item bronzeAxe = new GreekAxe(5006, bronze).setTextureName("Greece:bronzeAxe").setUnlocalizedName("bronzeAxe");
+		public final static Item bronzeShovel = new GreekShovel(5007, bronze).setTextureName("Greece:bronzeShovel").setUnlocalizedName("bronzeShovel");
+		public final static Item copperPick = new GreekPickaxe(5008, copper).setTextureName("Greece:copperPick").setUnlocalizedName("copperPick");
+		public final static Item copperAxe = new GreekAxe(5009, copper).setTextureName("Greece:copperAxe").setUnlocalizedName("copperAxe");
+		public final static Item copperShovel = new GreekShovel(5010, copper).setTextureName("Greece:copperShovel").setUnlocalizedName("copperShovel");
+		private final static Item tinIngot = new GenericItem(5011).setTextureName("Greece:tinIngot").setUnlocalizedName("tinIngot");
+		private final static Item copperIngot = new GenericItem(5012).setTextureName("Greece:copperIngot").setUnlocalizedName("copperIngot");
+		
 		//---------BLOCKS---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
 		public final static Block plasteredBlock = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(0.5f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("plasteredBlock").setCreativeTab(CreativeTabs.tabBlock);
@@ -68,6 +77,10 @@ public class Greece {
 		public final static Block thatch = new GreekBlock(506, Material.grass, 512).setHardness(0.2f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatch").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:thatch");
 		public final static Block thatchSlope = new ThatchSlope(507, thatch, 0).setTextureName("Greece:thatch").setHardness(0.5f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatchSlope").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block granite = new GreekBlock(508, Material.rock, 508).setHardness(0.9f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("granite").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:granite");
+		public final static Block tinBlock = new GreekBlock(509, Material.iron, 509).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("tinBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:tinBlock");
+		public final static Block copperBlock = new GreekBlock(510, Material.iron, 510).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("copperBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:copperBlock");
+		public final static Block bronzeBlock = new GreekBlock(511, Material.iron, 511).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("bronzeBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:bronzeBlock");
+		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
 		
 		//---------EVENT HANDLERS---------
 		EventManager oreManager = new EventManager(); // Matthew's ore generator
@@ -132,35 +145,69 @@ public class Greece {
         @EventHandler
         public void load(FMLInitializationEvent event) {
                 proxy.registerRenderers();
-                //GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond, 64), new ItemStack(Block.dirt));
-                //GameRegistry.addShapelessRecipe(new ItemStack(Item.coal, 64), new ItemStack(Item.diamond));
-                //GameRegistry.addShapelessRecipe(new ItemStack(Blo), new ItemStack(Block.stone, 32));
-                //GameRegistry.addRecipe(new ItemStack(Item.diamond, 64), "xy", "yx", 'x', new ItemStack(Block.dirt), 'y', new ItemStack(Block.stone));
-                //GameRegistry.addSmelting(Block.dirt.blockID, new ItemStack(Item.diamond), 1);
-                GameRegistry.addSmelting(limestone.blockID, new ItemStack(lime), 1);
-                GameRegistry.addShapelessRecipe(new ItemStack(plasterBucket), new ItemStack(lime), new ItemStack(Block.sand), new ItemStack(Item.bucketWater));
                 
-                //---------REGISTER BLOCKS---------                
+                //---------REGISTER BLOCKS--------- 
+                //PLASTER
                 GameRegistry.registerBlock(plasteredBlock, "plasteredBlock");
                 LanguageRegistry.addName(plasteredBlock, "Plastered Block");
                 MinecraftForge.setBlockHarvestLevel(plasteredBlock, "pick", 0);
                 
+                //SARD
                 GameRegistry.registerBlock(sardOre, "sardOre");
                 LanguageRegistry.addName(sardOre, "Sard Ore");
                 MinecraftForge.setBlockHarvestLevel(sardOre, "pickaxe", 1);
                 
+                //ONYX
                 GameRegistry.registerBlock(onyxOre, "onyxOre");
                 LanguageRegistry.addName(onyxOre, "Onyx Ore");
                 MinecraftForge.setBlockHarvestLevel(onyxOre, "pickaxe", 1);
                 
+                //LIMESTONE
                 GameRegistry.registerBlock(limestone, "limestone");
                 LanguageRegistry.addName(limestone, "Limestone");
                 MinecraftForge.setBlockHarvestLevel(limestone, "pickaxe", 0);
+                GameRegistry.addSmelting(limestone.blockID, new ItemStack(lime), 1);
+                GameRegistry.addShapelessRecipe(new ItemStack(Block.cobblestone), new ItemStack(limestone));
                 
+                //GRANITE
                 GameRegistry.registerBlock(granite, "granite");
                 LanguageRegistry.addName(granite, "Granite");
                 MinecraftForge.setBlockHarvestLevel(granite, "pickaxe", 2);
+                GameRegistry.addShapelessRecipe(new ItemStack(Block.cobblestone), new ItemStack(granite));
                 
+                //TIN BLOCK
+                GameRegistry.registerBlock(tinBlock, "tinBlock");
+                LanguageRegistry.addName(tinBlock, "Tin Block");
+                MinecraftForge.setBlockHarvestLevel(tinBlock, "pickaxe", 1);
+                GameRegistry.addRecipe(new ItemStack(tinBlock), "xxx", "xxx", "xxx",
+                		'x', tinIngot);
+                GameRegistry.addShapelessRecipe(new ItemStack(tinIngot, 9), new ItemStack(tinBlock));
+                
+                //COPPER BLOCK
+                GameRegistry.registerBlock(copperBlock, "copperBlock");
+                LanguageRegistry.addName(copperBlock, "Copper Block");
+                MinecraftForge.setBlockHarvestLevel(copperBlock, "pickaxe", 1);
+                GameRegistry.addRecipe(new ItemStack(copperBlock), "xxx", "xxx", "xxx",
+                		'x', copperIngot);
+                GameRegistry.addShapelessRecipe(new ItemStack(copperIngot, 9), new ItemStack(copperBlock));
+                
+                //BRONZE BLOCK
+                GameRegistry.registerBlock(bronzeBlock, "bronzeBlock");
+                LanguageRegistry.addName(bronzeBlock, "Bronze Block");
+                MinecraftForge.setBlockHarvestLevel(bronzeBlock, "pickaxe", 2);
+                GameRegistry.addRecipe(new ItemStack(bronzeBlock), "xxx", "xxx", "xxx",
+                		'x', bronzeIngot);
+                GameRegistry.addShapelessRecipe(new ItemStack(bronzeIngot, 9), new ItemStack(bronzeBlock));
+                
+                //SILVER BLOCK
+                GameRegistry.registerBlock(silverBlock, "silverBlock");
+                LanguageRegistry.addName(silverBlock, "Silver Block");
+                MinecraftForge.setBlockHarvestLevel(silverBlock, "pickaxe", 1);
+                GameRegistry.addRecipe(new ItemStack(silverBlock), "xxx", "xxx", "xxx",
+                		'x', silverIngot);
+                GameRegistry.addShapelessRecipe(new ItemStack(silverIngot, 9), new ItemStack(silverBlock));
+                
+                //THATCH SLOPE
                 GameRegistry.registerBlock(thatchSlope, "thatchSlope");
                 LanguageRegistry.addName(thatchSlope, "Thatch Slope");
                 MinecraftForge.setBlockHarvestLevel(thatchSlope, "axe", 0);
@@ -171,6 +218,7 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(thatchSlope), "x  ", "yx ", "yyx",
                 		'x', Block.grass, 'y', Item.stick);
                 
+                //THATCH
                 GameRegistry.registerBlock(thatch, "thatch");
                 LanguageRegistry.addName(thatch, "Thatch");
                 MinecraftForge.setBlockHarvestLevel(thatch, "axe", 0);
@@ -182,16 +230,80 @@ public class Greece {
                 		'x', Block.grass, 'y', Item.stick);
                 
                 //---------REGISTER ITEMS---------
+                //SARD ITEM
                 LanguageRegistry.addName(sard, "Sard");
                 GameRegistry.registerItem(sard, "sard");
+                
+                //ONYX ITEM
                 LanguageRegistry.addName(onyx, "Onyx");
                 GameRegistry.registerItem(onyx, "onyx");
+                
+                //LIME ITEM
                 LanguageRegistry.addName(lime, "Lime");
                 GameRegistry.registerItem(lime, "lime");
+                
+                //TIN INGOT
+                LanguageRegistry.addName(tinIngot, "Tin Ingot");
+                GameRegistry.registerItem(tinIngot, "tinIngot");
+                GameRegistry.addSmelting(tinOre.blockID, new ItemStack(tinIngot), 1);
+                GameRegistry.addRecipe(new ItemStack(Item.bucketEmpty), "x x", " x ",
+                		'x', tinIngot);
+                
+                //COPPER INGOT
+                LanguageRegistry.addName(copperIngot, "Copper Ingot");
+                GameRegistry.registerItem(copperIngot, "copperIngot");
+                GameRegistry.addSmelting(copperOre.blockID, new ItemStack(copperIngot), 1);
+                GameRegistry.addRecipe(new ItemStack(Item.arrow, 4), " x ", " y ", " z ",
+                		'x', copperIngot, 'y', Item.stick, 'z', Item.feather);
+                GameRegistry.addRecipe(new ItemStack(Item.shears), " x ", "x ",
+                		'x', copperIngot);
+                
+                //COPPER PICKAXE
+                LanguageRegistry.addName(copperPick, "Copper Pickaxe");
+                GameRegistry.registerItem(copperPick, "copperPick");
+                GameRegistry.addRecipe(new ItemStack(copperPick), "xxx", " y ", " y ",
+                		'x', copperIngot, 'y', Item.stick);
+                
+                //COPPER AXE
+                LanguageRegistry.addName(copperAxe, "Copper Axe");
+                GameRegistry.registerItem(copperAxe, "copperAxe");
+                GameRegistry.addRecipe(new ItemStack(copperAxe), " xx", " yx", " y ",
+                		'x', copperIngot, 'y', Item.stick);
+                
+                //COPPER SHOVEL
+                LanguageRegistry.addName(copperShovel, "Copper Shovel");
+                GameRegistry.registerItem(copperShovel, "copperShovel");
+                GameRegistry.addRecipe(new ItemStack(copperShovel), " x ", " y ", " y ",
+                		'x', copperIngot, 'y', Item.stick);
+                
+                //BRONZE PICKAXE
+                LanguageRegistry.addName(bronzePick, "Bronze Pickaxe");
+                GameRegistry.registerItem(bronzePick, "bronzePick");
+                GameRegistry.addRecipe(new ItemStack(bronzePick), "xxx", " y ", " y ",
+                		'x', bronzeIngot, 'y', Item.stick);
+                
+                //BRONZE AXE
+                LanguageRegistry.addName(bronzeAxe, "Bronze Axe");
+                GameRegistry.registerItem(bronzeAxe, "bronzeAxe");
+                GameRegistry.addRecipe(new ItemStack(bronzeAxe), " xx", " yx", " y ",
+                		'x', bronzeIngot, 'y', Item.stick);
+                
+                //BRONZE SHOVEL
+                LanguageRegistry.addName(bronzeShovel, "Bronze Shovel");
+                GameRegistry.registerItem(bronzeShovel, "bronzeShovel");
+                GameRegistry.addRecipe(new ItemStack(bronzeShovel), " x ", " y ", " y ",
+                		'x', bronzeIngot, 'y', Item.stick);
+                
+                //PLASTER BUCKET
                 LanguageRegistry.addName(plasterBucket, "Plaster Bucket");
                 GameRegistry.registerItem(plasterBucket, "plasterBucket");
+                GameRegistry.addShapelessRecipe(new ItemStack(plasterBucket), new ItemStack(lime), new ItemStack(Block.sand), new ItemStack(Item.bucketWater));
+                
+                //SHIELD
                 LanguageRegistry.addName(shield, "Shield");
                 GameRegistry.registerItem(shield, "shield");
+                GameRegistry.addRecipe(new ItemStack(shield), " x ", "xyx", " x ",
+                		'x', Block.planks, 'y', Item.leather);
                 
                 // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
                 // keys are pressed, like block or whatever
@@ -200,8 +312,6 @@ public class Greece {
 	           	KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key, repeat));
 	           	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.SERVER);
 	           	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.CLIENT);
-	           	//KeyBinding[] key2 = {new KeyBinding("Blocka", Keyboard.KEY_L)};
-	           	//KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key2, repeat));
                 
                 //------------ENTITIES---------------
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
@@ -278,6 +388,8 @@ public class Greece {
                 LanguageRegistry.addName(bronzeIngot, "Bronze Ingot");
                 ItemStack bronzeIngotStack = new ItemStack(bronzeIngot);
                 GameRegistry.addSmelting(copperTin.blockID, bronzeIngotStack, 1);
+                GameRegistry.addRecipe(new ItemStack(Item.arrow, 4), " x ", " y ", " z ",
+                		'x', bronzeIngot, 'y', Item.stick, 'z', Item.feather);
                 
                 // BRONZE SWORD
                 GameRegistry.registerItem(bronzeSword, "bronzeSword");
