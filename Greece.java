@@ -121,7 +121,8 @@ public class Greece {
 		public final static Item drachma = new GreekItem(6005).setTextureName(GreeceInfo.NAME.toLowerCase() + ":drachma").setUnlocalizedName("drachma");
 		public final static Item marbleEye = new GreekItem(6006).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
 		public final static Item unfiredBakingCover = new GreekItem(6007).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover_unfired").setUnlocalizedName("unfiredBakingCover");
-		public final static Item bakingCover = new GreekItem(6008, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
+		public final static Item bakingCover = new GreekHeatableItem(6008, 6009).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
+		public final static Item hotBakingCover = new GreekHotItem(6009, 6008, 300).setTextureName(GreeceInfo.NAME.toLowerCase() + ":hot_baking_cover").setUnlocalizedName("hotBakingCover");
 		
 		//---------EVENT HANDLERS - Mills---------
 		CraftingHandler chiselCrafting = new CraftingHandler();
@@ -440,10 +441,13 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(unfiredBakingCover), " a ", "aaa", "a a",
                 		'a', Item.clay);
                 
+                GameRegistry.registerItem(hotBakingCover, "hotBakingCover");
+                LanguageRegistry.addName(hotBakingCover, "Hot Baking Cover");
+                
                 GameRegistry.registerItem(bakingCover, "bakingCover");
                 LanguageRegistry.addName(bakingCover, "Baking Cover");
-                GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(bakingCover), 1);
-                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat);
+                GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(hotBakingCover), 1);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(hotBakingCover, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat, Item.wheat);
                 
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
@@ -460,13 +464,13 @@ public class Greece {
                 limeCliffsBiome = new BiomeGenGreek(66, -1, Block.stone.blockID, null, null).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
                 GameRegistry.addBiome(limeCliffsBiome);
                 
-                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
+                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.5f, 0.3f);
                 GameRegistry.addBiome(tinIslesBiome);
                 
                 graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID, null, null).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
                 GameRegistry.addBiome(graniteMountainsBiome);
                 
-                korinthiaBiome = new BiomeGenGreek(69, -1, Block.grass.blockID, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
+                korinthiaBiome = new BiomeGenGreek(69, -1, -1, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
                 GameRegistry.addBiome(korinthiaBiome); //13878634
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
