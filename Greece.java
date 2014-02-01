@@ -443,11 +443,12 @@ public class Greece {
                 
                 GameRegistry.registerItem(hotBakingCover, "hotBakingCover");
                 LanguageRegistry.addName(hotBakingCover, "Hot Baking Cover");
+                GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(hotBakingCover), 1);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(hotBakingCover, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat, Item.wheat);
                 
                 GameRegistry.registerItem(bakingCover, "bakingCover");
                 LanguageRegistry.addName(bakingCover, "Baking Cover");
-                GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(hotBakingCover), 1);
-                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(hotBakingCover, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat, Item.wheat);
+                GameRegistry.addSmelting(bakingCover.itemID, new ItemStack(hotBakingCover), 1);
                 
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
