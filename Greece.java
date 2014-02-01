@@ -6,6 +6,7 @@ import static net.minecraft.world.biome.BiomeGenBase.plains;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 
 import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
@@ -34,6 +35,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -41,6 +43,8 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
  
 @Mod(modid="Greece", name="Ancient Greece Mod", version="0.0.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
@@ -54,9 +58,9 @@ public class Greece {
 		private final static Item sard = new GenericItem(5001).setTextureName("Greece:sard").setUnlocalizedName("sard");
 		private final static Item lime = new GenericItem(5002).setTextureName("Greece:lime").setUnlocalizedName("lime");
 		private final static Item onyx = new GenericItem(5003).setTextureName("Greece:onyx").setUnlocalizedName("onyx");
+		public final static Item shield = new GreekShield(5004, bronze).setTextureName("Greece:shield").setUnlocalizedName("shield");
 			
 		//---------BLOCKS---------
-		public final static Block genericDirt = new GreekBlock(500, Material.rock, 500).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("genericDirt").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
 		public final static Block plasteredBlock = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(0.5f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("plasteredBlock").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block limestone = new GreekBlock(504, Material.rock, 504).setHardness(0.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
@@ -186,12 +190,16 @@ public class Greece {
                 GameRegistry.registerItem(lime, "lime");
                 LanguageRegistry.addName(plasterBucket, "Plaster Bucket");
                 GameRegistry.registerItem(plasterBucket, "plasterBucket");
+                LanguageRegistry.addName(shield, "Shield");
+                GameRegistry.registerItem(shield, "shield");
                 
                 // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
                 // keys are pressed, like block or whatever
-                //KeyBinding[] key = {new KeyBinding("Block", Keyboard.KEY_LCONTROL)};
-	           	//boolean[] repeat = {false};
-	           	//KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key, repeat));
+                KeyBinding[] key = {new KeyBinding("Block", Keyboard.KEY_LCONTROL)};
+	           	boolean[] repeat = {false};
+	           	KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key, repeat));
+	           	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.SERVER);
+	           	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.CLIENT);
 	           	//KeyBinding[] key2 = {new KeyBinding("Blocka", Keyboard.KEY_L)};
 	           	//KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key2, repeat));
                 

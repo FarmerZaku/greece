@@ -100,9 +100,13 @@ public class GreekSword extends ItemSword {
             		System.out.println("Gonna damage: " + damage);
             		EntityLiving target = ((EntityLiving) entities_hit.get(i));
             		MovingObjectPosition mop = this.getMovingObjectPositionFromPlayer(world, player, false);
-            		int mopID = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
+            		int mopID = 0;
+            		if (mop != null) {
+            			mopID = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
+            		}
             		if (mop == null || player.getDistanceSq(target.posX, target.posY, target.posZ) < player.getDistanceSq(mop.blockX, mop.blockY, mop.blockZ)
             				|| mopID == Block.waterMoving.blockID || mopID == Block.waterStill.blockID) {
+            			System.out.println("4");
                 		Vec3 to_target = player.getPosition(0);
                 		to_target.xCoord -= target.posX;
                 		to_target.yCoord -= target.posY;
@@ -113,6 +117,7 @@ public class GreekSword extends ItemSword {
             			double dot = facing.dotProduct(to_target);
             			double crossMag = Math.sqrt(cross.xCoord*cross.xCoord + cross.yCoord*cross.yCoord + cross.zCoord*cross.zCoord);
             			double angle = Math.atan2(crossMag, dot);
+            			System.out.println("5");
             			if (Math.abs(angle-2.35) < 0.11) {
             				target.attackEntityFrom(DamageSource.causePlayerDamage(player), (int)damage);
             				//target.knockBack(target, 0, 0, 0.);
