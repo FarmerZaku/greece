@@ -57,6 +57,23 @@ public class GreekSword extends ItemSword {
 	    	this.maxDamage = maxDamage;
 	    	this.fullCharge = chargeCapacity;
 	    }
+	    
+	    /**
+	     * Called when the player Left Clicks (attacks) an entity.
+	     * Processed before damage is done, if return value is true further processing is canceled
+	     * and the entity is not attacked.
+	     *
+	     * @param stack The Item being used
+	     * @param player The player that is attacking
+	     * @param entity The entity being attacked
+	     * @return True to cancel the rest of the interaction.
+	     */
+	    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+	    {
+	    	this.onPlayerStoppedUsing(stack, player.worldObj, player, this.getMaxItemUseDuration(stack));
+	        return true;
+	    }
+	    
 	    /**
 	     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
 	     */
@@ -106,7 +123,7 @@ public class GreekSword extends ItemSword {
             		}
             		if (mop == null || player.getDistanceSq(target.posX, target.posY, target.posZ) < player.getDistanceSq(mop.blockX, mop.blockY, mop.blockZ)
             				|| mopID == Block.waterMoving.blockID || mopID == Block.waterStill.blockID) {
-            			System.out.println("4");
+            			//System.out.println("4");
                 		Vec3 to_target = player.getPosition(0);
                 		to_target.xCoord -= target.posX;
                 		to_target.yCoord -= target.posY;
@@ -117,7 +134,7 @@ public class GreekSword extends ItemSword {
             			double dot = facing.dotProduct(to_target);
             			double crossMag = Math.sqrt(cross.xCoord*cross.xCoord + cross.yCoord*cross.yCoord + cross.zCoord*cross.zCoord);
             			double angle = Math.atan2(crossMag, dot);
-            			System.out.println("5");
+            			//System.out.println("5");
             			if (Math.abs(angle-2.35) < 0.11) {
             				target.attackEntityFrom(DamageSource.causePlayerDamage(player), (int)damage);
             				//target.knockBack(target, 0, 0, 0.);
