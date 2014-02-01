@@ -1,7 +1,5 @@
 package mod.greece;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,6 +10,9 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import com.google.common.collect.Multimap;
@@ -23,7 +24,6 @@ public class GreekShield extends Item
 {
     private float weaponDamage;
     private final EnumToolMaterial toolMaterial;
-    private int lastDamage=0;
 
     public GreekShield(int par1, EnumToolMaterial par2EnumToolMaterial)
     {
@@ -35,6 +35,24 @@ public class GreekShield extends Item
         this.weaponDamage = 4.0F + par2EnumToolMaterial.getDamageVsEntity();
     }
 
+    /**
+     * Called when the player Left Clicks (attacks) an entity.
+     * Processed before damage is done, if return value is true further processing is canceled
+     * and the entity is not attacked.
+     *
+     * @param stack The Item being used
+     * @param player The player that is attacking
+     * @param entity The entity being attacked
+     * @return True to cancel the rest of the interaction.
+     */
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+    {
+    	//Causes 1 damage on an attack and returns, canceling further attack processing
+    	entity.attackEntityFrom(DamageSource.causePlayerDamage(player), 1);
+        return true;
+    }
+    
     public float func_82803_g()
     {
         return this.toolMaterial.getDamageVsEntity();
@@ -49,6 +67,18 @@ public class GreekShield extends Item
      * update it's contents.
      */
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5) {
+    	//System.out.println("1");
+    	int lastDmg = 0;
+    	NBTTagCompound tag = itemStack.getTagCompound();
+    	//System.out.println("2");
+    	if (tag == null) {
+    		tag = new NBTTagCompound();
+    	}
+    	if (tag.hasKey("LastDmg"))
+        {
+    		lastDmg = tag.getInteger("LastDmg");
+        }
+    	//System.out.println("3");
     	int curDamage = this.getDamage(itemStack);
     	if (curDamage >= this.getMaxDamage()) {
     		--itemStack.stackSize;
@@ -56,16 +86,17 @@ public class GreekShield extends Item
     		if (entity instanceof EntityPlayer) {
     			ItemStack[] inv = ((EntityPlayer)entity).inventory.mainInventory;
     			for (int i = 0; i < inv.length; ++i) {
-    				if (inv[i].equals(itemStack)) {
+    				if (inv[i] != null && inv[i].equals(itemStack)) {
     					inv[i] = null;
     					return;
     				}
     			}
     		}
-    	} else if (curDamage != lastDamage) {
+    	} else if (lastDmg != curDamage) {
     		entity.playSound("mob.zombie.wood", 1, 1);
     	}
-    	lastDamage = curDamage;
+    	tag.setInteger("LastDmg", curDamage);
+    	itemStack.setTagCompound(tag);
     }
     
     /**

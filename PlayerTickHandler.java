@@ -2,6 +2,7 @@ package mod.greece;
 
 import java.util.EnumSet;
 
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -68,12 +69,16 @@ public class PlayerTickHandler implements ITickHandler
 		    	 }
 	    	 }
 	    	 if (shield != null) {
+	    		 //System.out.println(player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue());
+	    		 player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.8);
 	    		 player.setItemInUse(shield, shield.getMaxItemUseDuration());
 	    	 }
 	     } else if (GreekKeyBind.blockPressed == false && player.isUsingItem() && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == Greece.shield.itemID) {
 	    	 if (player.isUsingItem()) {
 	    		 //System.out.println("Stopped using shield");
 	    		 player.setItemInUse(null,0);
+	    		 //Ok, this will mess up in the future if the player somehow gets knockback resistance via other means
+	    		 player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.0);
 	    	 }
 	     }
 	}
