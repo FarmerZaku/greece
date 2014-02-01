@@ -52,6 +52,7 @@ public class Greece {
 	
 		//---------MATERIALS---------
 		public static EnumToolMaterial bronze = EnumHelper.addToolMaterial("Bronze", 2, 200, 5.0F, 2.0F, 12);
+		public static EnumToolMaterial clay = EnumHelper.addToolMaterial("Clay", 1, 100, 3.0F, 0.5F, 12);
 	
 		//---------ITEMS---------
 		private final static Item plasterBucket = new PlasterBucket(5000);
@@ -92,7 +93,7 @@ public class Greece {
 				.setStepSound(Block.soundGrassFootstep);
 		public final static Block oliveLeavesRipe = new GreekBlockLeaves(607, 1).setUnlocalizedName("oliveLeavesRipe").setTextureName(GreeceInfo.NAME.toLowerCase() + ":leaves_olive_ripe")
 				.setHardness(1f)
-				.setLightOpacity(100)
+				.setLightOpacity(10)
 				.setStepSound(Block.soundGrassFootstep);
 		public final static Block oliveWood = new MultiTextureBlock(608, Material.wood, "logs").setUnlocalizedName("oliveWood");
 		
@@ -106,6 +107,8 @@ public class Greece {
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
 		public final static Item drachma = new GreekItem(6005).setTextureName(GreeceInfo.NAME.toLowerCase() + ":drachma").setUnlocalizedName("drachma");
 		public final static Item marbleEye = new GreekItem(6006).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
+		public final static Item unfiredBakingCover = new GreekItem(6007).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover_unfired").setUnlocalizedName("unfiredBakingCover");
+		public final static Item bakingCover = new GreekItem(6008, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
 		
 		//---------EVENT HANDLERS - Mills---------
 		CraftingHandler chiselCrafting = new CraftingHandler();
@@ -122,6 +125,7 @@ public class Greece {
         //---------------BIOMES-----------------
 		public static BiomeGenBase limeCliffsBiome;
 		public static BiomeGenBase tinIslesBiome;
+		public static BiomeGenBase korinthiaBiome;
 		public static BiomeGenBase graniteMountainsBiome;
 		
         @EventHandler
@@ -318,27 +322,40 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(marbleEye), "a ", "bb", "cd",
                 		'a', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE), 'b', marble, 'c', new ItemStack(Item.dyePowder, 1, 1), 'd', new ItemStack(Item.dyePowder, 1, 11));
                 
+                // BAKING COVER
+                GameRegistry.registerItem(unfiredBakingCover, "unfiredBakingCover");
+                LanguageRegistry.addName(unfiredBakingCover, "UnFired Baking Cover");
+                GameRegistry.addRecipe(new ItemStack(unfiredBakingCover), " a ", "aaa", "a a",
+                		'a', Item.clay);
+                
+                GameRegistry.registerItem(bakingCover, "bakingCover");
+                LanguageRegistry.addName(bakingCover, "Baking Cover");
+                GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(bakingCover), 1);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat);
+                
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
                 LanguageRegistry.addName(olives, "Olives");
                 
                 //---------MISC - Mills---------
                 GameRegistry.registerCraftingHandler(chiselCrafting);
-                GameRegistry.registerWorldGenerator(treeManager);
-                
-                
+                GameRegistry.registerWorldGenerator(treeManager);             
                 
                 //---------BIOMES & WORLDGEN-----------
                 GameRegistry.registerWorldGenerator(oreManager);
                 
-                limeCliffsBiome = new BiomeGenGreek(66, -1, Block.stone.blockID).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
+                // last two parameters: grass color, tree leaf color. Pass in null for default color.
+                limeCliffsBiome = new BiomeGenGreek(66, -1, Block.stone.blockID, null, null).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
                 GameRegistry.addBiome(limeCliffsBiome);
                 
-                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
+                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
                 GameRegistry.addBiome(tinIslesBiome);
                 
-                graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
+                graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID, null, null).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
                 GameRegistry.addBiome(graniteMountainsBiome);
+                
+                korinthiaBiome = new BiomeGenGreek(69, -1, Block.grass.blockID, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
+                GameRegistry.addBiome(korinthiaBiome); //13878634
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);
                 GameRegistry.removeBiome(BiomeGenBase.frozenOcean);
@@ -350,15 +367,13 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIsland);
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIslandShore);
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
-                GameRegistry.removeBiome(BiomeGenBase.taigaHills);
-                
-                WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, graniteMountainsBiome, forestHills, limeCliffsBiome, tinIslesBiome));
-                
+                GameRegistry.removeBiome(BiomeGenBase.taigaHills);                                
         }
        
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
-                // Stub Method
+        	// this determines where you can spawn... I think.
+        	WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, graniteMountainsBiome, tinIslesBiome, korinthiaBiome));
         }
        
         public void registerEntity(Class<? extends Entity> entityClass, String entityName, int bkEggColor, int fgEggColor) {
