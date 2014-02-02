@@ -112,7 +112,7 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
         if (!par1World.isRemote)
         {
         	if (leafType == 0) {
-        		if (growthTime.nextInt(20) == 2) // random number
+        		if (growthTime.nextInt(30) == 27) // random number
         			par1World.setBlock(par2, par3, par4, Greece.oliveLeavesRipe.blockID);
         	}
         	
