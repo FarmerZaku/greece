@@ -48,7 +48,7 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
         //double d0 = 0.5D;
         //double d1 = 1.0D;
         //return ColorizerFoliage.getFoliageColor(d0, d1);
-        return 12433259;
+        return 10140019;
     }
 
     @SideOnly(Side.CLIENT)
@@ -59,7 +59,7 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
     public int getRenderColor(int par1)
     {
         //return ColorizerFoliage.getFoliageColorBirch();
-    	return 12433259;
+    	return 10140019;
     }
 
     @SideOnly(Side.CLIENT)
@@ -71,7 +71,7 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         //return ColorizerFoliage.getFoliageColorBirch();
-    	return 12433259;
+    	return 10140019; //12433259;
     }
 
     /**
@@ -112,7 +112,7 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
         if (!par1World.isRemote)
         {
         	if (leafType == 0) {
-        		if (growthTime.nextInt(10) == 2) // random number
+        		if (growthTime.nextInt(30) == 27) // random number
         			par1World.setBlock(par2, par3, par4, Greece.oliveLeavesRipe.blockID);
         	}
         	
@@ -319,7 +319,10 @@ public class GreekBlockLeaves extends BlockLeavesBase implements IShearable
     public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
     	if (leafType == 1) {
-    		this.dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Greece.olives));
+    		//this.dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Greece.olives));
+    		par2EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Greece.olives));
+    		//par2EntityPlayer.playSound("random.pop", 1, 1);
+    		par1World.playSoundAtEntity(par2EntityPlayer, "random.pop", 1, 1);
     		par1World.setBlock(par3, par4, par5, Greece.oliveLeaves.blockID);
     	}
     	//super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);

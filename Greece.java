@@ -122,6 +122,9 @@ public class Greece {
 		public final static Item marbleEye = new GreekItem(6006).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
 		public final static Item unfiredBakingCover = new GreekItem(6007).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover_unfired").setUnlocalizedName("unfiredBakingCover");
 		public final static Item bakingCover = new GreekItem(6008, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
+		public final static Item unfiredAmphora = new GreekItem(6009, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_unfired").setUnlocalizedName("unfiredAmphora");
+		public final static Item amphora = new GreekItem(6010, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_empty").setUnlocalizedName("amphora");
+		public final static Item oliveOil = new GreekItem(6011, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_oil").setUnlocalizedName("oliveOil");
 		
 		//---------EVENT HANDLERS - Mills---------
 		CraftingHandler chiselCrafting = new CraftingHandler();
@@ -444,6 +447,22 @@ public class Greece {
                 LanguageRegistry.addName(bakingCover, "Baking Cover");
                 GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(bakingCover), 1);
                 GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat);
+                
+                // AMPHORA
+                GameRegistry.registerItem(unfiredAmphora, "unfiredAmphora");
+                LanguageRegistry.addName(unfiredAmphora, "Unfired Amphora");
+                GameRegistry.addRecipe(new ItemStack(unfiredAmphora), "a a", "aaa", " a ",
+                		'a', Item.clay);
+                
+                GameRegistry.registerItem(amphora, "amphora");
+                LanguageRegistry.addName(amphora, "Amphora");
+                GameRegistry.addSmelting(unfiredAmphora.itemID, new ItemStack(amphora), 1);
+                
+                // OLIVE OIL
+                GameRegistry.registerItem(oliveOil, "oliveOil");
+                LanguageRegistry.addName(oliveOil, "Olive Oil");
+                GameRegistry.addRecipe(new ItemStack(oliveOil), "aaa", "aaa", " b ",
+                		'a', olives, 'b', amphora);
                 
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
