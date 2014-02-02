@@ -112,9 +112,9 @@ public class Greece {
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
-		public final Item bronzeSword = new GreekSword(6001, bronze, 0.1f, 2.3, 1, 7, 15)
+		public final Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2.5, 1, 9, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final Item spear = new GreekSword(6002, bronze, 0.08f, 3.3, 1, 5, 15)
+		public final Item spear = new GreekSword(6002, bronze, 0.04f, 3.1, 1, 7, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");

@@ -1,31 +1,38 @@
 package mod.greece;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumToolMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GreekSword extends ItemSword {
-	    //public static final String[] bowPullIconNameArray = new String[] {"pulling_0", "pulling_1", "pulling_2"};
 	    @SideOnly(Side.CLIENT)
 	    private Icon[] iconArray;
 	    private int minDamage, maxDamage, fullCharge;
@@ -43,14 +50,6 @@ public class GreekSword extends ItemSword {
 	        this.maxStackSize = 1;
 	        this.setMaxDamage(384);
 	        this.setCreativeTab(CreativeTabs.tabCombat);
-	    	this.knockBack = knockBack;
-	    	this.reach = reach;
-	    	this.minDamage = minDamage;
-	    	this.maxDamage = maxDamage;
-	    	this.fullCharge = chargeCapacity;
-	    }
-
-	    public void setWeaponStats(float knockBack, double reach, int minDamage, int maxDamage, int chargeCapacity) {
 	    	this.knockBack = knockBack;
 	    	this.reach = reach;
 	    	this.minDamage = minDamage;
@@ -79,11 +78,43 @@ public class GreekSword extends ItemSword {
 	     */
 	    @Override
 	    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int chargeVal)
-	    {
+	    {	
+	    	GreekEventHandler.ignoreFOVChanges=2;
+			//After the player stops using the item, remove our temporary speed boost. See the onItemRickClick for more
+	    	//explanation...
+	    	
+	    	//This should already have a stackTagCompound, but may as well check...
+	    	if (itemStack.stackTagCompound == null) {
+	        	itemStack.stackTagCompound = new NBTTagCompound();
+	        }
+	    	
+	    	//Look for the attribute ID (speedID) and if it doesn't exist get a new random one.
+	        String uu = itemStack.stackTagCompound.getString("SpeedUUID");
+			UUID speedID;
+			if(uu.equals("")) {
+				speedID = UUID.randomUUID();
+				itemStack.stackTagCompound.setString("SpeedUUID", speedID.toString());
+			}
+			else {
+				speedID = UUID.fromString(uu);
+			}
+	        
+			//Create a copy of the attribute modifier, see if it had already been applied to the player, and if so remove it 
+	        AttributeInstance atinst = player.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+	        AttributeModifier mod = new AttributeModifier(speedID,"SpeedBoostComponent",3f,2);
+	        if(atinst.getModifier(speedID) != null)
+			{
+	        	atinst.removeModifier(mod);
+			}    	
+	        
+	        //Make sure the player is dead (i.e. They haven't died while charging up a swing)
 	    	if (player.isDead) {
 	    		return;
 	    	}
-	    	//System.out.println("Released!");
+	    	
+	    	player.moveForward=1;
+	    	player.moveStrafing=1;
+	    	
 	        int maxCharge = this.getMaxItemUseDuration(itemStack);
 	        int chargeTime = this.getMaxItemUseDuration(itemStack) - chargeVal;
 	        //System.out.println(chargeTime);
@@ -96,75 +127,34 @@ public class GreekSword extends ItemSword {
 	        
 	        player.swingItem();
 	        
-            if (!world.isRemote)
-            {
-            	double futureX = player.posX + player.getLookVec().xCoord * this.reach;
-            	double futureY = player.posY + player.getLookVec().yCoord * this.reach;
-            	double futureZ = player.posZ + player.getLookVec().zCoord * this.reach;
-            	double threshold = 0.1;
-            	double minX = Math.min(player.posX,  futureX)-threshold;
-            	double minY = Math.min(player.posY, futureY)-threshold;
-            	double minZ = Math.min(player.posZ, futureZ)-threshold;
-            	double maxX = Math.max(player.posX,  futureX)+threshold;
-            	double maxY = Math.max(player.posY, futureY)+threshold;
-            	double maxZ = Math.max(player.posZ, futureZ)+threshold;
-            	AxisAlignedBB hitbox = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
-            	List entities_hit = world.getEntitiesWithinAABB(net.minecraft.entity.EntityLiving.class, hitbox);
-            	
-            	for (int i = 0; i < entities_hit.size(); ++i) {
-            		//System.out.println("WHEEEE");
-            		//System.out.println(entities_hit.get(i).toString());
-            		System.out.println("Gonna damage: " + damage);
-            		EntityLiving target = ((EntityLiving) entities_hit.get(i));
-            		MovingObjectPosition mop = this.getMovingObjectPositionFromPlayer(world, player, false);
-            		int mopID = 0;
-            		if (mop != null) {
-            			mopID = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
-            		}
-            		if (mop == null || player.getDistanceSq(target.posX, target.posY, target.posZ) < player.getDistanceSq(mop.blockX, mop.blockY, mop.blockZ)
-            				|| mopID == Block.waterMoving.blockID || mopID == Block.waterStill.blockID) {
-            			//System.out.println("4");
-                		Vec3 to_target = player.getPosition(0);
-                		to_target.xCoord -= target.posX;
-                		to_target.yCoord -= target.posY;
-                		to_target.zCoord -= target.posZ;
-                		to_target = to_target.normalize();
-                		Vec3 facing = player.getLookVec().normalize();
-            			Vec3 cross = facing.crossProduct(to_target).normalize();
-            			double dot = facing.dotProduct(to_target);
-            			double crossMag = Math.sqrt(cross.xCoord*cross.xCoord + cross.yCoord*cross.yCoord + cross.zCoord*cross.zCoord);
-            			double angle = Math.atan2(crossMag, dot);
-            			//System.out.println("5");
-            			if (Math.abs(angle-2.35) < 0.11) {
-            				target.attackEntityFrom(DamageSource.causePlayerDamage(player), (int)damage);
-            				//target.knockBack(target, 0, 0, 0.);
-            				double scale = damage*-1*knockBack;
-            				target.setVelocity(to_target.xCoord*scale, Math.max(to_target.yCoord*scale, 0.1), to_target.zCoord*scale);
-            			} else {
-            				System.out.println("Angle too bad: " + angle);
-            			}
-            			//System.out.println(angle);
-            		} else {
-            			//System.out.println(dist);
-            			////System.out.println("Target Pos: " + target.posX + ", " + target.posY + ", " + target.posZ);
-            			//System.out.println("Mop Pos: " + mop.blockX + ", " + mop.blockY + ", " + mop.blockZ);
-            			System.out.println("Something in way: " + mop.typeOfHit);
-            		}
-            	}
-            	return;
+	        Minecraft.getMinecraft().entityRenderer.getMouseOver(0);
+	        MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
+	        if (mop != null && mop.typeOfHit == EnumMovingObjectType.ENTITY) {
+	        	EntityLiving target = (EntityLiving) world.getEntityByID(mop.entityHit.entityId);//(EntityLiving) mop.entityHit;
+	        	if (player.getDistanceSq(target.posX, target.posY, target.posZ) < reach * reach) {
+    	        	target.attackEntityFrom(DamageSource.causePlayerDamage(player), (int)damage);
+    	        	Vec3 to_target = player.getPosition(0);
+            		to_target.xCoord -= target.posX;
+            		to_target.yCoord -= target.posY;
+            		to_target.zCoord -= target.posZ;
+    	        	double scale = damage*-1*knockBack;
+    				target.setVelocity(to_target.xCoord*scale, Math.max(to_target.yCoord*scale, 0.1), to_target.zCoord*scale);
+	        	}
+	        }
+        	return;
             }
-	    }
+	    
 	    @Override
-	    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+	    public ItemStack onEaten(ItemStack itemStack, World par2World, EntityPlayer entityPlayer)
 	    {
-	        return par1ItemStack;
+	        return itemStack;
 	    }
 
 	    /**
 	     * How long it takes to use or consume an item
 	     */
 	    @Override
-	    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+	    public int getMaxItemUseDuration(ItemStack itemStack)
 	    {
 	        return 72000;
 	    }
@@ -173,26 +163,78 @@ public class GreekSword extends ItemSword {
 	     * returns the action that specifies what animation to play when the items is being used
 	     */
 	    @Override
-	    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+	    public EnumAction getItemUseAction(ItemStack itemStack)
 	    {
 	        return EnumAction.bow;
 	    }
-
+	    
 	    /**
 	     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
 	     */
 	    @Override
-	    public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player)
+	    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
 	    {
-	        ArrowNockEvent event = new ArrowNockEvent(player, par1ItemStack);
+	    	//Queue up a forge event...
+	        ArrowNockEvent event = new ArrowNockEvent(player, itemStack);
 	        MinecraftForge.EVENT_BUS.post(event);
 	        if (event.isCanceled())
 	        {
 	            return event.result;
 	        }
 
-	        player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-
-	        return par1ItemStack;
+	        
+	        player.setItemInUse(itemStack, this.getMaxItemUseDuration(itemStack));
+	        
+	        return itemStack;
+	    }
+	    
+		@Override
+		public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5) {
+			
+		}
+	    /**
+	     * Called each tick while using an item.
+	     * @param stack The Item being used
+	     * @param player The Player using the item
+	     * @param count The amount of time in tick the item has been used for continuously
+	     */
+		@Override
+	    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int count)
+	    {
+			//System.out.println("Time: " + count);
+			//To prevent the massive slowdown that accompanies using an item, I boost the player's speed while they are using the
+	        //weapon. This is not as simple as increasing their speed, rather you have to create and apply an attribute modifier.
+	        //Thanks to Draco18s for the example code!
+	        
+	        //If the item doesn't have a tag compound already, make one
+	        if (itemStack.stackTagCompound == null) {
+	        	itemStack.stackTagCompound = new NBTTagCompound();
+	        }
+	        
+	        //Try to grab the attribute modifier ID (speedID) from the tag compound. If that field doesn't yet exist, create it
+	        //by getting a new random attribute modifier ID.
+	        String uu = itemStack.stackTagCompound.getString("SpeedUUID");
+			UUID speedID;
+			if(uu.equals("")) {
+				speedID = UUID.randomUUID();
+				itemStack.stackTagCompound.setString("SpeedUUID", speedID.toString());
+			}
+			else {
+				speedID = UUID.fromString(uu);
+			}
+	        
+			//Get the attribute modifiers applied to the player. If they already have the attribute modifier that we want to
+			//create, then don't bother applying the attribute modifier.
+	        AttributeInstance atinst = player.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+	        //The third parameter is a float that is a speed multiplier I believe
+	        AttributeModifier mod = new AttributeModifier(speedID,"SpeedBoostComponent",3f,2);
+	        if(atinst.getModifier(speedID) == null)
+			{
+	        	//itemStack.stackTagCompound.setBoolean("Waiting", true);
+	        	atinst.applyModifier(mod);
+			}
+	        
+	        //The following was replaced using a forge hook in GreekEventHandler
+	        //ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 1f, "fovModifierHand", "field_78507_R");
 	    }
 	}
