@@ -99,6 +99,8 @@ public class GreekEventHandler {
     	}
     }
     
+    //Ignore all FOV changes while the player is using a shield (because that sets their speed, which gives you tunnel vision),
+    //and for two updates afterwards (apparently you need to do that? Otherwise there's a flicker when you use the sword briefly)
     @ForgeSubscribe
     public void onFOVChange(FOVUpdateEvent event) {
     	if (event.entity.isUsingItem() && event.entity.getItemInUse().getItem() instanceof GreekSword) {

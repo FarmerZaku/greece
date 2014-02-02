@@ -4,12 +4,13 @@ import java.util.EnumSet;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 public class PlayerTickHandler implements ITickHandler
 {
+	private static boolean previouslyBlocking=false;
 	private final EnumSet<TickType> ticksToGet;
 	
 	/*
@@ -61,8 +62,11 @@ public class PlayerTickHandler implements ITickHandler
 		    		 if (inv[i] != null && inv[i].itemID == Greece.shield.itemID) {
 		    			 //System.out.println("In pos: " + i);
 		    			 //player.inventory.currentItem = i;
+		    			 if (inv[i].stackTagCompound == null) {
+		    				 inv[i].stackTagCompound = new NBTTagCompound();
+		    			 }
+		    			 inv[i].stackTagCompound.setInteger("LastItem", player.inventory.currentItem);
 		    			 player.inventory.setCurrentItem(inv[i].itemID, 0, false, false);
-		    			 //player.inventory.
 		    			 shield = inv[i];
 		    			 break;
 		    		 }
@@ -72,14 +76,23 @@ public class PlayerTickHandler implements ITickHandler
 	    		 //System.out.println(player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue());
 	    		 player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.8);
 	    		 player.setItemInUse(shield, shield.getMaxItemUseDuration());
+	    		 previouslyBlocking = true;
 	    	 }
-	     } else if (GreekKeyBind.blockPressed == false && player.isUsingItem() && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == Greece.shield.itemID) {
-	    	 if (player.isUsingItem()) {
-	    		 //System.out.println("Stopped using shield");
-	    		 player.setItemInUse(null,0);
-	    		 //Ok, this will mess up in the future if the player somehow gets knockback resistance via other means
-	    		 player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.0);
-	    	 }
+	     } else if (GreekKeyBind.blockPressed == false && previouslyBlocking && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == Greece.shield.itemID) {
+    		 previouslyBlocking = false;
+	    	 ItemStack shield = player.getCurrentEquippedItem();
+    		 player.setItemInUse(null,0);
+    		 //System.out.println("1");
+    		 if (shield != null && shield.stackTagCompound.hasKey("LastItem")) {
+    			// System.out.println(shield.stackTagCompound.getInteger("LastItem"));
+	    		int lastItem = shield.stackTagCompound.getInteger("LastItem");
+	    		if (player.inventory.mainInventory[lastItem] != null) {
+	    			//System.out.println("3");
+	    			player.inventory.setCurrentItem(player.inventory.mainInventory[lastItem].itemID, 0, false, false);
+	    		}
+    		 }
+    		 //Ok, this will mess up in the future if the player somehow gets knockback resistance via other means
+    		 player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.0);
 	     }
 	}
 }
