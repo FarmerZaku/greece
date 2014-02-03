@@ -3,6 +3,7 @@ package mod.greece;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.ICraftingHandler;
 
@@ -32,6 +33,9 @@ public class CraftingHandler implements ICraftingHandler {
 		    		}
 		    		else if(j.getItem() != null && (j.getItem() == Greece.chisel || j.getItem() == Greece.bakingCover) && j.getItemDamage()+15 >= j.getMaxDamage())
 		    			player.playSound("random.break", 1, 1);
+		    		else if (item.itemID == Greece.plasterBucket.itemID && j.getItem() != null & j.getItem() == Item.bucketWater) {
+		    			craftMatrix.setInventorySlotContents(i, null);
+		    		}
 		    	}  
 			}
 	}

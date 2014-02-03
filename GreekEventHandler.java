@@ -91,9 +91,9 @@ public class GreekEventHandler {
     			//amount equal to the damage "blocked".
     			EntityLiving attacker = (EntityLiving) event.source.getEntity();
 				if (attacker != null && attacker.getHeldItem() != null && attacker.getHeldItem().getItem() instanceof ItemAxe) {
-					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*1.2f*reductionAmt));
+					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*modifiedDamage*1.2f*reductionAmt));
 				} else {
-					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*0.6f*reductionAmt));
+					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*modifiedDamage*0.6f*reductionAmt));
 				}
     		}
     	}
