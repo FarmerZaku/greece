@@ -18,12 +18,11 @@ public class PlasterBucket extends Item {
 	
 	public PlasterBucket(int id) {
 		super(id);
-		setMaxStackSize(64);
 		setCreativeTab(CreativeTabs.tabMisc);
 		setUnlocalizedName("plasterBucket");
 		setTextureName("Greece:bucket_plaster");
 		//number of uses:
-		setMaxDamage(12);
+		setMaxDamage(20);
 	}
 
 	/*@Override

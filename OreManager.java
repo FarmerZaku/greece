@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import cpw.mods.fml.common.IWorldGenerator;
  
-public class EventManager implements IWorldGenerator {
+public class OreManager implements IWorldGenerator {
 		int sardOffsetX, sardOffsetY;
 		int onyxOffsetX, onyxOffsetY;
 		int bOffsetX, bOffsetY;
@@ -25,7 +25,7 @@ public class EventManager implements IWorldGenerator {
 		int marbleOffsetX, marbleOffsetY;
 		int limestoneOffsetX, limestoneOffsetY;
 		
-		public EventManager() {
+		public OreManager() {
 			Random temp_rand = new Random();
 			sardOffsetX = temp_rand.nextInt(600)-300;
 			sardOffsetY = temp_rand.nextInt(600)-300;
@@ -132,7 +132,7 @@ public class EventManager implements IWorldGenerator {
         }
  
         private void generateSurface(World world, Random random, int x, int z) {
-    		this.addOreSpawn(Greece.silverOre, world, random, x, z, 16, 16, 10+random.nextInt(20), 10, 15, 160);
+    		this.addOreSpawn(Greece.silverOre, world, random, x, z, 16, 16, 10+random.nextInt(20), 4, 15, 160);
     		this.addOreSpawn(Greece.copperOre, world, random, x, z, 16, 16, 3+random.nextInt(20), 20, 15, 160);
     		
         	if (isInRegion("sard", x, z)) {

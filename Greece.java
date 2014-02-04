@@ -56,10 +56,10 @@ public class Greece {
 		public static EnumToolMaterial copper = EnumHelper.addToolMaterial("Copper", 1, 100, 3.0F, 1.0F, 18);
 	
 		//---------ITEMS---------
-		private final static Item plasterBucket = new PlasterBucket(5000);
-		private final static Item sard = new GenericItem(5001).setTextureName("Greece:sard").setUnlocalizedName("sard");
-		private final static Item lime = new GenericItem(5002).setTextureName("Greece:lime").setUnlocalizedName("lime");
-		private final static Item onyx = new GenericItem(5003).setTextureName("Greece:onyx").setUnlocalizedName("onyx");
+		public final static Item plasterBucket = new PlasterBucket(5000).setMaxStackSize(1).setNoRepair();
+		public final static Item sard = new GenericItem(5001).setTextureName("Greece:sard").setUnlocalizedName("sard");
+		public final static Item lime = new GenericItem(5002).setTextureName("Greece:lime").setUnlocalizedName("lime");
+		public final static Item onyx = new GenericItem(5003).setTextureName("Greece:onyx").setUnlocalizedName("onyx");
 		public final static Item shield = new GreekShield(5004, bronze).setTextureName("Greece:shield").setUnlocalizedName("shield");
 		public final static Item bronzePick = new GreekPickaxe(5005, bronze).setTextureName("Greece:bronzePick").setUnlocalizedName("bronzePick");
 		public final static Item bronzeAxe = new GreekAxe(5006, bronze).setTextureName("Greece:bronzeAxe").setUnlocalizedName("bronzeAxe");
@@ -67,8 +67,8 @@ public class Greece {
 		public final static Item copperPick = new GreekPickaxe(5008, copper).setTextureName("Greece:copperPick").setUnlocalizedName("copperPick");
 		public final static Item copperAxe = new GreekAxe(5009, copper).setTextureName("Greece:copperAxe").setUnlocalizedName("copperAxe");
 		public final static Item copperShovel = new GreekShovel(5010, copper).setTextureName("Greece:copperShovel").setUnlocalizedName("copperShovel");
-		private final static Item tinIngot = new GenericItem(5011).setTextureName("Greece:tinIngot").setUnlocalizedName("tinIngot");
-		private final static Item copperIngot = new GenericItem(5012).setTextureName("Greece:copperIngot").setUnlocalizedName("copperIngot");
+		public final static Item tinIngot = new GenericItem(5011).setTextureName("Greece:tinIngot").setUnlocalizedName("tinIngot");
+		public final static Item copperIngot = new GenericItem(5012).setTextureName("Greece:copperIngot").setUnlocalizedName("copperIngot");
 		
 		//---------BLOCKS---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
@@ -84,7 +84,7 @@ public class Greece {
 		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
 		
 		//---------EVENT HANDLERS---------
-		EventManager oreManager = new EventManager(); // Matthew's ore generator
+		OreManager oreManager = new OreManager(); // Matthew's ore generator
 		
 		//---------FOOD - Mills---------
 		public static Item olives = new GreekFood(6500, 2, 0.5f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":olives").setUnlocalizedName("olives");
@@ -112,9 +112,9 @@ public class Greece {
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
-		public final Item bronzeSword = new GreekSword(6001, bronze, 0.1f, 2.3, 1, 7, 15)
+		public final Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2.5, 1, 9, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final Item spear = new GreekSword(6002, bronze, 0.08f, 3.3, 1, 5, 15)
+		public final Item spear = new GreekSword(6002, bronze, 0.04f, 3.1, 1, 7, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
@@ -479,13 +479,13 @@ public class Greece {
                 limeCliffsBiome = new BiomeGenGreek(66, -1, Block.stone.blockID, null, null).setBiomeName("Limestone Cliffs").setColor(11977652).setMinMaxHeight(-0.3f, 0.8f);                
                 GameRegistry.addBiome(limeCliffsBiome);
                 
-                tinIslesBiome = new BiomeGenGreek(67, -1, Block.stone.blockID, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
+                tinIslesBiome = new BiomeGenGreek(67, -1, -1, null, null).setBiomeName("Tin Isles").setColor(10537122).setMinMaxHeight(-0.4f, 0.4f);
                 GameRegistry.addBiome(tinIslesBiome);
                 
-                graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID, null, null).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
+                graniteMountainsBiome = new BiomeGenGreek(68, -1, Block.stone.blockID, 15588736, null).setBiomeName("Granite Mountains").setColor(0).setMinMaxHeight(0.5f, 2f);
                 GameRegistry.addBiome(graniteMountainsBiome);
                 
-                korinthiaBiome = new BiomeGenGreek(69, -1, Block.grass.blockID, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
+                korinthiaBiome = new BiomeGenGreek(69, -1, -1, 15588736, null).setBiomeName("Korinthia").setMinMaxHeight(0.0f, 0.5f);
                 GameRegistry.addBiome(korinthiaBiome); //13878634
                 
                 GameRegistry.removeBiome(BiomeGenBase.extremeHills);

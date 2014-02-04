@@ -34,6 +34,19 @@ public class GreekShield extends Item
         this.setCreativeTab(CreativeTabs.tabCombat);
         this.weaponDamage = 4.0F + par2EnumToolMaterial.getDamageVsEntity();
     }
+    
+//    @Override
+//    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int chargeVal)
+//    {	
+//    	if (world.isRemote && !player.isUsingItem()) {
+//	    	if (itemStack != null && itemStack.stackTagCompound.hasKey("LastItem")) {
+//	    		int lastItem = itemStack.stackTagCompound.getInteger("LastItem");
+//	    		if (player.inventory.mainInventory[lastItem] != null) {
+//	    			player.inventory.setCurrentItem(player.inventory.mainInventory[lastItem].itemID, 0, false, false);
+//	    		}
+//	    	}
+//    	}
+//    }
 
     /**
      * Called when the player Left Clicks (attacks) an entity.

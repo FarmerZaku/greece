@@ -9,15 +9,15 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraftforge.event.Event.Result;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 public class GreekEventHandler {
+	public static int ignoreFOVChanges = 0;
+	
     @ForgeSubscribe
     public void onEntityLivingSpawn(LivingSpawnEvent event) {
         if (!event.world.isRemote) {
@@ -91,11 +91,23 @@ public class GreekEventHandler {
     			//amount equal to the damage "blocked".
     			EntityLiving attacker = (EntityLiving) event.source.getEntity();
 				if (attacker != null && attacker.getHeldItem() != null && attacker.getHeldItem().getItem() instanceof ItemAxe) {
-					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*1.2f*reductionAmt));
+					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*modifiedDamage*1.2f*reductionAmt));
 				} else {
-					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*0.6f*reductionAmt));
+					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*modifiedDamage*0.6f*reductionAmt));
 				}
     		}
+    	}
+    }
+    
+    //Ignore all FOV changes while the player is using a shield (because that sets their speed, which gives you tunnel vision),
+    //and for two updates afterwards (apparently you need to do that? Otherwise there's a flicker when you use the sword briefly)
+    @ForgeSubscribe
+    public void onFOVChange(FOVUpdateEvent event) {
+    	if (event.entity.isUsingItem() && event.entity.getItemInUse().getItem() instanceof GreekSword) {
+    		event.newfov = 1.0f;
+    	} else if (ignoreFOVChanges > 0) {
+    		ignoreFOVChanges--;
+    		event.newfov = 1.0f;
     	}
     }
 }
