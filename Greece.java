@@ -95,11 +95,7 @@ public class Greece {
 		public final static Block copperOre = new GreekOre(602, Material.rock, 602).setTextureName(GreeceInfo.NAME.toLowerCase() + ":copper_ore").setUnlocalizedName("copperOre");
 		public final static Block tinOre = new GreekOre(603, Material.rock, 603).setTextureName(GreeceInfo.NAME.toLowerCase() + ":tin_ore").setUnlocalizedName("tinOre");
 		public final static Block copperTin = new GreekOre(604, Material.rock, 604).setTextureName(GreeceInfo.NAME.toLowerCase() + ":copper_tin").setUnlocalizedName("copperTin");
-		public final static Block marbleBrick = new GreekBlock(605, Material.rock)
-		.setHardness(4.0f)
-		.setStepSound(Block.soundStoneFootstep)
-		.setUnlocalizedName("marbleBrick")
-		.setTextureName(GreeceInfo.NAME.toLowerCase() + ":marblebrick");
+		public final static Block marbleBrick = new GreekBlock(605, Material.rock).setHardness(4.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("marbleBrick").setTextureName(GreeceInfo.NAME.toLowerCase() + ":marblebrick");
 		public final static Block oliveLeaves = new GreekBlockLeaves(606, 0).setUnlocalizedName("oliveLeaves").setTextureName(GreeceInfo.NAME.toLowerCase() + ":leaves_olive")
 				.setHardness(1f)
 				.setLightOpacity(100)
@@ -109,6 +105,7 @@ public class Greece {
 				.setLightOpacity(10)
 				.setStepSound(Block.soundGrassFootstep);
 		public final static Block oliveWood = new MultiTextureBlock(608, Material.wood, "logs").setUnlocalizedName("oliveWood");
+		public final static Block olivePress = new GreekBlockPress(609, Material.rock, 609, olives.itemID).setHardness(4.0f).setUnlocalizedName("olivePress");
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
@@ -388,6 +385,17 @@ public class Greece {
                 GameRegistry.registerBlock(oliveWood, "oliveWood");
                 LanguageRegistry.addName(oliveWood, "Olive Wood");
                 MinecraftForge.setBlockHarvestLevel(oliveWood, "axe", 0);
+                
+                // OLIVE PRESS
+                GameRegistry.registerBlock(olivePress, "olivePress");
+                LanguageRegistry.addName(olivePress, "Olive Press");
+                MinecraftForge.setBlockHarvestLevel(olivePress, "pickaxe", 1);
+                GameRegistry.addRecipe(new ItemStack(olivePress), "x", "y", "x",
+                		'x', Block.cobblestone, 'y', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE));
+                GameRegistry.addRecipe(new ItemStack(olivePress), "x", "y", "x",
+                		'x', limestone, 'y', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE));
+                GameRegistry.addRecipe(new ItemStack(olivePress), "x", "y", "x",
+                		'x', marble, 'y', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE));
        
                 //---------REGISTER ITEMS - Mills---------
                 // BRONZE INGOT
