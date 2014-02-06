@@ -84,7 +84,7 @@ public class Greece {
 		public final static Block bronzeBlock = new GreekBlock(511, Material.iron, 511).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("bronzeBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:bronzeBlock");
 		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
 		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(0.9f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
-		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true).setHardness(0.4f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
+		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.4f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
@@ -246,6 +246,8 @@ public class Greece {
                 		new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt));
                 GameRegistry.addSmelting(mudbrickWet.blockID, new ItemStack(mudbrick), 1.0f);
                 
+                
+                
                 //---------REGISTER ITEMS---------
                 //SARD ITEM
                 LanguageRegistry.addName(sard, "Sard");
@@ -328,7 +330,10 @@ public class Greece {
                 //In the crafting handler we return straw as part of this process
                 GameRegistry.addShapelessRecipe(new ItemStack(Item.seeds), new ItemStack(Item.wheat));
                 //3 Grass = 1 Straw
-                GameRegistry.addShapelessRecipe(new ItemStack(straw), new ItemStack(Block.grass), new ItemStack(Block.grass), new ItemStack(Block.grass));
+                GameRegistry.addShapelessRecipe(new ItemStack(straw), new ItemStack(Block.tallGrass), new ItemStack(Block.grass), new ItemStack(Block.grass));
+                //Temporary bread recipe to allow the seeds. We'll probably want to include flour-making and baking in the future
+                GameRegistry.addRecipe(new ItemStack(Item.bread), "xxx",
+                		'x', Item.seeds);
                 
                 // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
                 // keys are pressed, like block or whatever

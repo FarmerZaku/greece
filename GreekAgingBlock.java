@@ -12,12 +12,13 @@ public class GreekAgingBlock extends Block {
 	private int resultID;
 	private int requiredTicks;
 	private boolean heatBased;
+	private boolean sunBased;
 	
 	/**
      * eventAge is how many in-game hours (~50 sec of real time) it takes for the block to finish aging
      * Note that, due to us using metadata for this and metadata being small, eventAge has a max value of 17
      */
-	public GreekAgingBlock(int id, Material material, int resultID, int requiredTicks, boolean heatBased) {
+	public GreekAgingBlock(int id, Material material, int resultID, int requiredTicks, boolean heatBased, boolean sunBased) {
 		super(id, material);
 		setCreativeTab(CreativeTabs.tabBlock);
 		this.resultID = resultID;
@@ -46,7 +47,7 @@ public class GreekAgingBlock extends Block {
 	public void updateTick(World world, int x, int y, int z, Random random) {
 		//System.out.println("Cur val: " + world.getBlockMetadata(x, y, z));
 		int toAdd = 1;
-		if (heatBased) {
+		if (sunBased) {
 			//Check if any of the adjacent blocks (besides below) are well-lit, and if so count that as drying sunlight
 			if ((world.getBlockLightValue(x, y+1, z) >= 13) || (world.getBlockLightValue(x-1, y, z) >= 13) ||
 					(world.getBlockLightValue(x+1, y, z) >= 13) || (world.getBlockLightValue(x, y, z-1) >= 13) ||
@@ -64,12 +65,17 @@ public class GreekAgingBlock extends Block {
 				toAdd *= 2;
 			}
 			//If the drying block is on top of stone or iron, double the drying value
-			Material materialBelow = world.getBlockMaterial(x, y-1, z);
-			if (materialBelow != null && (materialBelow == Material.rock || materialBelow == Material.iron)) {
+			Material matBelow = world.getBlockMaterial(x, y-1, z);
+			if (matBelow != null && (matBelow == Material.rock || matBelow == Material.iron)) {
 				toAdd *= 2;
 			}
-			//If it's above fire, just go ahead and set a high enough drying value to instantly dry it
-			if (materialBelow != null && materialBelow == Material.fire) {
+		}
+		if (heatBased) {
+			//If it's above fire or lava, just go ahead and set a high enough drying value to instantly dry it
+			Material matBelow = world.getBlockMaterial(x, y-1, z);
+			Material matBelowBelow = world.getBlockMaterial(x, y-2, z);
+			if (matBelow != null && (matBelow == Material.fire || matBelow == Material.lava) ||
+					matBelowBelow != null && (matBelowBelow == Material.fire || matBelowBelow == Material.lava)) {
 				toAdd = 20;
 			}
 		}
