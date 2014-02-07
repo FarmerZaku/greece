@@ -38,9 +38,9 @@ public class CraftingHandler implements ICraftingHandler {
 		    		} else if ((item.itemID == Greece.basketGrain.itemID || item.itemID == Greece.amphoraGrain.itemID) 
 		    				&& j.getItem() != null & j.getItem() == Item.wheat) {
 		    			//Give 'em a straw item. If it doesn't fit in their inventory, drop it
-		    			if (!player.inventory.addItemStackToInventory(new ItemStack(Greece.straw))) {
+		    			//if (!player.inventory.addItemStackToInventory(new ItemStack(Greece.straw))) {
 		    				player.dropPlayerItem(new ItemStack(Greece.straw));
-		    			}
+		    			//}
 		    		} else if (item.itemID == Greece.dough.itemID && j.getItem() != null & j.getItem() == Greece.basketFlour) {
 		    			craftMatrix.setInventorySlotContents(i, new ItemStack(Greece.basketEmpty, 2));
 		    		} else if (item.itemID == Greece.dough.itemID && j.getItem() != null & j.getItem() == Item.bucketWater) {
