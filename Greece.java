@@ -70,6 +70,12 @@ public class Greece {
 		public final static Item tinIngot = new GenericItem(5011).setTextureName("Greece:tinIngot").setUnlocalizedName("tinIngot");
 		public final static Item copperIngot = new GenericItem(5012).setTextureName("Greece:copperIngot").setUnlocalizedName("copperIngot");
 		public final static Item straw = new GenericItem(5013).setTextureName("Greece:straw").setUnlocalizedName("straw");
+		public final static Item basketEmpty = new GenericItem(5014).setTextureName("Greece:basket_empty").setUnlocalizedName("basketEmpty").setMaxStackSize(16);
+		public final static Item basketGrain = new GenericItem(5015).setTextureName("Greece:basket_grain").setUnlocalizedName("basketGrain").setMaxStackSize(1);
+		public final static Item basketFlour = new GenericItem(5016).setTextureName("Greece:basket_flour").setUnlocalizedName("basketFlour").setMaxStackSize(1);
+		public final static Item dough = new GenericItem(5017).setTextureName("Greece:dough").setUnlocalizedName("dough");
+		public final static Item amphoraGrain = new GreekItem(5018, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_grain").setUnlocalizedName("amphoraGrain");
+		public final static Item amphoraFlour = new GreekItem(5019, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_flour").setUnlocalizedName("amphoraFlour");
 		
 		//---------BLOCKS---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
@@ -85,6 +91,7 @@ public class Greece {
 		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
 		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(0.9f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
 		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.4f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
+		public final static Block quern = new GreekQuern(515, Material.rock, new Item[] {basketGrain, amphoraGrain}, new Item[] {null, null}, new int[] {1, 1}, new Item[] {basketFlour, amphoraFlour});
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
@@ -246,7 +253,12 @@ public class Greece {
                 		new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt));
                 GameRegistry.addSmelting(mudbrickWet.blockID, new ItemStack(mudbrick), 1.0f);
                 
-                
+                //QUERN
+                GameRegistry.registerBlock(quern, "quern");
+                LanguageRegistry.addName(quern, "Quern");
+                MinecraftForge.setBlockHarvestLevel(quern, "pick", 0);
+                GameRegistry.addRecipe(new ItemStack(quern), "xyx", "yyy",
+                		'x', Item.stick, 'y', Block.cobblestone);
                 
                 //---------REGISTER ITEMS---------
                 //SARD ITEM
@@ -327,13 +339,44 @@ public class Greece {
                 //STRAW
                 LanguageRegistry.addName(straw, "Straw");
                 GameRegistry.registerItem(straw, "straw");
-                //In the crafting handler we return straw as part of this process
-                GameRegistry.addShapelessRecipe(new ItemStack(Item.seeds), new ItemStack(Item.wheat));
                 //3 Grass = 1 Straw
                 GameRegistry.addShapelessRecipe(new ItemStack(straw), new ItemStack(Block.tallGrass), new ItemStack(Block.grass), new ItemStack(Block.grass));
                 //Temporary bread recipe to allow the seeds. We'll probably want to include flour-making and baking in the future
                 GameRegistry.addRecipe(new ItemStack(Item.bread), "xxx",
                 		'x', Item.seeds);
+                
+                //EMPTY BASKET
+                LanguageRegistry.addName(basketEmpty, "Basket");
+                GameRegistry.registerItem(basketEmpty, "basketEmpty");
+                GameRegistry.addRecipe(new ItemStack(basketEmpty), "x x", "x x", " x ",
+                		'x', Item.reed);
+                
+                //GRAIN BASKET
+                LanguageRegistry.addName(basketGrain, "Grain Basket");
+                GameRegistry.registerItem(basketGrain, "basketGrain");
+                //In the crafting handler we return straw as part of this process
+                GameRegistry.addShapelessRecipe(new ItemStack(basketGrain), new ItemStack(Item.wheat), new ItemStack(Item.wheat), new ItemStack(Item.wheat), new ItemStack(basketEmpty));
+                
+                //FLOUR BASKET
+                LanguageRegistry.addName(basketFlour, "Flour Basket");
+                GameRegistry.registerItem(basketFlour, "basketFlour");
+                
+                //GRAIN AMPHORA
+                LanguageRegistry.addName(amphoraGrain, "Grain Amphora");
+                GameRegistry.registerItem(amphoraGrain, "amphoraGrain");
+                //In the crafting handler we return straw as part of this process
+                GameRegistry.addShapelessRecipe(new ItemStack(amphoraGrain), new ItemStack(Item.wheat), new ItemStack(Item.wheat), new ItemStack(Item.wheat), new ItemStack(amphora));
+                
+                //FLOUR AMPHORA
+                LanguageRegistry.addName(amphoraFlour, "Flour Amphora");
+                GameRegistry.registerItem(amphoraFlour, "amphoraFlour");
+                
+                //DOUGH
+                LanguageRegistry.addName(dough, "Dough");
+                GameRegistry.registerItem(dough, "dough");
+                GameRegistry.addShapelessRecipe(new ItemStack(dough), new ItemStack(basketFlour), new ItemStack(Item.bucketWater));
+                GameRegistry.addShapelessRecipe(new ItemStack(dough), new ItemStack(amphoraFlour), new ItemStack(Item.bucketWater));
+                GameRegistry.addSmelting(dough.itemID, new ItemStack(Item.bread), 1.0f);
                 
                 // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
                 // keys are pressed, like block or whatever
@@ -473,7 +516,7 @@ public class Greece {
                 
                 // BAKING COVER
                 GameRegistry.registerItem(unfiredBakingCover, "unfiredBakingCover");
-                LanguageRegistry.addName(unfiredBakingCover, "UnFired Baking Cover");
+                LanguageRegistry.addName(unfiredBakingCover, "Unfired Baking Cover");
                 GameRegistry.addRecipe(new ItemStack(unfiredBakingCover), " a ", "aaa", "a a",
                 		'a', Item.clay);
                 
@@ -481,7 +524,7 @@ public class Greece {
                 LanguageRegistry.addName(bakingCover, "Baking Cover");
                 GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(bakingCover), 1);
                 GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat);
-                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.seeds, Item.seeds);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), dough);
                 
                 // AMPHORA
                 GameRegistry.registerItem(unfiredAmphora, "unfiredAmphora");

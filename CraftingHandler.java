@@ -35,11 +35,18 @@ public class CraftingHandler implements ICraftingHandler {
 		    			player.playSound("random.break", 1, 1);
 		    		else if (item.itemID == Greece.plasterBucket.itemID && j.getItem() != null & j.getItem() == Item.bucketWater) {
 		    			craftMatrix.setInventorySlotContents(i, null);
-		    		} else if (item.itemID == Item.seeds.itemID && j.getItem() != null & j.getItem() == Item.wheat) {
+		    		} else if ((item.itemID == Greece.basketGrain.itemID || item.itemID == Greece.amphoraGrain.itemID) 
+		    				&& j.getItem() != null & j.getItem() == Item.wheat) {
 		    			//Give 'em a straw item. If it doesn't fit in their inventory, drop it
 		    			if (!player.inventory.addItemStackToInventory(new ItemStack(Greece.straw))) {
 		    				player.dropPlayerItem(new ItemStack(Greece.straw));
 		    			}
+		    		} else if (item.itemID == Greece.dough.itemID && j.getItem() != null & j.getItem() == Greece.basketFlour) {
+		    			craftMatrix.setInventorySlotContents(i, new ItemStack(Greece.basketEmpty, 2));
+		    		} else if (item.itemID == Greece.dough.itemID && j.getItem() != null & j.getItem() == Item.bucketWater) {
+		    			craftMatrix.setInventorySlotContents(i, new ItemStack(Item.bucketEmpty, 2));
+		    		} else if (item.itemID == Greece.dough.itemID && j.getItem() != null & j.getItem() == Greece.amphoraFlour) {
+		    			craftMatrix.setInventorySlotContents(i, new ItemStack(Greece.amphora, 2));
 		    		}
 		    	}  
 			}
