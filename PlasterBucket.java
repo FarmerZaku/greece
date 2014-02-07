@@ -24,21 +24,6 @@ public class PlasterBucket extends Item {
 		//number of uses:
 		setMaxDamage(20);
 	}
-
-	/*@Override
-	public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase target) {
-		//check to make sure we're modifying the server instance of the entity instead of the client instance,
-		//to avoid sync issues
-		if (!target.worldObj.isRemote) {
-			if (target instanceof EntityZombie) {
-				target.motionY = 2.5;
-			} else {
-				player.addChatMessage("This item only works on zombies.");
-			}
-			
-		}
-		return false;
-	}*/
 	
 	/**
      * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and

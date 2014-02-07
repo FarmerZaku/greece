@@ -69,6 +69,7 @@ public class Greece {
 		public final static Item copperShovel = new GreekShovel(5010, copper).setTextureName("Greece:copperShovel").setUnlocalizedName("copperShovel");
 		public final static Item tinIngot = new GenericItem(5011).setTextureName("Greece:tinIngot").setUnlocalizedName("tinIngot");
 		public final static Item copperIngot = new GenericItem(5012).setTextureName("Greece:copperIngot").setUnlocalizedName("copperIngot");
+		public final static Item straw = new GenericItem(5013).setTextureName("Greece:straw").setUnlocalizedName("straw");
 		
 		//---------BLOCKS---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
@@ -82,6 +83,8 @@ public class Greece {
 		public final static Block copperBlock = new GreekBlock(510, Material.iron, 510).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("copperBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:copperBlock");
 		public final static Block bronzeBlock = new GreekBlock(511, Material.iron, 511).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("bronzeBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:bronzeBlock");
 		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
+		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(0.9f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
+		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.4f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
@@ -215,23 +218,35 @@ public class Greece {
                 GameRegistry.registerBlock(thatchSlope, "thatchSlope");
                 LanguageRegistry.addName(thatchSlope, "Thatch Slope");
                 MinecraftForge.setBlockHarvestLevel(thatchSlope, "axe", 0);
-                GameRegistry.addRecipe(new ItemStack(thatchSlope), "x  ", "yx ", "yyx",
-                		'x', Item.wheat, 'y', Item.stick);
-                GameRegistry.addRecipe(new ItemStack(thatchSlope), "x  ", "yx ", "yyx",
+                GameRegistry.addRecipe(new ItemStack(thatchSlope, 4), "x  ", "yx ", "yyx",
+                		'x', straw, 'y', Item.stick);
+                GameRegistry.addRecipe(new ItemStack(thatchSlope, 4), "x  ", "yx ", "yyx",
                 		'x', Item.reed, 'y', Item.stick);
-                GameRegistry.addRecipe(new ItemStack(thatchSlope), "x  ", "yx ", "yyx",
-                		'x', Block.grass, 'y', Item.stick);
                 
                 //THATCH
                 GameRegistry.registerBlock(thatch, "thatch");
                 LanguageRegistry.addName(thatch, "Thatch");
                 MinecraftForge.setBlockHarvestLevel(thatch, "axe", 0);
-                GameRegistry.addRecipe(new ItemStack(thatch), "xxx", "yyy",
-                		'x', Item.wheat, 'y', Item.stick);
-                GameRegistry.addRecipe(new ItemStack(thatch), "xxx", "yyy",
+                GameRegistry.addRecipe(new ItemStack(thatch, 4), "xxx", "yyy",
+                		'x', straw, 'y', Item.stick);
+                GameRegistry.addRecipe(new ItemStack(thatch, 4), "xxx", "yyy",
                 		'x', Item.reed, 'y', Item.stick);
-                GameRegistry.addRecipe(new ItemStack(thatch), "xxx", "yyy",
-                		'x', Block.grass, 'y', Item.stick);
+                
+                //MUDBRICK
+                GameRegistry.registerBlock(mudbrick, "mudbrick");
+                LanguageRegistry.addName(mudbrick, "Mudbrick");
+                MinecraftForge.setBlockHarvestLevel(mudbrick, "pick", 0);
+                
+                //WET MUDBRICK
+                GameRegistry.registerBlock(mudbrickWet, "mudbrickWet");
+                LanguageRegistry.addName(mudbrickWet, "Wet Mudbrick");
+                MinecraftForge.setBlockHarvestLevel(mudbrickWet, "shovel", 0);
+                GameRegistry.addShapelessRecipe(new ItemStack(mudbrickWet, 9),
+                		new ItemStack(Item.bucketWater), new ItemStack(straw), new ItemStack(straw), new ItemStack(straw),
+                		new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt), new ItemStack(Block.dirt));
+                GameRegistry.addSmelting(mudbrickWet.blockID, new ItemStack(mudbrick), 1.0f);
+                
+                
                 
                 //---------REGISTER ITEMS---------
                 //SARD ITEM
@@ -308,6 +323,17 @@ public class Greece {
                 GameRegistry.registerItem(shield, "shield");
                 GameRegistry.addRecipe(new ItemStack(shield), " x ", "xyx", " x ",
                 		'x', Block.planks, 'y', Item.leather);
+                
+                //STRAW
+                LanguageRegistry.addName(straw, "Straw");
+                GameRegistry.registerItem(straw, "straw");
+                //In the crafting handler we return straw as part of this process
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.seeds), new ItemStack(Item.wheat));
+                //3 Grass = 1 Straw
+                GameRegistry.addShapelessRecipe(new ItemStack(straw), new ItemStack(Block.tallGrass), new ItemStack(Block.grass), new ItemStack(Block.grass));
+                //Temporary bread recipe to allow the seeds. We'll probably want to include flour-making and baking in the future
+                GameRegistry.addRecipe(new ItemStack(Item.bread), "xxx",
+                		'x', Item.seeds);
                 
                 // Create a keybinding and add it via our GreekKeyBind class. That way we can do stuff whenever specific
                 // keys are pressed, like block or whatever
@@ -455,6 +481,7 @@ public class Greece {
                 LanguageRegistry.addName(bakingCover, "Baking Cover");
                 GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(bakingCover), 1);
                 GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.seeds, Item.seeds);
                 
                 // AMPHORA
                 GameRegistry.registerItem(unfiredAmphora, "unfiredAmphora");

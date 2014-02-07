@@ -35,6 +35,11 @@ public class CraftingHandler implements ICraftingHandler {
 		    			player.playSound("random.break", 1, 1);
 		    		else if (item.itemID == Greece.plasterBucket.itemID && j.getItem() != null & j.getItem() == Item.bucketWater) {
 		    			craftMatrix.setInventorySlotContents(i, null);
+		    		} else if (item.itemID == Item.seeds.itemID && j.getItem() != null & j.getItem() == Item.wheat) {
+		    			//Give 'em a straw item. If it doesn't fit in their inventory, drop it
+		    			if (!player.inventory.addItemStackToInventory(new ItemStack(Greece.straw))) {
+		    				player.dropPlayerItem(new ItemStack(Greece.straw));
+		    			}
 		    		}
 		    	}  
 			}

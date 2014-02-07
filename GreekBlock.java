@@ -14,6 +14,7 @@ public class GreekBlock extends Block {
 	public GreekBlock(int id, Material material) {
 		super(id, material);
 		setCreativeTab(CreativeTabs.tabBlock);
+		this.dropID = id;
 	}
 	
 	public GreekBlock(int id, Material material, int drop_id) {
