@@ -83,7 +83,7 @@ public class GreekEventHandler {
     		ItemStack curItem = player.getItemInUse();
     		
     		//Check to see if they're using our mod's shield to block
-    		if (player.isUsingItem() && curItem.itemID == Greece.shield.itemID) {
+    		if (player.isUsingItem() && curItem.getItem() instanceof GreekShield) {
             	//Reduce the reduction amount by half, because every time the player is attacked this
             	//event happens TWICE despite only doing damage once.
     			float reductionAmt = ((GreekShield)curItem.getItem()).getDamageReduction()*0.5f;
@@ -110,6 +110,10 @@ public class GreekEventHandler {
 				} else {
 					curItem.setItemDamage(curItem.getItemDamage() + (int)(modifiedDamage*modifiedDamage*0.6f*reductionAmt));
 				}
+				if (event.source.isProjectile() && player.getArrowCountInEntity() > 0) {
+					//Ends up kinda janky, but is better than you being stuffed full of arrows after blocking a bunch
+					player.setArrowCountInEntity(player.getArrowCountInEntity()-1);
+				}
     		}
     	}
     }
@@ -118,7 +122,8 @@ public class GreekEventHandler {
     //and for two updates afterwards (apparently you need to do that? Otherwise there's a flicker when you use the sword briefly)
     @ForgeSubscribe
     public void onFOVChange(FOVUpdateEvent event) {
-    	if (event.entity.isUsingItem() && event.entity.getItemInUse().getItem() instanceof GreekSword) {
+    	if (event.entity.isUsingItem() &&
+    			(event.entity.getItemInUse().getItem() instanceof GreekSword || event.entity.getItemInUse().getItem() instanceof GreekAxe)) {
     		event.newfov = 1.0f;
     	} else if (ignoreFOVChanges > 0) {
     		ignoreFOVChanges--;

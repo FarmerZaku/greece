@@ -14,6 +14,7 @@ class GreekKeyBind extends KeyHandler
 {
 	 private EnumSet tickTypes = EnumSet.of(TickType.CLIENT);
 	 public static boolean blockPressed = false;
+	 public static boolean dropPressed = false;
 	
 	 public GreekKeyBind(KeyBinding[] keyBindings, boolean[] repeatings)
 	 {
@@ -27,9 +28,11 @@ class GreekKeyBind extends KeyHandler
 	 @Override
 	 public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
 	 {
-		 
+		 System.out.println("Key pressed: " + kb.keyDescription);
 		 if (kb.keyDescription == "Block") {
 			 this.blockPressed = true;
+		 } else if (kb.keyDescription == "Drop") {
+			 this.dropPressed = true;
 		 }
 		 //this.keyDown[kb.keyCode] = true;
 		 //System.out.println("Key Pressed");
@@ -37,8 +40,11 @@ class GreekKeyBind extends KeyHandler
 	 @Override
 	 public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd)
 	 {
-		 this.blockPressed = false;
-		 //System.out.println("Key Released");
+		 if (kb.keyDescription == "Block") {
+			 this.blockPressed = false;
+		 } else if (kb.keyDescription == "Drop") {
+			 this.dropPressed = false;
+		 }
 	 }
 	 @Override
 	 public EnumSet<TickType> ticks()

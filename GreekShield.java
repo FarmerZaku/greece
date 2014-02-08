@@ -30,7 +30,7 @@ public class GreekShield extends Item
         super(par1);
         this.toolMaterial = par2EnumToolMaterial;
         this.maxStackSize = 1;
-        this.setMaxDamage(par2EnumToolMaterial.getMaxUses());
+        this.setMaxDamage(par2EnumToolMaterial.getMaxUses()*6);
         this.setCreativeTab(CreativeTabs.tabCombat);
         this.weaponDamage = 4.0F + par2EnumToolMaterial.getDamageVsEntity();
     }

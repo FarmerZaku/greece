@@ -63,12 +63,12 @@ public class Greece {
 		public final static Item sard = new GenericItem(5001).setTextureName("Greece:sard").setUnlocalizedName("sard");
 		public final static Item lime = new GenericItem(5002).setTextureName("Greece:lime").setUnlocalizedName("lime");
 		public final static Item onyx = new GenericItem(5003).setTextureName("Greece:onyx").setUnlocalizedName("onyx");
-		public final static Item shield = new GreekShield(5004, bronze).setTextureName("Greece:shield").setUnlocalizedName("shield");
+		public final static Item shieldWood = new GreekShield(5004, EnumToolMaterial.WOOD).setTextureName("Greece:shield_wood").setUnlocalizedName("shieldWood");
 		public final static Item bronzePick = new GreekPickaxe(5005, bronze).setTextureName("Greece:bronzePick").setUnlocalizedName("bronzePick");
-		public final static Item bronzeAxe = new GreekAxe(5006, bronze).setTextureName("Greece:bronzeAxe").setUnlocalizedName("bronzeAxe");
+		public final static Item bronzeAxe = new GreekAxe(5006, bronze, 0.08f, 2, 2, 8, 20).setTextureName("Greece:bronzeAxe").setUnlocalizedName("bronzeAxe");
 		public final static Item bronzeShovel = new GreekShovel(5007, bronze).setTextureName("Greece:bronzeShovel").setUnlocalizedName("bronzeShovel");
 		public final static Item copperPick = new GreekPickaxe(5008, copper).setTextureName("Greece:copperPick").setUnlocalizedName("copperPick");
-		public final static Item copperAxe = new GreekAxe(5009, copper).setTextureName("Greece:copperAxe").setUnlocalizedName("copperAxe");
+		public final static Item copperAxe = new GreekAxe(5009, copper, 0.06f, 2, 2, 7, 20).setTextureName("Greece:copperAxe").setUnlocalizedName("copperAxe");
 		public final static Item copperShovel = new GreekShovel(5010, copper).setTextureName("Greece:copperShovel").setUnlocalizedName("copperShovel");
 		public final static Item tinIngot = new GenericItem(5011).setTextureName("Greece:tinIngot").setUnlocalizedName("tinIngot");
 		public final static Item copperIngot = new GenericItem(5012).setTextureName("Greece:copperIngot").setUnlocalizedName("copperIngot");
@@ -79,6 +79,11 @@ public class Greece {
 		public final static Item dough = new GenericItem(5017).setTextureName("Greece:dough").setUnlocalizedName("dough");
 		public final static Item amphoraGrain = new GreekItem(5018, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_grain").setUnlocalizedName("amphoraGrain");
 		public final static Item amphoraFlour = new GreekItem(5019, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_flour").setUnlocalizedName("amphoraFlour");
+		public final static Item spearCopper = new GreekSword(5020, copper, 0.03f, 3.1, 1, 6, 14).setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear_copper").setUnlocalizedName("spearCopper");
+		public final static Item shieldBronze = new GreekShield(5021, bronze).setTextureName("Greece:shield_bronze").setUnlocalizedName("shieldBronze");
+		public final static Item javelinStone = new GreekWeaponThrowable(5022, EnumToolMaterial.STONE, 0.03f, 3.1, 1, 4, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_stone").setUnlocalizedName("javelinStone");
+		public final static Item javelinCopper = new GreekWeaponThrowable(5023, copper, 0.03f, 3.1, 1, 5, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_copper").setUnlocalizedName("javelinCopper");
+		public final static Item javelinBronze = new GreekWeaponThrowable(5024, bronze, 0.03f, 3.1, 1, 6, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_bronze").setUnlocalizedName("javelinBronze");
 		
 		//---------BLOCKS---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
@@ -340,10 +345,40 @@ public class Greece {
                 GameRegistry.addShapelessRecipe(new ItemStack(plasterBucket), new ItemStack(lime), new ItemStack(Block.sand), new ItemStack(Item.bucketWater));
                 
                 //SHIELD
-                LanguageRegistry.addName(shield, "Shield");
-                GameRegistry.registerItem(shield, "shield");
-                GameRegistry.addRecipe(new ItemStack(shield), " x ", "xyx", " x ",
+                LanguageRegistry.addName(shieldWood, "Shield");
+                GameRegistry.registerItem(shieldWood, "shieldWood");
+                GameRegistry.addRecipe(new ItemStack(shieldWood), " x ", "xyx", " x ",
                 		'x', Block.planks, 'y', Item.leather);
+                
+                //BRONZE SHIELD
+                LanguageRegistry.addName(shieldBronze, "Reinforced Shield");
+                GameRegistry.registerItem(shieldBronze, "shield");
+                GameRegistry.addRecipe(new ItemStack(shieldBronze), " x ", "xyx", " x ",
+                		'x', bronzeIngot, 'y', shieldWood);
+                
+                //COPPER SPEAR
+                LanguageRegistry.addName(spearCopper, "Copper Spear");
+                GameRegistry.registerItem(spearCopper, "spearCopper");
+                GameRegistry.addRecipe(new ItemStack(spearCopper), "  x", " y ", "y  ",
+                		'x', copperIngot, 'y', Item.stick);
+                
+                //STONE JAVELIN
+                LanguageRegistry.addName(javelinStone, "Stone Javelin");
+                GameRegistry.registerItem(javelinStone, "javelinStone");
+                GameRegistry.addRecipe(new ItemStack(javelinStone), "x  ", " y ", "  y",
+                		'x', Block.cobblestone, 'y', Item.stick);
+                
+                //COPPER JAVELIN
+                LanguageRegistry.addName(javelinCopper, "Copper Javelin");
+                GameRegistry.registerItem(javelinCopper, "javelinCopper");
+                GameRegistry.addRecipe(new ItemStack(javelinCopper), "x  ", " y ", "  y",
+                		'x', copperIngot, 'y', Item.stick);
+                
+                //BRONZE JAVELIN
+                LanguageRegistry.addName(javelinBronze, "Bronze Javelin");
+                GameRegistry.registerItem(javelinBronze, "javelinBronze");
+                GameRegistry.addRecipe(new ItemStack(javelinBronze), "x  ", " y ", "  y",
+                		'x', bronzeIngot, 'y', Item.stick);
                 
                 //STRAW
                 LanguageRegistry.addName(straw, "Straw");
@@ -406,6 +441,10 @@ public class Greece {
                 registerEntity(GreekArcher.class, "ArcherBandit", 0xe00abcd, 0x0abcd0);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekArcher.name", "ArcherBandit");
                 
+                //registerEntity(GreekEntityJavelin.class, "Javelin", 0xefdfe0, 0xaaccaa);
+                EntityRegistry.registerModEntity(GreekEntityJavelin.class, "Javelin", 
+                		cpw.mods.fml.common.registry.EntityRegistry.findGlobalUniqueEntityId(), this, 64, 1, true);
+                LanguageRegistry.instance().addStringLocalization("entity.GreekJavelin.name", "Javelin");
                 registerEntity(GreekVillager.class, "Demesman", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekVillager.name", "Demesman");
                 

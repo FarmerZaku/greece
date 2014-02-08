@@ -48,18 +48,18 @@ public class PlayerTickHandler implements ITickHandler
 		if (player.getHealth() <= 0) {
 			return;
 		}
-	     if(GreekKeyBind.blockPressed && (player.isUsingItem() == false || player.getCurrentEquippedItem().itemID != Greece.shield.itemID))
+	     if(GreekKeyBind.blockPressed && (player.isUsingItem() == false || player.getCurrentEquippedItem().getItem() instanceof GreekShield))
 	     {
 	    	 ItemStack[] inv = player.inventory.mainInventory;
 	    	 ItemStack shield = null;
-	    	 if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == Greece.shield.itemID) {
+	    	 if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof GreekShield) {
     			 shield = player.getCurrentEquippedItem();
     			 //System.out.println("Already have shield equipped!");
 	    	 }
 	    	 if (shield == null) {
 		    	 //check the player's hotbar for a shield
 		    	 for (int i = 0; i < inv.length && i < 9; ++i) {
-		    		 if (inv[i] != null && inv[i].itemID == Greece.shield.itemID) {
+		    		 if (inv[i] != null && inv[i].getItem() instanceof GreekShield) {
 		    			 //System.out.println("In pos: " + i);
 		    			 //player.inventory.currentItem = i;
 		    			 if (inv[i].stackTagCompound == null) {
@@ -78,7 +78,8 @@ public class PlayerTickHandler implements ITickHandler
 	    		 player.setItemInUse(shield, shield.getMaxItemUseDuration());
 	    		 previouslyBlocking = true;
 	    	 }
-	     } else if (GreekKeyBind.blockPressed == false && previouslyBlocking && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == Greece.shield.itemID) {
+	     } else if (GreekKeyBind.blockPressed == false && previouslyBlocking && player.getCurrentEquippedItem() != null &&
+	    		 player.getCurrentEquippedItem().getItem() instanceof GreekShield) {
     		 previouslyBlocking = false;
 	    	 ItemStack shield = player.getCurrentEquippedItem();
     		 player.setItemInUse(null,0);
