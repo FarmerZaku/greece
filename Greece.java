@@ -12,6 +12,7 @@ import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -159,7 +160,7 @@ public class Greece {
 		public static BiomeGenBase graniteMountainsBiome;
 		
         @EventHandler
-        public void preInit(FMLPreInitializationEvent event) {
+        public void preInit(FMLPreInitializationEvent event) {        	
         	// iterate through all the villager types and add their new trades
         	for (int i = 0; i < 5; ++i) {
         		VillagerRegistry.instance().registerVillageTradeHandler(i, new TradeHandler());

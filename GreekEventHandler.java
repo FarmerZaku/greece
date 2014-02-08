@@ -1,7 +1,11 @@
 package mod.greece;
 
+import java.util.Random;
+
 import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
+import mod.greece.mobs.RenderHuman;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -15,6 +19,7 @@ import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class GreekEventHandler {
 	public static int ignoreFOVChanges = 0;
@@ -52,7 +57,8 @@ public class GreekEventHandler {
                 oldCreep.setDead();
             } else if (event.entityLiving instanceof EntityVillager) {
             	EntityVillager oldVill = (EntityVillager)event.entityLiving;
-                GreekVillager newVillager = new GreekVillager(event.world);
+            	Random professionID = new Random();
+            	GreekVillager newVillager = new GreekVillager(event.world, professionID.nextInt(6));
                 newVillager.setLocationAndAngles(oldVill.posX, oldVill.posY, oldVill.posZ, oldVill.rotationYaw, oldVill.rotationPitch);
                // if (newVillager.getCanSpawnHere()) {
                 	event.world.spawnEntityInWorld(newVillager);
