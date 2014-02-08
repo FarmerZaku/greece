@@ -22,6 +22,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraftforge.common.EnumHelper;
@@ -44,6 +45,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
  
 @Mod(modid="Greece", name="Ancient Greece Mod", version="0.0.0")
@@ -124,7 +126,7 @@ public class Greece {
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
-		public final Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2.5, 1, 9, 15)
+		public final static Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2.5, 1, 9, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
 		public final Item spear = new GreekSword(6002, bronze, 0.04f, 3.1, 1, 7, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
@@ -158,7 +160,10 @@ public class Greece {
 		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
-                // Stub Method
+        	// iterate through all the villager types and add their new trades
+        	for (int i = 0; i < 5; ++i) {
+        		VillagerRegistry.instance().registerVillageTradeHandler(i, new TradeHandler());
+        	}
         }
        
         @EventHandler
@@ -439,6 +444,8 @@ public class Greece {
                 EntityRegistry.registerModEntity(GreekEntityJavelin.class, "Javelin", 
                 		cpw.mods.fml.common.registry.EntityRegistry.findGlobalUniqueEntityId(), this, 64, 1, true);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekJavelin.name", "Javelin");
+                registerEntity(GreekVillager.class, "Demesman", 0xefaf00, 0xaa00aa);
+                LanguageRegistry.instance().addStringLocalization("entity.GreekVillager.name", "Demesman");
                 
                 // Register the event handler, so we can catch events like zombies spawning and do stuff, like replacing
                 // the zombies with bandits.
@@ -623,7 +630,12 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIsland);
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIslandShore);
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
-                GameRegistry.removeBiome(BiomeGenBase.taigaHills);                                
+                GameRegistry.removeBiome(BiomeGenBase.taigaHills);               
+                
+                // villager stuff?
+                //GreekRegistry.instance().registerVillagerId(1000);
+                //GreekRegistry.instance().registerVillagerSkin(1000, new ResourceLocation("greece:textures/mobs/farmer.png"));
+                //GreekRegistry.instance().registerVillageTradeHandler(1000, new TradeHandler());
         }
        
         @EventHandler
