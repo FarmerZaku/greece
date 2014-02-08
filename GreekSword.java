@@ -34,10 +34,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class GreekSword extends ItemSword {
 	    @SideOnly(Side.CLIENT)
-	    private Icon[] iconArray;
-	    private int minDamage, maxDamage, fullCharge;
-	    private double reach;
-	    private float knockBack;
+	    protected Icon[] iconArray;
+	    protected int minDamage, maxDamage;
+		protected int fullCharge;
+		protected double reach;
+		protected float knockBack;
 	    
 	    /**
 	     * knockBack: knockback scaling. Should be like 0.01-0.1 or so.
@@ -126,6 +127,7 @@ public class GreekSword extends ItemSword {
 	        double damage = ((double)chargeTime / (double)fullCharge) * (double)damageDiff + (double)minDamage;
 	        
 	        player.swingItem();
+	        System.out.println("Gonna damage: " + damage);
 	        
 	        Minecraft.getMinecraft().entityRenderer.getMouseOver(0);
 	        MovingObjectPosition mop = Minecraft.getMinecraft().objectMouseOver;
@@ -139,6 +141,7 @@ public class GreekSword extends ItemSword {
             		to_target.zCoord -= target.posZ;
     	        	double scale = damage*-1*knockBack;
     				target.setVelocity(to_target.xCoord*scale, Math.max(to_target.yCoord*scale, 0.1), to_target.zCoord*scale);
+    				itemStack.damageItem(1, player);
 	        	}
 	        }
         	return;

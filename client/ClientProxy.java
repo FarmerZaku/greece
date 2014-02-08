@@ -1,6 +1,8 @@
 package mod.greece.client;
  
 import mod.greece.CommonProxy;
+import mod.greece.GreekEntityJavelin;
+import mod.greece.GreekRenderJavelin;
 import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import mod.greece.mobs.RenderHuman;
@@ -16,6 +18,7 @@ public class ClientProxy extends CommonProxy {
         	//MinecraftForgeClient.registerItemRenderer(Greece.thatchSlope.blockID, new ItemSlopeRenderer());
         	RenderingRegistry.registerEntityRenderingHandler(GreekHuman.class, new RenderHuman(new ModelBiped(), 0.5f));
         	RenderingRegistry.registerEntityRenderingHandler(GreekArcher.class, new RenderHuman(new ModelBiped(), 0.5f));
+        	RenderingRegistry.registerEntityRenderingHandler(GreekEntityJavelin.class, new GreekRenderJavelin());
         }
        
 }
