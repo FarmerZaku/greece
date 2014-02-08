@@ -10,10 +10,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderHuman extends RenderBiped {
-	private static final ResourceLocation model = new ResourceLocation("greece", "/textures/mobs/bandit.png");
+	private static ResourceLocation model = new ResourceLocation("greece", "/textures/mobs/bandit.png"); // removed "final"
 	public RenderHuman(ModelBase par1ModelBase, float par2) {
 		super((ModelBiped) par1ModelBase, par2);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public RenderHuman(ModelBase par1ModelBase, float par2, String file) {
+		super((ModelBiped) par1ModelBase, par2);
+		model = new ResourceLocation("greece", file);
 	}
 
 	@Override
