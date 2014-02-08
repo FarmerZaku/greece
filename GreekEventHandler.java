@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -49,6 +50,14 @@ public class GreekEventHandler {
                 	event.world.spawnEntityInWorld(newHuman);
                 }
                 oldCreep.setDead();
+            } else if (event.entityLiving instanceof EntityVillager) {
+            	EntityVillager oldVill = (EntityVillager)event.entityLiving;
+                GreekVillager newVillager = new GreekVillager(event.world);
+                newVillager.setLocationAndAngles(oldVill.posX, oldVill.posY, oldVill.posZ, oldVill.rotationYaw, oldVill.rotationPitch);
+               // if (newVillager.getCanSpawnHere()) {
+                	event.world.spawnEntityInWorld(newVillager);
+                //}
+                oldVill.setDead();
             }
         }
     }
