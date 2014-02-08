@@ -24,9 +24,8 @@ public class TradeHandler implements IVillageTradeHandler
 		switch(villager.getProfession()) {
 		case 0: // FARMER
 			// standard trades
-			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Item.wheat, 1)));
-			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Item.seeds, 1)));
 			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Greece.olives, 1)));
+			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Item.wheat, 1)));
 			break;
 		case 1: // LIBRARIAN
 			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),

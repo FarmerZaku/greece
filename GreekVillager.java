@@ -48,6 +48,11 @@ public class GreekVillager extends EntityVillager {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public GreekVillager(World par1World, int professionID) {
+		super(par1World);
+        this.setProfession(professionID);
+	}
+	
 	@Override
 	public MerchantRecipeList getRecipes(EntityPlayer par1EntityPlayer)
     {
