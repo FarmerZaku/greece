@@ -20,7 +20,8 @@ public class ClientProxy extends CommonProxy {
         	RenderingRegistry.registerEntityRenderingHandler(GreekHuman.class, new RenderHuman(new ModelBiped(), 0.5f));
         	RenderingRegistry.registerEntityRenderingHandler(GreekArcher.class, new RenderHuman(new ModelBiped(), 0.5f));
         	RenderingRegistry.registerEntityRenderingHandler(GreekEntityJavelin.class, new GreekRenderJavelin());
-        	RenderingRegistry.registerEntityRenderingHandler(GreekVillager.class, new RenderHuman(new ModelBiped(), 0.5f, "/textures/mobs/demesman.png"));
+        	//RenderingRegistry.registerEntityRenderingHandler(GreekVillager.class, new RenderHuman(new ModelBiped(), 0.5f, "/textures/mobs/demesman.png"));
+        	RenderingRegistry.registerEntityRenderingHandler(GreekVillager.class, new RenderHuman(new ModelBiped(), 0.5f, true));
         }
        
 }

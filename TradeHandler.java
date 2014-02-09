@@ -25,26 +25,28 @@ public class TradeHandler implements IVillageTradeHandler
 		case 0: // FARMER
 			// standard trades
 			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Item.wheat, 1)));
-			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Item.seeds, 1)));
-			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Greece.olives, 1)));
 			break;
-		case 1: // LIBRARIAN
-			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
-				new ItemStack(Greece.oliveOil, 1))); // to buy
+		case 1: // LIBRARIAN / ORATOR
+			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 16),
+				new ItemStack(Greece.copperIngot, 1))); // to buy
 			// use the vanilla Item method to easily construct an ItemStack containing an enchanted book of any level
            // recipeList.add(new MerchantRecipe(new ItemStack(Item.diamond, 1), Item.enchantedBook.getEnchantedItemStack(new EnchantmentData(Enchantment.flame, 1))));
 			break;
 		case 2: // PRIEST
-			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Greece.oliveOil)));
+			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 16), new ItemStack(Greece.bronzeIngot)));
 			break;
 		case 3: // BLACKSMITH
 			// using the passed in Random to randomize amounts; nextInt(value) returns an int between 0 and value (non-inclusive)
-			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
-				new ItemStack(Greece.bronzeSword, 1))); // to buy
+			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 16),
+				new ItemStack(Greece.tinIngot, 1))); // to buy
 			break;
 		case 4: // BUTCHER
 			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
 				new ItemStack(Item.fishCooked, 1))); // to buy
+			break;
+		case 5: // YOUTH
+			recipeList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 32),
+				new ItemStack(Item.saddle, 1))); // to buy
 			
 			// You can also add directly to the villager with 2 different methods:
 
