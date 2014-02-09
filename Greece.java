@@ -162,7 +162,7 @@ public class Greece {
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {        	
         	// iterate through all the villager types and add their new trades
-        	for (int i = 0; i < 6; ++i) {
+        	for (int i = 0; i < 7; ++i) {
         		VillagerRegistry.instance().registerVillageTradeHandler(i, new TradeHandler());
         	}
         }

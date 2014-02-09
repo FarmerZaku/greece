@@ -58,7 +58,7 @@ public class GreekEventHandler {
             } else if (event.entityLiving instanceof EntityVillager) {
             	EntityVillager oldVill = (EntityVillager)event.entityLiving;
             	Random professionID = new Random();
-            	GreekVillager newVillager = new GreekVillager(event.world, professionID.nextInt(6));
+            	GreekVillager newVillager = new GreekVillager(event.world, professionID.nextInt(7));
                 newVillager.setLocationAndAngles(oldVill.posX, oldVill.posY, oldVill.posZ, oldVill.rotationYaw, oldVill.rotationPitch);
                // if (newVillager.getCanSpawnHere()) {
                 	event.world.spawnEntityInWorld(newVillager);
