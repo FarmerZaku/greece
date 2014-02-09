@@ -93,18 +93,18 @@ public class Greece {
 		
 		//---------BLOCKS---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
-		public final static Block plasteredBlock = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(0.5f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("plasteredBlock").setCreativeTab(CreativeTabs.tabBlock);
-		public final static Block limestone = new GreekBlock(504, Material.rock, 504).setHardness(0.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
+		public final static Block plasteredBlock = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(1.0f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("plasteredBlock").setCreativeTab(CreativeTabs.tabBlock);
+		public final static Block limestone = new GreekBlock(504, Material.rock, 504).setHardness(1.3f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
 		public final static Block onyxOre = new GreekOre(505, Material.rock, Greece.onyx.itemID).setTextureName("Greece:onyx_ore");
-		public final static Block thatch = new GreekBlock(506, Material.grass, 506).setHardness(0.2f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatch").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:thatch");
+		public final static Block thatch = new GreekBlock(506, Material.grass, 506).setHardness(0.5f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatch").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:thatch");
 		public final static Block thatchSlope = new ThatchSlope(507, thatch, 0).setTextureName("Greece:thatch").setHardness(0.5f).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("thatchSlope").setCreativeTab(CreativeTabs.tabBlock);
-		public final static Block granite = new GreekBlock(508, Material.rock, 508).setHardness(0.9f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("granite").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:granite");
-		public final static Block tinBlock = new GreekBlock(509, Material.iron, 509).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("tinBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:tinBlock");
-		public final static Block copperBlock = new GreekBlock(510, Material.iron, 510).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("copperBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:copperBlock");
-		public final static Block bronzeBlock = new GreekBlock(511, Material.iron, 511).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("bronzeBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:bronzeBlock");
-		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(0.9f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
-		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(0.9f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
-		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.4f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
+		public final static Block granite = new GreekBlock(508, Material.rock, 508).setHardness(2f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("granite").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:granite");
+		public final static Block tinBlock = new GreekBlock(509, Material.iron, 509).setHardness(4f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("tinBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:tinBlock");
+		public final static Block copperBlock = new GreekBlock(510, Material.iron, 510).setHardness(5f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("copperBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:copperBlock");
+		public final static Block bronzeBlock = new GreekBlock(511, Material.iron, 511).setHardness(5f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("bronzeBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:bronzeBlock");
+		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(5f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
+		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(1.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
+		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
 		public final static Block quern = new GreekQuern(515, Material.rock, new Item[] {basketGrain, amphoraGrain}, new Item[] {null, null}, new int[] {1, 1}, new Item[] {basketFlour, amphoraFlour});
 		
 		//---------EVENT HANDLERS---------
