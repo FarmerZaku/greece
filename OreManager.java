@@ -184,8 +184,6 @@ public class OreManager implements IWorldGenerator {
         		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 8+random.nextInt(15), 80, 15, 160);
         		this.replaceStone(Greece.limestone.blockID, world, x, z, random);
         		addMarble = false;
-        	} else {
-        		this.addOreSpawn(Greece.tinOre, world, random, x, z, 16, 16, 3+random.nextInt(10), 4, 15, 160);
         	}
         	if (world.getBiomeGenForCoords(x, z).biomeID == Greece.graniteMountainsBiome.biomeID) {
         		this.replaceStone(Greece.granite.blockID, world, x, z, random);
