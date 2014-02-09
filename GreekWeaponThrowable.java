@@ -92,7 +92,7 @@ public class GreekWeaponThrowable extends GreekSword {
 				if (speed > 1.5F) {
 					speed = 1.5F;
 				}
-				float damage = Math.min(this.maxDamage, speed * (float)this.maxDamage);
+				float damage = speed * (float)this.maxDamage;
 				System.out.println("Gonna damage " + damage);
 				EntityPlayer player = (EntityPlayer)entity;
 				ItemStack toDrop = new ItemStack(itemStack.getItem());

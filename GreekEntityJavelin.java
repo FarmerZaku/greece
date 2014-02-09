@@ -308,6 +308,28 @@ public class GreekEntityJavelin extends EntityArrow implements IProjectile
             {
                 if (movingobjectposition.entityHit != null)
                 {
+                	if (!this.worldObj.isRemote) {
+	                	//50% chance to drop the javelin, %50 chance to drop its bits
+	                	if (this.rand.nextBoolean()) {
+		                	//50% chance to drop an ingot depending on what type
+		                	if (this.rand.nextBoolean()) {
+		                		int ingotID = 0;
+		                		if (this.toPickup.itemID == Greece.javelinBronze.itemID) {
+		                			ingotID = Greece.bronzeIngot.itemID;
+		                		} else if (this.toPickup.itemID == Greece.javelinCopper.itemID) {
+		                			ingotID = Greece.copperIngot.itemID;
+		                		} else if (this.toPickup.itemID == Greece.javelinStone.itemID) {
+		                			ingotID = Block.cobblestone.blockID;
+		                		}
+		                		this.dropItem(ingotID, 1);
+		                	}
+		                	this.dropItem(Item.stick.itemID, 1);
+		                	this.playSound("random.break", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+	                	} else {
+	                		this.dropItem(toPickup.itemID, 1);
+	                	}
+                	}
+                	
                     f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     int i1 = MathHelper.ceiling_double_int((double)f2 * this.damage);
 
@@ -400,6 +422,21 @@ public class GreekEntityJavelin extends EntityArrow implements IProjectile
                     this.arrowShake = 7;
                     this.setIsCritical(false);
                     if (breakOnHit) {
+                    	if (!this.worldObj.isRemote) {
+	                    	//50% chance to drop an ingot depending on what type
+	                    	if (this.rand.nextBoolean()) {
+	                    		int ingotID = 0;
+	                    		if (this.toPickup.itemID == Greece.javelinBronze.itemID) {
+	                    			ingotID = Greece.bronzeIngot.itemID;
+	                    		} else if (this.toPickup.itemID == Greece.javelinCopper.itemID) {
+	                    			ingotID = Greece.copperIngot.itemID;
+	                    		} else if (this.toPickup.itemID == Greece.javelinStone.itemID) {
+	                    			ingotID = Block.cobblestone.blockID;
+	                    		}
+	                    		this.dropItem(ingotID, 1);
+	                    	}
+	                    	this.dropItem(Item.stick.itemID, 1);
+                    	}
                     	this.setDead();
                     	this.playSound("random.break", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     }

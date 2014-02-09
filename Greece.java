@@ -7,6 +7,7 @@ import static net.minecraft.world.biome.BiomeGenBase.plains;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 
 import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
@@ -22,9 +23,11 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -432,7 +435,24 @@ public class Greece {
 	           	KeyBindingRegistry.registerKeyBinding(new GreekKeyBind(key, repeat));
 	           	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.SERVER);
 	           	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.CLIENT);
-                
+	           	List recipes = CraftingManager.getInstance().getRecipeList();
+	           	int terminus = recipes.size();
+	           	for (int i = 0; i < terminus; ++i) {
+	           		IRecipe recipe = (IRecipe)recipes.get(i);
+	           		int idOutput = 0;
+	           		if (recipe.getRecipeOutput() == null) {
+	           			System.out.println("Continuing");
+	           			continue;
+	           		}
+	           		idOutput = recipe.getRecipeOutput().itemID;
+	           		if (idOutput == Item.pickaxeStone.itemID) { //idOutput == Item.pickaxeWood.itemID
+	           			CraftingManager.getInstance().getRecipeList().remove(i);
+	           			System.out.println("Removed Crafting Recipe " + i);
+	           			terminus--;
+	           			i--;
+	           		}
+	           	}
+	           	
                 //------------ENTITIES---------------
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Bandit");
@@ -642,6 +662,8 @@ public class Greece {
         public void postInit(FMLPostInitializationEvent event) {
         	// this determines where you can spawn... I think.
         	WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, graniteMountainsBiome, tinIslesBiome, korinthiaBiome));
+        	MapGenVillage.villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {forest, plains, forestHills,
+           			limeCliffsBiome, korinthiaBiome, BiomeGenBase.desert});
         }
        
         public void registerEntity(Class<? extends Entity> entityClass, String entityName, int bkEggColor, int fgEggColor) {
