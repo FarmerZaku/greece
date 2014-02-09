@@ -6,6 +6,7 @@ import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import mod.greece.mobs.RenderHuman;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
