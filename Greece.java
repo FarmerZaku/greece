@@ -60,6 +60,7 @@ public class Greece {
 		public static EnumToolMaterial bronze = EnumHelper.addToolMaterial("Bronze", 2, 200, 5.0F, 2.0F, 12);
 		public static EnumToolMaterial clay = EnumHelper.addToolMaterial("Clay", 1, 100, 3.0F, 0.5F, 12);
 		public static EnumToolMaterial copper = EnumHelper.addToolMaterial("Copper", 1, 100, 3.0F, 1.0F, 18);
+		public static EnumToolMaterial badWood = EnumHelper.addToolMaterial("badWood", 0, 59, 0.5F, 0.0F, 15);
 	
 		//---------ITEMS---------
 		public final static Item plasterBucket = new PlasterBucket(5000).setMaxStackSize(1).setNoRepair();
@@ -87,6 +88,8 @@ public class Greece {
 		public final static Item javelinStone = new GreekWeaponThrowable(5022, EnumToolMaterial.STONE, 0.03f, 3.1, 1, 4, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_stone").setUnlocalizedName("javelinStone");
 		public final static Item javelinCopper = new GreekWeaponThrowable(5023, copper, 0.03f, 3.1, 1, 5, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_copper").setUnlocalizedName("javelinCopper");
 		public final static Item javelinBronze = new GreekWeaponThrowable(5024, bronze, 0.03f, 3.1, 1, 6, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_bronze").setUnlocalizedName("javelinBronze");
+		public final static Item badWoodPickaxe = new GreekPickaxe(5025, badWood).setTextureName("Greece:woodPick").setUnlocalizedName("badWoodPickaxe");
+		
 		
 		//---------BLOCKS---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
@@ -306,6 +309,12 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(Item.shears), " x ", "x ",
                 		'x', copperIngot);
                 
+                //BAD WOOD PICKAXE
+                LanguageRegistry.addName(badWoodPickaxe, "Wooden Pickaxe");
+                GameRegistry.registerItem(badWoodPickaxe, "badWoodPickaxe");
+                GameRegistry.addRecipe(new ItemStack(badWoodPickaxe), "xxx", " y ", " y ",
+                		'x', Block.planks, 'y', Item.stick);
+                
                 //COPPER PICKAXE
                 LanguageRegistry.addName(copperPick, "Copper Pickaxe");
                 GameRegistry.registerItem(copperPick, "copperPick");
@@ -446,13 +455,14 @@ public class Greece {
 	           			continue;
 	           		}
 	           		idOutput = recipe.getRecipeOutput().itemID;
-	           		if (idOutput == Item.pickaxeStone.itemID) { //idOutput == Item.pickaxeWood.itemID
+	           		if (idOutput == Item.pickaxeStone.itemID || idOutput == Item.pickaxeWood.itemID) {
 	           			CraftingManager.getInstance().getRecipeList().remove(i);
 	           			System.out.println("Removed Crafting Recipe " + i);
 	           			terminus--;
 	           			i--;
 	           		}
 	           	}
+	           	
 	           	
                 //------------ENTITIES---------------
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
