@@ -209,7 +209,7 @@ public class GreekArcher extends EntityMob implements IRangedAttackMob
         {
             this.dropItem(Item.arrow.itemID, 1);
         }
-        this.dropItem(Greece.drachma.itemID, 5);
+        this.dropItem(Greece.drachma.itemID, 4);
     }
 
     @Override
