@@ -15,19 +15,20 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class GreekQuern extends Block {
-	private Item[] outputs;
-	private Item[] inputs;
-	private Item[] secondaryInputs;
+	private int[] outputs;
+	private int[] inputs;
+	private int[] secondaryInputs;
 	private int[] inputQuantities;
+	private int textureType;
 	
-	//for secondary inputs, use Item.comparator for a blank value. null makes there be problems... Sorry, I know that's ugly
-	public GreekQuern(int id, Material material, Item[] inputs, Item[] secondaryInputs, int[] inputQuantities, Item[] outputs) {
+	public GreekQuern(int id, Material material, int[] inputs, int[] secondaryInputs, int[] inputQuantities, int[] outputs, int textureType) {
 		super(id, material);
 		setCreativeTab(CreativeTabs.tabBlock);
 		this.outputs = outputs;
 		this.inputs = inputs;
 		this.inputQuantities = inputQuantities;
 		this.secondaryInputs = secondaryInputs;
+		this.textureType = textureType;
 	}
 	
 	public int counter(EntityPlayer player, ItemStack item) {
@@ -50,15 +51,19 @@ public class GreekQuern extends Block {
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
 		for (int i = 0; i < inputs.length; ++i) {
-			if ((secondaryInputs[i] == null || par5EntityPlayer.inventory.hasItemStack(new ItemStack(secondaryInputs[i]))) && 
-					counter(par5EntityPlayer, new ItemStack(inputs[i])) >= inputQuantities[i]) {
-				par5EntityPlayer.inventory.addItemStackToInventory(new ItemStack(outputs[i]));
+			if ((secondaryInputs[i] == 0 || par5EntityPlayer.inventory.hasItemStack(new ItemStack(secondaryInputs[i], 1, 0))) && 
+					counter(par5EntityPlayer, new ItemStack(inputs[i], 1, 0)) >= inputQuantities[i]) {
+				if (par5EntityPlayer.inventory.getFirstEmptyStack() != -1) {
+					par5EntityPlayer.inventory.addItemStackToInventory(new ItemStack(outputs[i], 1, 0));
+				} else {
+					par5EntityPlayer.dropPlayerItem(new ItemStack(outputs[i], 1, 0));
+				}
 				par1World.playSoundAtEntity(par5EntityPlayer, "random.wood_click", 1, 1);
-				if (secondaryInputs[i] != null) {
-					par5EntityPlayer.inventory.consumeInventoryItem(secondaryInputs[i].itemID);
+				if (secondaryInputs[i] != 0) {
+					par5EntityPlayer.inventory.consumeInventoryItem(secondaryInputs[i]);
 				}
 				for (int j = 0; j < inputQuantities[i]; j++) {
-					par5EntityPlayer.inventory.consumeInventoryItem(inputs[i].itemID);
+					par5EntityPlayer.inventory.consumeInventoryItem(inputs[i]);
 				}
 				return true;
 			}
@@ -67,18 +72,31 @@ public class GreekQuern extends Block {
     }
 	
 	@SideOnly(Side.CLIENT)
-	public static Icon topIcon;
+	public Icon topIcon;
 	@SideOnly(Side.CLIENT)
-	public static Icon bottomIcon;
+	public Icon bottomIcon;
 	@SideOnly(Side.CLIENT)
-	public static Icon sideIcon;
+	public Icon sideIcon;
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister icon) {
-		topIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":quern_top");
-		bottomIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":press_side");
-		sideIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":quern_side");
+		switch (textureType) {
+		case 0:
+			topIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":quern_top");
+			bottomIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":press_side");
+			sideIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":quern_side");
+			break;
+		case 1:
+			topIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":quern_top");
+			bottomIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":press_side");
+			sideIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":crusher_side");
+			break;
+		default:
+			topIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":quern_top");
+			bottomIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":press_side");
+			sideIcon = icon.registerIcon(GreeceInfo.NAME.toLowerCase() + ":quern_side");
+		}
 	}
 	
 	@Override
