@@ -111,6 +111,9 @@ public class Greece {
 		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(5f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
 		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(1.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
 		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
+		public final static Block greekFire = new GreekFire(517).setUnlocalizedName("greekFire").setTextureName("Greece:greekFire");
+		public final static Block ash = new GreekAsh(518).setUnlocalizedName("greekAsh").setTextureName("Greece:greek_ash");
+		
 				//new int[] {crushedSilver, crushedCopper, crushedTin});
 		
 		//---------EVENT HANDLERS---------
@@ -143,7 +146,7 @@ public class Greece {
 		public final static Item bronzeIngot = new BronzeIngot(6000);
 		public final static Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2.5, 1, 9, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final static Item spear = new GreekSword(6002, bronze, 0.04f, 3.1, 1, 7, 15)
+		public final static Item spear = new GreekWeaponThrowable(6002, bronze, 0.04f, 3.1, 1, 7, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
@@ -307,6 +310,14 @@ public class Greece {
                 MinecraftForge.setBlockHarvestLevel(crusher, "pick", 0);
                 GameRegistry.addRecipe(new ItemStack(crusher), "xyx", "yyy", "yyy",
                 		'x', Item.stick, 'y', Block.cobblestone);
+                
+                //GREEK FIRE
+                GameRegistry.registerBlock(greekFire, "greekFire");
+                LanguageRegistry.addName(greekFire, "Fire");
+                
+                //ASH
+                GameRegistry.registerBlock(ash, "ash");
+                LanguageRegistry.addName(ash, "Ash");
                 
                 //---------REGISTER ITEMS---------
                 //SARD ITEM

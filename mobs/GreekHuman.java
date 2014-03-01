@@ -54,7 +54,7 @@ public class GreekHuman extends EntityMob
         super(par1World);
         this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIBreakDoor(this));
+        this.tasks.addTask(1, new GreekAIBreakAndBurn(this));
         this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
         this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
         this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
@@ -360,7 +360,7 @@ public class GreekHuman extends EntityMob
     {
         super.onKillEntity(par1EntityLivingBase);
 
-        if (this.worldObj.difficultySetting >= 2 && par1EntityLivingBase instanceof EntityVillager)
+        /*if (this.worldObj.difficultySetting >= 2 && par1EntityLivingBase instanceof EntityVillager)
         {
             if (this.worldObj.difficultySetting == 2 && this.rand.nextBoolean())
             {
@@ -374,7 +374,7 @@ public class GreekHuman extends EntityMob
 
             this.worldObj.spawnEntityInWorld(GreekHuman);
             this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1016, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-        }
+        }*/
     }
 
     @Override
