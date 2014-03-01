@@ -254,7 +254,7 @@ public class GreekHuman extends EntityMob
     @Override
     protected int getDropItemId()
     {
-        return Greece.drachma.itemID;
+        return Greece.obol.itemID;
     }
 
     /**
@@ -278,7 +278,7 @@ public class GreekHuman extends EntityMob
                 this.dropItem(Item.carrot.itemID, 1);
                 break;
             case 2:
-                this.dropItem(Item.potato.itemID, 1);
+                this.dropItem(Greece.drachma.itemID, 4);
         }
     }
 
