@@ -6,6 +6,7 @@ import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
 import mod.greece.mobs.RenderHuman;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -58,7 +59,7 @@ public class GreekEventHandler {
             } else if (event.entityLiving instanceof EntityVillager) {
             	EntityVillager oldVill = (EntityVillager)event.entityLiving;
             	Random professionID = new Random();
-            	GreekVillager newVillager = new GreekVillager(event.world, professionID.nextInt(6));
+            	GreekVillager newVillager = new GreekVillager(event.world, professionID.nextInt(7));
                 newVillager.setLocationAndAngles(oldVill.posX, oldVill.posY, oldVill.posZ, oldVill.rotationYaw, oldVill.rotationPitch);
                // if (newVillager.getCanSpawnHere()) {
                 	event.world.spawnEntityInWorld(newVillager);
