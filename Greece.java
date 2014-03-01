@@ -89,9 +89,15 @@ public class Greece {
 		public final static Item javelinCopper = new GreekWeaponThrowable(5023, copper, 0.03f, 3.1, 1, 5, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_copper").setUnlocalizedName("javelinCopper");
 		public final static Item javelinBronze = new GreekWeaponThrowable(5024, bronze, 0.03f, 3.1, 1, 6, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":javelin_bronze").setUnlocalizedName("javelinBronze");
 		public final static Item badWoodPickaxe = new GreekPickaxe(5025, badWood).setTextureName("Greece:woodPick").setUnlocalizedName("badWoodPickaxe");
+		public final static Item copperWashed = new GenericItem(5026).setTextureName("Greece:copperWashed").setUnlocalizedName("copperWashed");
+		public final static Item tinWashed = new GenericItem(5027).setTextureName("Greece:tinWashed").setUnlocalizedName("tinWashed");
+		public final static Item silverWashed = new GenericItem(5028).setTextureName("Greece:silverWashed").setUnlocalizedName("silverWashed");
+		public final static Item bronzeWashed = new GenericItem(5029).setTextureName("Greece:bronzeWashed").setUnlocalizedName("bronzeWashed");
+		public final static Item copperCrushed = new GreekWashable(5030, copperWashed.itemID).setTextureName("Greece:copperCrushed").setUnlocalizedName("copperCrushed");
+		public final static Item tinCrushed = new GreekWashable(5031, tinWashed.itemID).setTextureName("Greece:tinCrushed").setUnlocalizedName("tinCrushed");
+		public final static Item silverCrushed = new GreekWashable(5032, silverWashed.itemID).setTextureName("Greece:silverCrushed").setUnlocalizedName("silverCrushed");
 		
-		
-		//---------BLOCKS---------
+		//---------BLOCKS - Matthew ---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
 		public final static Block plasteredBlock = new PlasteredBlock(502, Material.ground, Block.dirt.blockID).setHardness(1.0f).setStepSound(Block.soundWoodFootstep).setUnlocalizedName("plasteredBlock").setCreativeTab(CreativeTabs.tabBlock);
 		public final static Block limestone = new GreekBlock(504, Material.rock, 504).setHardness(1.3f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("limestone").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:limestone");
@@ -105,7 +111,7 @@ public class Greece {
 		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(5f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
 		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(1.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
 		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
-		public final static Block quern = new GreekQuern(515, Material.rock, new Item[] {basketGrain, amphoraGrain}, new Item[] {null, null}, new int[] {1, 1}, new Item[] {basketFlour, amphoraFlour});
+				//new int[] {crushedSilver, crushedCopper, crushedTin});
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
@@ -164,6 +170,19 @@ public class Greece {
 		public static BiomeGenBase tinIslesBiome;
 		public static BiomeGenBase korinthiaBiome;
 		public static BiomeGenBase graniteMountainsBiome;
+		
+		//------------ BLOCKS - Matthew2 ------- these need the itemIDs from above-defined blocks/items
+		public final static Block quern = new GreekQuern(515, Material.rock,
+				new int[] {basketGrain.itemID, amphoraGrain.itemID},
+				new int[] {0, 0},
+				new int[] {1, 1},
+				new int[] {basketFlour.itemID, amphoraFlour.itemID}, 0).setUnlocalizedName("quern");
+		public final static Block crusher = new GreekQuern(516, Material.rock,
+				new int[] {silverOre.blockID, copperOre.blockID, tinOre.blockID},
+				new int[] {0, 0, 0},
+				new int[] {1, 1, 1},
+				new int[] {silverCrushed.itemID, copperCrushed.itemID, tinCrushed.itemID}, 1).setUnlocalizedName("crusher");
+		
 		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {        	
@@ -280,6 +299,13 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(quern), "xyx", "yyy",
                 		'x', Item.stick, 'y', Block.cobblestone);
                 
+                //CRUSHER
+                GameRegistry.registerBlock(crusher, "crusher");
+                LanguageRegistry.addName(crusher, "Ore Grinder");
+                MinecraftForge.setBlockHarvestLevel(crusher, "pick", 0);
+                GameRegistry.addRecipe(new ItemStack(crusher), "xyx", "yyy", "yyy",
+                		'x', Item.stick, 'y', Block.cobblestone);
+                
                 //---------REGISTER ITEMS---------
                 //SARD ITEM
                 LanguageRegistry.addName(sard, "Sard");
@@ -296,18 +322,48 @@ public class Greece {
                 //TIN INGOT
                 LanguageRegistry.addName(tinIngot, "Tin Ingot");
                 GameRegistry.registerItem(tinIngot, "tinIngot");
-                GameRegistry.addSmelting(tinOre.blockID, new ItemStack(tinIngot), 1);
+                GameRegistry.addSmelting(tinWashed.itemID, new ItemStack(tinIngot), 1);
                 GameRegistry.addRecipe(new ItemStack(Item.bucketEmpty), "x x", " x ",
                 		'x', tinIngot);
                 
                 //COPPER INGOT
                 LanguageRegistry.addName(copperIngot, "Copper Ingot");
                 GameRegistry.registerItem(copperIngot, "copperIngot");
-                GameRegistry.addSmelting(copperOre.blockID, new ItemStack(copperIngot), 1);
+                GameRegistry.addSmelting(copperWashed.itemID, new ItemStack(copperIngot), 1);
                 GameRegistry.addRecipe(new ItemStack(Item.arrow, 4), " x ", " y ", " z ",
                 		'x', copperIngot, 'y', Item.stick, 'z', Item.feather);
                 GameRegistry.addRecipe(new ItemStack(Item.shears), " x ", "x ",
                 		'x', copperIngot);
+                
+                //CRUSHED TIN
+                LanguageRegistry.addName(tinCrushed, "Crushed Tin");
+                GameRegistry.registerItem(tinCrushed, "tinCrushed");
+                
+                //CRUSHED COPPER
+                LanguageRegistry.addName(copperCrushed, "Crushed Copper");
+                GameRegistry.registerItem(copperCrushed, "copperCrushed");
+                
+                //CRUSHED SILVER
+                LanguageRegistry.addName(silverCrushed, "Crushed Silver");
+                GameRegistry.registerItem(silverCrushed, "silverCrushed");
+                
+                //WASHED TIN
+                LanguageRegistry.addName(tinWashed, "Refined Tin");
+                GameRegistry.registerItem(tinWashed, "tinWashed");
+                
+                //WASHED COPPER
+                LanguageRegistry.addName(copperWashed, "Refined Copper");
+                GameRegistry.registerItem(copperWashed, "copperWashed");
+                
+                //WASHED SILVER
+                LanguageRegistry.addName(silverWashed, "Refined Silver");
+                GameRegistry.registerItem(silverWashed, "silverWashed");
+                
+                //WASHED BRONZE
+                LanguageRegistry.addName(bronzeWashed, "Refined Bronze");
+                GameRegistry.registerItem(bronzeWashed, "bronzeWashed");
+                //1 refined tin + 8 refined copper = 9 refined bronze
+                GameRegistry.addShapelessRecipe(new ItemStack(bronzeWashed, 9), new ItemStack(tinWashed), new ItemStack(copperWashed), new ItemStack(copperWashed), new ItemStack(copperWashed), new ItemStack(copperWashed), new ItemStack(copperWashed), new ItemStack(copperWashed), new ItemStack(copperWashed), new ItemStack(copperWashed));
                 
                 //BAD WOOD PICKAXE
                 LanguageRegistry.addName(badWoodPickaxe, "Wooden Pickaxe");
@@ -519,12 +575,12 @@ public class Greece {
                 MinecraftForge.setBlockHarvestLevel(tinOre, "pickaxe", 1);               
                 
                 // COPPER WITH TIN
-                GameRegistry.registerBlock(copperTin, "copperTin");
-                LanguageRegistry.addName(copperTin, "Copper and Tin");
-                MinecraftForge.setBlockHarvestLevel(copperTin, "pickaxe", 1);  
+                //GameRegistry.registerBlock(copperTin, "copperTin");
+                //LanguageRegistry.addName(copperTin, "Copper and Tin");
+                //MinecraftForge.setBlockHarvestLevel(copperTin, "pickaxe", 1);  
                 
-                ItemStack copperTinStack = new ItemStack(copperTin, 2);
-                GameRegistry.addShapelessRecipe(copperTinStack, copperOre, tinOre);
+                //ItemStack copperTinStack = new ItemStack(copperTin, 2);
+                //GameRegistry.addShapelessRecipe(copperTinStack, copperOre, tinOre);
                 
                 // OLIVE LEAVES
                 GameRegistry.registerBlock(oliveLeaves, "oliveLeaves");
@@ -556,7 +612,7 @@ public class Greece {
                 GameRegistry.registerItem(bronzeIngot, "bronzeIngot");
                 LanguageRegistry.addName(bronzeIngot, "Bronze Ingot");
                 ItemStack bronzeIngotStack = new ItemStack(bronzeIngot);
-                GameRegistry.addSmelting(copperTin.blockID, bronzeIngotStack, 1);
+                GameRegistry.addSmelting(bronzeWashed.itemID, bronzeIngotStack, 1);
                 GameRegistry.addRecipe(new ItemStack(Item.arrow, 4), " x ", " y ", " z ",
                 		'x', bronzeIngot, 'y', Item.stick, 'z', Item.feather);
                 
@@ -584,7 +640,7 @@ public class Greece {
                 GameRegistry.registerItem(silverIngot, "silverIngot");
                 LanguageRegistry.addName(silverIngot, "Silver Ingot");
                 //ItemStack silverIngotStack = new ItemStack(silverIngot);
-                GameRegistry.addSmelting(silverOre.blockID, new ItemStack(silverIngot), 1);
+                GameRegistry.addSmelting(silverWashed.itemID, new ItemStack(silverIngot), 1);
                 
                 // DRACHMA
                 GameRegistry.registerItem(drachma, "drachma");
