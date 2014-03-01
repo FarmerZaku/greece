@@ -106,12 +106,14 @@ public class GreekVillager extends EntityVillager {
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 8), new ItemStack(Item.arrow, 20)));
 			break;
 		case 3: // METAL DEALER
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), // 1.5
-				new ItemStack(Greece.tinIngot, 1)));
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 2), // 2.3
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 3), // 2.3
 					new ItemStack(Greece.copperIngot, 1)));
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
 					new ItemStack(Greece.bronzeIngot, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), // 1.5
+					new ItemStack(Greece.tinCrushed, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), // 1.5
+					new ItemStack(Greece.copperCrushed, 2)));
 			break;
 		case 4: // FISH DEALER
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
