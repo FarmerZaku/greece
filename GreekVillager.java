@@ -1,8 +1,10 @@
 package mod.greece;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.block.Block;
@@ -46,12 +48,12 @@ public class GreekVillager extends EntityVillager {
 	
 	public GreekVillager(World par1World) {
 		super(par1World);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public GreekVillager(World par1World, int professionID) {
 		super(par1World);
         this.setProfession(professionID);
+        
 	}
 	
 	@Override
@@ -60,7 +62,7 @@ public class GreekVillager extends EntityVillager {
 		//buyingList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Item.wheat, 1)));
 		if (this.buyingList == null)
 		{
-            this.addDefaultEquipmentAndRecipies(1);
+            this.addDefaultEquipmentAndRecipies(5);
         }
         return this.buyingList;
     }
@@ -78,6 +80,61 @@ public class GreekVillager extends EntityVillager {
         //addMerchantItem(merchantrecipelist, Item.wheat.itemID, this.rand, 0.9F);
         //addBlacksmithItem(merchantrecipelist, Item.bread.itemID, this.rand, 0.9F);
         
+        
+        switch(this.getProfession()) {
+		case 0: // FARMER
+			// villager selling
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 6), new ItemStack(Item.wheat, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), new ItemStack(Greece.olives, 1)));
+			// villager buying
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.amphora, 1), new ItemStack(Greece.drachma, 1))); // 3 obols
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.spear, 1), new ItemStack(Greece.drachma, 4)));
+			break;
+		case 1: // MERCHANT
+			// villager selling
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1),
+				new ItemStack(Greece.amphora, 1))); // 3 obols
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1),
+				new ItemStack(Greece.amphoraGrain, 6))); // price?
+			// villager buying
+			break;
+		case 2: // TOOL DEALER
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 5), new ItemStack(Greece.chisel, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Greece.spear, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 5), new ItemStack(Greece.shieldBronze, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 7), new ItemStack(Item.bow, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 8), new ItemStack(Item.arrow, 20)));
+			break;
+		case 3: // METAL DEALER
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), // 1.5
+				new ItemStack(Greece.tinIngot, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 2), // 2.3
+					new ItemStack(Greece.copperIngot, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
+					new ItemStack(Greece.bronzeIngot, 1)));
+			break;
+		case 4: // FISH DEALER
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
+				new ItemStack(Item.fishCooked, 1))); // to buy
+			break;
+		case 5: // LEATHER DEALER
+			// villager selling
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 16),
+				new ItemStack(Item.saddle, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),
+					new ItemStack(Item.leather, 1)));
+			break;
+		case 6: // CARPENTER
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 20),
+				new ItemStack(Item.bed, 1))); // to buy
+			break;	
+		default:
+			break;
+		}
+        
+        
+        //Collections.shuffle(merchantrecipelist);
+        
         if (this.buyingList == null)
         {
             this.buyingList = new MerchantRecipeList();
@@ -92,6 +149,54 @@ public class GreekVillager extends EntityVillager {
     @Override
     public void useRecipe(MerchantRecipe par1MerchantRecipe)
     {
+    	
+    	/////
+    	if (this.buyingPlayer != null)
+        {
+            this.lastBuyingPlayer = this.buyingPlayer.getCommandSenderName();
+        }
+        else
+        {
+            this.lastBuyingPlayer = null;
+        }
+    	/////
+    	
+    	
+    	
+    	this.needsInitilization = true;
+		if (this.needsInitilization)
+        {
+			
+			System.out.print("\nBUYING LIST" + this.buyingList.size() + "\n");
+			
+            if (this.buyingList.size() > 1)
+            {	
+                Iterator iterator = this.buyingList.iterator();
+
+                while (iterator.hasNext())
+                {
+                    MerchantRecipe merchantrecipe = (MerchantRecipe)iterator.next();
+
+                    // this might set the trade limit per trade?
+                    /*if (merchantrecipe.func_82784_g())
+                    {
+                        merchantrecipe.func_82783_a(this.rand.nextInt(6) + this.rand.nextInt(6) + 2);
+                    }*/
+                }
+            }
+
+            this.addDefaultEquipmentAndRecipies(1);
+            this.needsInitilization = false;
+
+            if (this.villageObj != null && this.lastBuyingPlayer != null)
+            {
+                this.worldObj.setEntityState(this, (byte)14);
+                this.villageObj.setReputationForPlayer(this.lastBuyingPlayer, 1);
+            }
+        }
+    	
+    	
+    	
         par1MerchantRecipe.incrementToolUses();
         this.livingSoundTime = -this.getTalkInterval();
         this.playSound("random.pop", this.getSoundVolume(), this.getSoundPitch());
@@ -122,7 +227,7 @@ public class GreekVillager extends EntityVillager {
      */
     protected void updateAITick()
     {
-        if (--this.randomTickDivider <= 0)
+    	if (--this.randomTickDivider <= 0)
         {
             this.worldObj.villageCollectionObj.addVillagerPosition(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
             this.randomTickDivider = 70 + this.rand.nextInt(50);
@@ -183,6 +288,70 @@ public class GreekVillager extends EntityVillager {
         }
 
         super.updateAITick();
+    	
+        
+        
+        /*if (--this.randomTickDivider <= 0)
+        {
+            this.worldObj.villageCollectionObj.addVillagerPosition(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+            this.randomTickDivider = 70 + this.rand.nextInt(50);
+            this.villageObj = this.worldObj.villageCollectionObj.findNearestVillage(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 32);
+
+            if (this.villageObj == null)
+            {
+                this.detachHome();
+            }
+            else
+            {
+                ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
+                this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ, (int)((float)this.villageObj.getVillageRadius() * 0.6F));
+
+                if (this.field_82190_bM)
+                {
+                    this.field_82190_bM = false;
+                    this.villageObj.func_82683_b(5);
+                }
+            }
+        }
+
+        if (!this.isTrading() && this.timeUntilReset > 0)
+        {
+            --this.timeUntilReset;
+
+            if (this.timeUntilReset <= 0)
+            {
+                if (this.needsInitilization)
+                {
+                    if (this.buyingList.size() > 1)
+                    {
+                        Iterator iterator = this.buyingList.iterator();
+
+                        while (iterator.hasNext())
+                        {
+                            MerchantRecipe merchantrecipe = (MerchantRecipe)iterator.next();
+
+                            if (merchantrecipe.func_82784_g())
+                            {
+                                merchantrecipe.func_82783_a(this.rand.nextInt(6) + this.rand.nextInt(6) + 2);
+                            }
+                        }
+                    }
+
+                    this.addDefaultEquipmentAndRecipies(1);
+                    this.needsInitilization = false;
+
+                    if (this.villageObj != null && this.lastBuyingPlayer != null)
+                    {
+                        this.worldObj.setEntityState(this, (byte)14);
+                        this.villageObj.setReputationForPlayer(this.lastBuyingPlayer, 1);
+                    }
+                }
+
+                this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 200, 0));
+            }
+        }
+
+        super.updateAITick();*/
     }
     
     @Override

@@ -130,12 +130,14 @@ public class Greece {
 				.setStepSound(Block.soundGrassFootstep);
 		public final static Block oliveWood = new MultiTextureBlock(608, Material.wood, "logs").setUnlocalizedName("oliveWood");
 		public final static Block olivePress = new GreekBlockPress(609, Material.rock, 609, olives.itemID).setHardness(4.0f).setUnlocalizedName("olivePress");
+		public final static Block roofTiles = new GreekBlock(610, Material.clay, 506).setHardness(2.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("roofTiles").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:roof_tiles");
+		public final static Block roofTilesSlope = new ThatchSlope(611, roofTiles, 0).setTextureName("Greece:roof_tiles").setHardness(2.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("roofTilesSlope").setCreativeTab(CreativeTabs.tabBlock);
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
 		public final static Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2.5, 1, 9, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final Item spear = new GreekSword(6002, bronze, 0.04f, 3.1, 1, 7, 15)
+		public final static Item spear = new GreekSword(6002, bronze, 0.04f, 3.1, 1, 7, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
@@ -168,9 +170,9 @@ public class Greece {
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {        	
         	// iterate through all the villager types and add their new trades
-        	for (int i = 0; i < 7; ++i) {
-        		VillagerRegistry.instance().registerVillageTradeHandler(i, new TradeHandler());
-        	}
+        	//for (int i = 0; i < 7; ++i) {
+        	//	VillagerRegistry.instance().registerVillageTradeHandler(i, new TradeHandler());
+        	//}
         }
        
         @EventHandler
@@ -550,6 +552,14 @@ public class Greece {
                 		'x', limestone, 'y', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE));
                 GameRegistry.addRecipe(new ItemStack(olivePress), "x", "y", "x",
                 		'x', marble, 'y', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE));
+                
+                // ROOF TILES
+                GameRegistry.registerBlock(roofTiles, "roofTiles");
+                LanguageRegistry.addName(roofTiles, "Roof Tiles");
+                //MinecraftForge.setBlockHarvestLevel(roofTiles, "pickAxe", 0);
+                
+                GameRegistry.registerBlock(roofTilesSlope, "roofTilesSlope");
+                LanguageRegistry.addName(roofTilesSlope, "Sloped Roof Tiles");
        
                 //---------REGISTER ITEMS - Mills---------
                 // BRONZE INGOT
