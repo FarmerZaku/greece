@@ -1,12 +1,12 @@
 package mod.greece;
  
 import java.util.Random;
- 
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraft.world.gen.structure.MapGenVillage;
 import cpw.mods.fml.common.IWorldGenerator;
  
 public class OreManager implements IWorldGenerator {
@@ -24,6 +24,7 @@ public class OreManager implements IWorldGenerator {
 		int kOffsetX, kOffsetY;
 		int marbleOffsetX, marbleOffsetY;
 		int limestoneOffsetX, limestoneOffsetY;
+		private MapGenVillage villageGenerator = new MapGenVillage();
 		
 		public OreManager() {
 			Random temp_rand = new Random();
@@ -193,6 +194,7 @@ public class OreManager implements IWorldGenerator {
 	     		//Add in marble any place higher than 64
 	         	this.addStoneSpawn(Greece.marble, world, random, x, z, 16, 16, 15, 20, 68, 240);
         	}
+        	this.villageGenerator.generate(null, world, x, z, new byte[32768]);
         }
  
         private void generateNether(World world, Random random, int x, int z) {

@@ -11,9 +11,11 @@ import java.util.List;
 
 import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
+import mod.greece.village.GreekMapGenVillage;
+import mod.greece.village.GreekStructureVillagePieces;
+import mod.greece.village.GreekStructureVillageStart;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -28,6 +30,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
@@ -49,9 +52,8 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
- 
+
 @Mod(modid="Greece", name="Ancient Greece Mod", version="0.0.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class Greece {
@@ -113,8 +115,6 @@ public class Greece {
 		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
 		public final static Block greekFire = new GreekFire(517).setUnlocalizedName("greekFire").setTextureName("Greece:greekFire");
 		public final static Block ash = new GreekAsh(518).setUnlocalizedName("greekAsh").setTextureName("Greece:greek_ash");
-		
-				//new int[] {crushedSilver, crushedCopper, crushedTin});
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
@@ -195,6 +195,10 @@ public class Greece {
         	//for (int i = 0; i < 7; ++i) {
         	//	VillagerRegistry.instance().registerVillageTradeHandler(i, new TradeHandler());
         	//}
+        	MapGenStructureIO.func_143034_b(GreekStructureVillageStart.class, "GreekVillage");
+        	GreekStructureVillagePieces.func_143016_a();
+            GameRegistry.registerWorldGenerator(new GreekMapGenVillage());
+    		MinecraftForge.TERRAIN_GEN_BUS.register(new GreekEventHandler());
         }
        
         @EventHandler
@@ -270,6 +274,7 @@ public class Greece {
                 		'x', straw, 'y', Item.stick);
                 GameRegistry.addRecipe(new ItemStack(thatchSlope, 4), "x  ", "yx ", "yyx",
                 		'x', Item.reed, 'y', Item.stick);
+                thatchSlope.setBurnProperties(thatchSlope.blockID, 5, 5);
                 
                 //THATCH
                 GameRegistry.registerBlock(thatch, "thatch");
@@ -279,6 +284,7 @@ public class Greece {
                 		'x', straw, 'y', Item.stick);
                 GameRegistry.addRecipe(new ItemStack(thatch, 4), "xxx", "yyy",
                 		'x', Item.reed, 'y', Item.stick);
+                thatchSlope.setBurnProperties(thatch.blockID, 5, 5);
                 
                 //MUDBRICK
                 GameRegistry.registerBlock(mudbrick, "mudbrick");
@@ -751,6 +757,8 @@ public class Greece {
         	// this determines where you can spawn... I think.
         	WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, graniteMountainsBiome, tinIslesBiome, korinthiaBiome));
         	MapGenVillage.villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {forest, plains, forestHills,
+           			limeCliffsBiome, korinthiaBiome, BiomeGenBase.desert});
+        	GreekMapGenVillage.villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {forest, plains, forestHills,
            			limeCliffsBiome, korinthiaBiome, BiomeGenBase.desert});
         }
        

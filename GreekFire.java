@@ -164,6 +164,7 @@ public class GreekFire extends BlockFire
             if (!this.canPlaceBlockAt(world, x, y, z))
             {
                 world.setBlockToAir(x, y, z);
+                dropAsh(world, x, y, z);
             }
 
             if (!flag && world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
