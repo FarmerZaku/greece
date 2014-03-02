@@ -63,7 +63,7 @@ public class GreekVillager extends EntityVillager {
 		//buyingList.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Item.wheat, 1)));
 		if (this.buyingList == null)
 		{
-            this.addDefaultEquipmentAndRecipies(5);
+            this.addDefaultEquipmentAndRecipies(5); // CHANGE THIS ACCORDING TO MAX # OF DIFFERENT TRADES PER VILLAGER
         }
         return this.buyingList;
     }
@@ -87,22 +87,25 @@ public class GreekVillager extends EntityVillager {
 			// villager selling
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 6), new ItemStack(Item.wheat, 1)));
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), new ItemStack(Greece.olives, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 2), new ItemStack(Greece.straw, 1)));
 			// villager buying
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.amphora, 1), new ItemStack(Greece.drachma, 1))); // 3 obols
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.spear, 1), new ItemStack(Greece.drachma, 4)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.amphora, 1), new ItemStack(Greece.obol, 3)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Item.hoeIron, 1), new ItemStack(Greece.drachma, 3)));
 			break;
 		case 1: // MERCHANT
 			// villager selling
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1),
-				new ItemStack(Greece.amphora, 1))); // 3 obols
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1),
-				new ItemStack(Greece.amphoraGrain, 6))); // price?
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.obol, 3),
+				new ItemStack(Greece.amphora, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 6),
+				new ItemStack(Greece.amphoraGrain, 1))); // price?
 			// villager buying
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.wine, 1), new ItemStack(Greece.drachma, 4))); //price?
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.oliveOil, 1), new ItemStack(Greece.drachma, 12))); //price?
 			break;
 		case 2: // TOOL DEALER
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 5), new ItemStack(Greece.chisel, 1)));
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4), new ItemStack(Greece.spear, 1)));
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 5), new ItemStack(Greece.shieldBronze, 1)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 20), new ItemStack(Greece.shieldBronze, 1)));
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 7), new ItemStack(Item.bow, 1)));
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 8), new ItemStack(Item.arrow, 20)));
 			break;
@@ -113,8 +116,8 @@ public class GreekVillager extends EntityVillager {
 					new ItemStack(Greece.bronzeIngot, 1)));
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), // 1.5
 					new ItemStack(Greece.tinCrushed, 1)));
-			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1), // 1.5
-					new ItemStack(Greece.copperCrushed, 2)));
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 2), // 1.5
+					new ItemStack(Greece.copperCrushed, 1)));
 			break;
 		case 4: // FISH DEALER
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 4),

@@ -48,6 +48,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -150,13 +151,16 @@ public class Greece {
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
-		public final static Item drachma = new GreekItem(6005).setTextureName(GreeceInfo.NAME.toLowerCase() + ":drachma").setUnlocalizedName("drachma");
-		public final static Item marbleEye = new GreekItem(6006).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
-		public final static Item unfiredBakingCover = new GreekItem(6007).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover_unfired").setUnlocalizedName("unfiredBakingCover");
-		public final static Item bakingCover = new GreekItem(6008, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
-		public final static Item unfiredAmphora = new GreekItem(6009, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_unfired").setUnlocalizedName("unfiredAmphora");
-		public final static Item amphora = new GreekItem(6010, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_empty").setUnlocalizedName("amphora");
-		public final static Item oliveOil = new GreekItem(6011, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_oil").setUnlocalizedName("oliveOil");
+		public final static Item drachma = new GreekItemCoin(6005, "drachma");
+		public final static Item obol = new GreekItemCoin(6006, "obol");
+		public final static Item marbleEye = new GreekItem(6007).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
+		public final static Item unfiredBakingCover = new GreekItem(6008).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover_unfired").setUnlocalizedName("unfiredBakingCover");
+		public final static Item bakingCover = new GreekItem(6009, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
+		public final static Item unfiredAmphora = new GreekItem(6010, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_unfired").setUnlocalizedName("unfiredAmphora");
+		public final static Item amphora = new GreekItem(6011, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_empty").setUnlocalizedName("amphora");
+		public final static Item oliveOil = new GreekItem(6012, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_oil").setUnlocalizedName("oliveOil");
+		public final static Item wine = new GreekItem(6013, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_wine").setUnlocalizedName("wine");
+		
 		
 		//---------EVENT HANDLERS - Mills---------
 		CraftingHandler chiselCrafting = new CraftingHandler();
@@ -562,7 +566,8 @@ public class Greece {
                 //        BiomeGenBase.extremeHillsEdge, BiomeGenBase.forest, BiomeGenBase.forestHills, BiomeGenBase.jungle, BiomeGenBase.jungleHills,
                 //        BiomeGenBase.mushroomIsland, BiomeGenBase.mushroomIslandShore, BiomeGenBase.ocean, BiomeGenBase.plains, BiomeGenBase.river, BiomeGenBase.swampland);
                 
-                //---------REGISTER BLOCKS - Mills---------
+        		
+        		//---------REGISTER BLOCKS - Mills---------
                 // MARBLE
                 GameRegistry.registerBlock(marble, "marble");
                 LanguageRegistry.addName(marble, "Marble");
@@ -666,15 +671,19 @@ public class Greece {
                 // SILVER INGOT
                 GameRegistry.registerItem(silverIngot, "silverIngot");
                 LanguageRegistry.addName(silverIngot, "Silver Ingot");
-                //ItemStack silverIngotStack = new ItemStack(silverIngot);
                 GameRegistry.addSmelting(silverWashed.itemID, new ItemStack(silverIngot), 1);
                 
                 // DRACHMA
                 GameRegistry.registerItem(drachma, "drachma");
                 LanguageRegistry.addName(drachma, "Drachma");
-                //ItemStack drachmaStack = new ItemStack(drachma);
-                GameRegistry.addRecipe(new ItemStack(drachma), "x", "x",
-                		'x', silverIngot);
+                GameRegistry.addShapelessRecipe(new ItemStack(drachma, 4), new ItemStack(silverIngot, 4));
+                GameRegistry.addShapelessRecipe(new ItemStack(drachma, 1), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol)); // 6 obols
+                
+                // OBOL
+                GameRegistry.registerItem(obol, "obol");
+                LanguageRegistry.addName(obol, "Obol");
+                GameRegistry.addShapelessRecipe(new ItemStack(obol, 6), new ItemStack(silverIngot));
+                GameRegistry.addShapelessRecipe(new ItemStack(obol, 6), new ItemStack(drachma));
                 
                 // MARBLE EYE
                 GameRegistry.registerItem(marbleEye, "marbleEye");
@@ -710,6 +719,10 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(oliveOil), "aaa", "aaa", " b ",
                 		'a', olives, 'b', amphora);
                 
+                // WINE
+                GameRegistry.registerItem(wine, "wine");
+                LanguageRegistry.addName(wine, "Wine");
+                
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
                 LanguageRegistry.addName(olives, "Olives");
@@ -744,12 +757,7 @@ public class Greece {
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIsland);
                 GameRegistry.removeBiome(BiomeGenBase.mushroomIslandShore);
                 GameRegistry.removeBiome(BiomeGenBase.taiga);
-                GameRegistry.removeBiome(BiomeGenBase.taigaHills);               
-                
-                // villager stuff?
-                //GreekRegistry.instance().registerVillagerId(1000);
-                //GreekRegistry.instance().registerVillagerSkin(1000, new ResourceLocation("greece:textures/mobs/farmer.png"));
-                //GreekRegistry.instance().registerVillageTradeHandler(1000, new TradeHandler());
+                GameRegistry.removeBiome(BiomeGenBase.taigaHills);                 
         }
        
         @EventHandler
