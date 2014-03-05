@@ -45,7 +45,6 @@ public class GreekComponentVillageHouse1 extends GreekComponentVillage
             this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 9 - 1, 0);
         }
 
-        System.out.println("Making a house1");
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 1, 7, 5, 4, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 8, 0, 5, Greece.mudbrick.blockID, Greece.mudbrick.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 5, 0, 8, 5, 5, Greece.mudbrick.blockID, Greece.mudbrick.blockID, false);
@@ -119,7 +118,6 @@ public class GreekComponentVillageHouse1 extends GreekComponentVillage
             this.placeBlockAtCurrentPosition(par1World, Block.stairsCobblestone.blockID, this.getMetadataWithOffset(Block.stairsCobblestone.blockID, 3), 1, 0, -1, par3StructureBoundingBox);
         }
 
-        System.out.println("1");
         for (l = 0; l < 6; ++l)
         {
             for (int i1 = 0; i1 < 9; ++i1)

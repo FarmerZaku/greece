@@ -27,7 +27,6 @@ public class GreekMapGenVillage extends MapGenVillage implements IWorldGenerator
 
     public GreekMapGenVillage()
     {
-    	System.out.println("A");
         this.field_82665_g = 16; //32
         this.field_82666_h = 4; //8
     }
@@ -35,7 +34,6 @@ public class GreekMapGenVillage extends MapGenVillage implements IWorldGenerator
     public GreekMapGenVillage(Map par1Map)
     {
         this();
-        System.out.println("B");
         Iterator iterator = par1Map.entrySet().iterator();
 
         while (iterator.hasNext())
@@ -55,37 +53,52 @@ public class GreekMapGenVillage extends MapGenVillage implements IWorldGenerator
 
     public String func_143025_a()
     {
-    	System.out.println("C");
         return "GreekVillage";
     }
 
     protected boolean canSpawnStructureAtCoords(int x, int z)
     {
-        int k = x;
-        int l = z;
+    	//return true;
+        int oldX = x;
+        int oldZ = z;
+        int xSpacing = 20;
+        int zSpacing = 20;
 
         if (x < 0)
         {
-            x -= this.field_82665_g - 1;
+            x -= xSpacing - 1; //x -= 31
         }
 
         if (z < 0)
         {
-            z -= this.field_82665_g - 1;
+            z -= zSpacing - 1; //z -= 31
         }
 
-        int i1 = x / this.field_82665_g;
-        int j1 = z / this.field_82665_g;
+        //i1 & j1 are reduced by a percentage
+        int i1 = (x / xSpacing); //i1 = x / 32
+        int j1 = (z / zSpacing); //j1 = z / 32
+        //set the random seed to a known value, to make sure we get a consistent result when checking this coordinate
         Random random = this.worldObj.setRandomSeed(i1, j1, 10387312);
-        i1 *= this.field_82665_g;//*=32
-        j1 *= this.field_82665_g;//*=32
-        i1 += random.nextInt(this.field_82665_g - this.field_82666_h); //rand(26)
-        j1 += random.nextInt(this.field_82665_g - this.field_82666_h);//rand(26)
-
-        if (k == i1 && l == j1)
+        //i1 & j1 are restored to the old x & z values
+        i1 *= xSpacing; //i1 *= 32
+        j1 *= zSpacing; //j1 *= 32
+        //And then added to by a random int.
+        //i1 += random.nextInt(this.field_82665_g - this.field_82666_h); //rand(26)
+        //j1 += random.nextInt(this.field_82665_g - this.field_82666_h);//rand(26)
+        //i1 += random.nextInt(1);
+        //j1 += random.nextInt(1);
+        
+        //if (random.nextInt(4) == 0) {
+        	//return true;
+        //}
+        //if that random int happened to be zero...
+        if (oldX == i1 && oldZ == j1)
+        //if (random.nextInt(4) == 0)
         {
-            boolean flag = this.worldObj.getWorldChunkManager().areBiomesViable(k * 16 + 8, l * 16 + 8, 0, villageSpawnBiomes);
+        	//check to see if this is an allowed biome
+            boolean flag = this.worldObj.getWorldChunkManager().areBiomesViable(oldX * 16 + 8, oldZ * 16 + 8, 0, villageSpawnBiomes);
 
+            //if so, return true
             if (flag)
             {
                 return true;
@@ -98,7 +111,7 @@ public class GreekMapGenVillage extends MapGenVillage implements IWorldGenerator
     protected StructureStart getStructureStart(int par1, int par2)
     {
     	System.out.println("Starting Village Gen");
-        return new GreekStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType);
+        return new GreekStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType+100);
     }
 
 	@Override

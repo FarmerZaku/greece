@@ -5,6 +5,7 @@ import mod.greece.GreekEntityJavelin;
 import mod.greece.GreekRenderJavelin;
 import mod.greece.GreekVillager;
 import mod.greece.mobs.GreekArcher;
+import mod.greece.mobs.GreekGuard;
 import mod.greece.mobs.GreekHuman;
 import mod.greece.mobs.RenderHuman;
 import net.minecraft.client.model.ModelBiped;
@@ -22,6 +23,7 @@ public class ClientProxy extends CommonProxy {
         	RenderingRegistry.registerEntityRenderingHandler(GreekEntityJavelin.class, new GreekRenderJavelin());
         	//RenderingRegistry.registerEntityRenderingHandler(GreekVillager.class, new RenderHuman(new ModelBiped(), 0.5f, "/textures/mobs/demesman.png"));
         	RenderingRegistry.registerEntityRenderingHandler(GreekVillager.class, new RenderHuman(new ModelBiped(), 0.5f, true));
+        	RenderingRegistry.registerEntityRenderingHandler(GreekGuard.class, new RenderHuman(new ModelBiped(), 0.5f, true));
         }
        
 }

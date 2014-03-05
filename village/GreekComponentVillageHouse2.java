@@ -67,10 +67,9 @@ public class GreekComponentVillageHouse2 extends GreekComponentVillage
             this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 6 - 1, 0);
         }
 
-        System.out.println("Making a house2");
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 9, 4, 6, 0, 0, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 9, 0, 6, Greece.mudbrick.blockID, Greece.mudbrick.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 4, 0, 9, 4, 6, Greece.mudbrick.blockID, Greece.mudbrick.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 9, 0, 6, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 4, 0, 9, 4, 6, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 5, 0, 9, 5, 6, Block.stoneSingleSlab.blockID, Block.stoneSingleSlab.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 5, 1, 8, 5, 5, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 0, 2, 3, 0, Block.planks.blockID, Block.planks.blockID, false);
@@ -84,13 +83,13 @@ public class GreekComponentVillageHouse2 extends GreekComponentVillage
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 6, 5, 3, 6, Block.planks.blockID, Block.planks.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 5, 1, 0, 5, 3, 0, Block.fence.blockID, Block.fence.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 9, 1, 0, 9, 3, 0, Block.fence.blockID, Block.fence.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 6, 1, 4, 9, 4, 6, Greece.mudbrick.blockID, Greece.mudbrick.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 6, 1, 4, 9, 4, 6, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
         this.placeBlockAtCurrentPosition(par1World, Block.lavaMoving.blockID, 0, 7, 1, 5, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.lavaMoving.blockID, 0, 8, 1, 5, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.fenceIron.blockID, 0, 9, 2, 5, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.fenceIron.blockID, 0, 9, 2, 4, par3StructureBoundingBox);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 7, 2, 4, 8, 2, 5, 0, 0, false);
-        this.placeBlockAtCurrentPosition(par1World, Greece.mudbrick.blockID, 0, 6, 1, 3, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Block.cobblestone.blockID, 0, 6, 1, 3, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.furnaceIdle.blockID, 0, 6, 2, 3, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.furnaceIdle.blockID, 0, 6, 3, 3, par3StructureBoundingBox);
         this.placeBlockAtCurrentPosition(par1World, Block.stoneDoubleSlab.blockID, 0, 8, 1, 1, par3StructureBoundingBox);
@@ -127,14 +126,13 @@ public class GreekComponentVillageHouse2 extends GreekComponentVillage
             }
         }
 
-        System.out.println("2");
         for (i = 0; i < 7; ++i)
         {
             for (j = 0; j < 10; ++j)
             {
                 this.clearCurrentPositionBlocksUpwards(par1World, j, 6, i, par3StructureBoundingBox);
-                //this.fillCurrentPositionBlocksDownwards(par1World, Greece.mudbrick.blockID, 0, j, -1, i, par3StructureBoundingBox);
-                this.fillCurrentPositionBlocksDownwards(par1World, Block.blockEmerald.blockID, 0, j, -1, i, par3StructureBoundingBox);
+                this.fillCurrentPositionBlocksDownwards(par1World, Block.cobblestone.blockID, 0, j, -1, i, par3StructureBoundingBox);
+                //this.fillCurrentPositionBlocksDownwards(par1World, Block.blockEmerald.blockID, 0, j, -1, i, par3StructureBoundingBox);
             }
         }
 

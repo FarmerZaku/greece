@@ -19,7 +19,6 @@ public class GreekStructureVillageStart extends StructureStart
     public GreekStructureVillageStart(World par1World, Random par2Random, int par3, int par4, int par5)
     {
         super(par3, par4);
-        System.out.println("Hey");
         List list = GreekStructureVillagePieces.getStructureVillageWeightedPieceList(par2Random, par5);
         GreekComponentVillageStartPiece componentvillagestartpiece = new GreekComponentVillageStartPiece(par1World.getWorldChunkManager(), 0, par2Random, (par3 << 4) + 2, (par4 << 4) + 2, list, par5);
         this.components.add(componentvillagestartpiece);
@@ -27,9 +26,12 @@ public class GreekStructureVillageStart extends StructureStart
         List list1 = componentvillagestartpiece.field_74930_j;
         List list2 = componentvillagestartpiece.field_74932_i;
         int l;
+        int counter = 0;
 
         while (!list1.isEmpty() || !list2.isEmpty())
         {
+        	counter++;
+        	System.out.println(counter);
             StructureComponent structurecomponent;
 
             if (list1.isEmpty())

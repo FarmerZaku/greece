@@ -134,7 +134,7 @@ public abstract class GreekComponentVillage extends StructureComponent
      */
     protected void spawnVillagers(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6)
     {
-        if (this.villagersSpawned < par6)
+        if (this.villagersSpawned < par6)// && par1World.rand.nextInt(6) == 0)
         {
             for (int i1 = this.villagersSpawned; i1 < par6; ++i1)
             {
@@ -204,7 +204,12 @@ public abstract class GreekComponentVillage extends StructureComponent
                 return Block.sandStone.blockID;
             }
         }
-
+        if (par1 == Block.gravel.blockID) {
+        	return Greece.mudbrick.blockID;
+        }
+        if (par1 == Greece.mudbrick.blockID) {
+        	return Block.planks.blockID;
+        }
         return par1;
     }
 

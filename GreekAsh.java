@@ -120,36 +120,161 @@ public class GreekAsh extends Block
      */
     private boolean canAshStay(World world, int x, int y, int z)
     {
+    	if (y <= 0) {
+    		return false;
+    	}
     	int belowID = world.getBlockId(x, y-1, z);
+    	int thisMeta = world.getBlockMetadata(x, y, z);
         if (belowID != 0) {
         	int belowMeta =  world.getBlockMetadata(x, y-1, z);
         	if (belowID == this.blockID && belowMeta < 7) {
-        		int thisMeta = world.getBlockMetadata(x, y, z);
+        		thisMeta++; //adding 1 because the first level is level 0. 0x2=0, so two layers lose a layer when adding
         		int remainder = belowMeta + thisMeta - 7;
         		world.setBlockMetadataWithNotify(x, y-1, z, Math.min(belowMeta + thisMeta, 7), 2);
         		if (remainder > 0) {
         			world.setBlockMetadataWithNotify(x, y, z, remainder, 2);
         			return true;
         		} else {
-        			world.setBlock(x, y, z, 0);
+        			world.setBlock(x, y, z, 0, 0, 2);
         			return false;
         		}
+        	} else if (thisMeta > 2) {
+        		int[] diffs = {0, 0, 0, 0};
+        		int i = 0;
+        		boolean isDifference = true;
+        		
+        		while (isDifference) {
+        			int winX = 0;
+        			int winZ = 0;
+        			int winNum = 0;
+        			for (int checkX = x - 1; checkX < x + 2; ++checkX) {
+            			for (int checkZ = z - 1; checkZ < z + 2; ++checkZ) {
+            				if (checkZ != z ^ checkX != x) {
+            					int diff = 0;
+            					if (world.getBlockId(checkX, y, checkZ) == Greece.ash.blockID) {
+            						diff = thisMeta - world.getBlockMetadata(checkX, y, checkZ);
+            					} else if (world.getBlockId(checkX, y, checkZ) == 0) {
+            						diff = thisMeta;
+            					}
+            					if (diff > winNum) {
+            						winNum = diff;
+            						winX = checkX;
+            						winZ = checkZ;
+            					}
+            				}
+            			}
+        			}
+        			if (winNum > 3) {
+        				world.setBlockMetadataWithNotify(x, y, z, thisMeta-1, 0);
+        				if (world.getBlockId(winX, y, winZ) == Greece.ash.blockID) {
+        					world.setBlockMetadataWithNotify(winX, y, winZ, world.getBlockMetadata(winX, y, winZ)+1, 3);
+        				} else {
+        					//world.setBlock(winX, y, winZ, Greece.ash.blockID, 0, 3);
+        					if (!world.getBlockMaterial(winX, y-1, winZ).blocksMovement() || world.getBlockId(winX, y-1, winZ) == Greece.ash.blockID) {
+        						world.setBlock(winX, y, winZ, Greece.ash.blockID, 0, 3);
+        						canAshStay(world, winX, y, winZ);
+        					} else if (Block.blocksList[world.getBlockId(winX, y-1, winZ)].isOpaqueCube()) {
+        						world.setBlock(winX, y, winZ, Greece.ash.blockID, 0, 3);
+        						canAshStay(world, winX, y, winZ);
+        					}
+        				}
+        				thisMeta = world.getBlockMetadata(x, y, z);
+        			} else {
+        				isDifference = false;
+        			}
+        		}
+        		/*
+        		//System.out.println("A");
+        		for (int checkX = x - 1; checkX < x + 2; ++checkX) {
+        			for (int checkZ = z - 1; checkZ < z + 2; ++checkZ) {
+        				if (checkZ != z && checkX != x) {
+        					if (world.getBlockId(checkX, y, checkZ) == Greece.ash.blockID) {
+        						diffs[i] = thisMeta - world.getBlockMetadata(checkX, y, checkZ);
+        					} else if (world.getBlockId(checkX, y, checkZ) == 0) {
+        						diffs[i] = thisMeta;
+        					}
+        					if (diffs[i] > 1) {
+        						isDifference = true;
+        					}
+        					i++;
+        				}
+        			}
+        		}
+        		
+        		//System.out.println("B");
+        		while (isDifference) {
+        			int winIndex = 0;
+        			int winNum = 0;
+	        		for (int j = 0; j < 4; ++j) {
+	        			if (diffs[j] > winNum) {
+	        				winIndex = j;
+	        				winNum = diffs[j];
+	        			}
+	        		}
+	        		//System.out.println("C");
+	        		if (winNum <= 1) {
+	        			isDifference = false;
+	        		} else {
+	        			//System.out.println("D");
+	        			thisMeta--;
+	        			for (int j = 0; j < 4; ++j) {
+	        				diffs[j]--;
+	        			}
+	        			//System.out.println("E");
+	        			diffs[winIndex]--;
+	        			//System.out.println("F");
+	        			int setX = x;
+	        			int setZ = z;
+	        			switch (winIndex) {
+	        			case 0:
+	        				setX--;
+	        				setZ--;
+	        				break;
+	        			case 1:
+	        				setX--;
+	        				setZ++;
+	        				break;
+	        			case 2:
+	        				setX++;
+	        				setZ--;
+	        				break;
+	        			case 3:
+	        				setX++;
+	        				setZ++;	        				
+	        			}
+	        			world.setBlockMetadataWithNotify(x, y, z, thisMeta, 0);
+	        			if (world.getBlockId(setX, y, setZ) == Greece.ash.blockID) {
+        					world.setBlockMetadataWithNotify(setX, y, setZ, world.getBlockMetadata(setX, y, setZ)+1, 3);
+        				} else {
+        					if (!world.getBlockMaterial(setX, y-1, setZ).blocksMovement() || world.getBlockId(setX, y-1, setZ) == Greece.ash.blockID) {
+        						world.setBlock(setX, y, setZ, Greece.ash.blockID, 0, 3);
+        						canAshStay(world, setX, y, setZ);
+        					} else if (Block.blocksList[world.getBlockId(setX, y-1, setZ)].isOpaqueCube()) {
+        						world.setBlock(setX, y, setZ, Greece.ash.blockID, 0, 3);
+        					}
+        				}
+	        			thisMeta = world.getBlockMetadata(x, y, z);
+	        		}
+        		}
+        		//world.setBlockMetadataWithNotify(x, y, z, thisMeta, 3);
+        		if (world.getBlockId(x, y+1, z) == Greece.ash.blockID) {
+        			canAshStay(world, x, y+1, z);
+        		}*/
         	}
         } else if (belowID == Greece.greekFire.blockID || belowID == 0) {
-        	for (int checkY = y-2; checkY > y - 25; --checkY) {
+        	for (int checkY = y-2; checkY > y - 25 && checkY > 0; --checkY) {
         		//world.spawnParticle("smoke", x, checkY, z, 0.0D, 0.0D, 0.0D);
         		//Minecraft.getMinecraft().effectRenderer.addEffect(new EntitySmokeFX(world,x,checkY,z,-0.1D,-0.1D,-0.1D,10F));
         		int curID = world.getBlockId(x, checkY, z);
         		int belowMeta =  world.getBlockMetadata(x, checkY, z);
         		if (curID == this.blockID && belowMeta < 7) {
-            		int thisMeta = world.getBlockMetadata(x, y, z);
             		int remainder = belowMeta + thisMeta - 7;
             		world.setBlockMetadataWithNotify(x, checkY, z, Math.min(belowMeta + thisMeta, 7), 2);
             		if (remainder > 0 && world.getBlockId(x, checkY+1, z) == 0) {
             			world.setBlockMetadataWithNotify(x, checkY+1, z, remainder, 2);
             		}
             		break;
-        		} else if (curID != 0 && world.getBlockMaterial(x, checkY, z).blocksMovement()) {
+        		} else if (curID != 0 && world.getBlockMaterial(x, checkY, z).blocksMovement() && Block.blocksList[world.getBlockId(x, checkY, z)].isOpaqueCube()) {
         			if (world.getBlockId(x, checkY+1, z) == 0) {
         				world.setBlock(x, checkY+1, z, this.blockID, world.getBlockMetadata(x, y, z), 2);
         			}
@@ -157,7 +282,7 @@ public class GreekAsh extends Block
         		}
         	}
         	world.playSoundEffect(x+0.5D, y+0.5D, z+0.5D, "step.snow", 10.0F, 1.0F);
-        	world.setBlockToAir(x, y, z);
+        	world.setBlock(x, y, z, 0, 0, 2);
         	return false;
         }
         return true;

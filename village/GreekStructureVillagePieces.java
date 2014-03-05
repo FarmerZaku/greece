@@ -37,13 +37,13 @@ public class GreekStructureVillagePieces extends StructureVillagePieces
     {
         ArrayList arraylist = new ArrayList();
         arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageHouse4_Garden.class, 4, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 4 + par1 * 2)));
-        arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageChurch.class, 20, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 1 + par1)));
+        arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageChurch.class, 3, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 1 + par1)));
         arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageHouse1.class, 20, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 2 + par1)));
         arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageWoodHut.class, 3, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 5 + par1 * 3)));
         arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageHall.class, 15, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 2 + par1)));
         arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageField.class, 3, MathHelper.getRandomIntegerInRange(par0Random, 1 + par1, 4 + par1)));
         arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageField2.class, 3, MathHelper.getRandomIntegerInRange(par0Random, 2 + par1, 4 + par1 * 2)));
-        arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageHouse2.class, 15, MathHelper.getRandomIntegerInRange(par0Random, 0, 1 + par1)));
+        arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageHouse2.class, 3, MathHelper.getRandomIntegerInRange(par0Random, 0, 1 + par1)));
         arraylist.add(new GreekStructureVillagePieceWeight(GreekComponentVillageHouse3.class, 8, MathHelper.getRandomIntegerInRange(par0Random, 0 + par1, 3 + par1 * 2)));
         //VillagerRegistry.addExtraVillageComponents(arraylist, par0Random, par1);
 
@@ -231,6 +231,7 @@ public class GreekStructureVillagePieces extends StructureVillagePieces
 
     private static StructureComponent getNextComponentVillagePath(GreekComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
+    	//what the fuck is going on here
         if (par7 > 3 + par0ComponentVillageStartPiece.terrainType)
         {
             return null;

@@ -11,9 +11,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -136,15 +138,60 @@ public class GreekFire extends BlockFire
     	entity.setFire(15);
     }
 
-    private void dropAsh(World world, int x, int y, int z) {
-    	for (int checkY = y; checkY > y - 15; --checkY) {
+    private void dropAsh(World world, int x, int y, int z, int quantity) {
+    	for (int checkY = y; checkY > y - 15 && checkY > 0; --checkY) {
     		int blockID = world.getBlockId(x, checkY, z);
     		if (blockID == Greece.ash.blockID && world.getBlockMetadata(x, checkY, z) < 7) {
     			world.setBlockMetadataWithNotify(x, checkY, z, world.getBlockMetadata(x, checkY, z)+1, 2);
     			break;
     		} else if (blockID != 0 && world.getBlockMaterial(x, checkY, z).blocksMovement()) {
-    			if (world.getBlockId(x, checkY+1, z) == 0) {
-    				world.setBlock(x, checkY+1, z, Greece.ash.blockID);
+    			int aboveID = world.getBlockId(x, checkY+1, z);
+    			if (aboveID == 0) {
+    				//world.setBlock(x, checkY+1, z, Greece.ash.blockID);
+    				if (world.getBlockMaterial(x, checkY, z).getCanBurn()) {
+	    				if (quantity > 7) {
+	    					quantity = 7;
+	    				}
+    					world.setBlock(x, checkY+1, z, Greece.greekFire.blockID, quantity, 3);
+    				} else if (Block.blocksList[world.getBlockId(x, checkY, z)].isOpaqueCube()) { //if we're going to put ash down, make sure it's on top of something opaque
+    					if (quantity > 7) {
+    						world.setBlock(x, checkY+1, z, Greece.ash.blockID, 7, 3);
+    						if (world.getBlockId(x, checkY+2, z) == 0) {
+    							world.setBlock(x, checkY+2, z, Greece.ash.blockID, quantity-7, 3);
+    						}
+    					} else {
+    						world.setBlock(x, checkY+1, z, Greece.ash.blockID, quantity, 3);
+    					}
+    				} else if (world.getBlockId(x, checkY, z) == Block.skull.blockID) {
+    		        	TileEntity tileEntity = world.getBlockTileEntity(x, checkY, z);
+    		        	if (tileEntity != null) {
+    		        		//If it is already charred, then return
+    		        		if (((TileEntitySkull)tileEntity).getSkullType() == 1) {
+    		        			return;
+    		        		}
+    		        	}
+    		        	
+    		        	world.setBlockToAir(x, checkY, z);
+    		        	world.setBlock(x, checkY, z, Block.skull.blockID, 1, 2);
+    		        	
+    		        	tileEntity = world.getBlockTileEntity(x, checkY, z);
+    		        	if (tileEntity != null) {
+    		        		((TileEntitySkull)tileEntity).setSkullType(1, "");
+    		        		world.rand.setSeed(x*checkY*z);
+    		        		((TileEntitySkull)tileEntity).setSkullRotation(world.rand.nextInt(8));
+    		        	}
+    				}
+    			} else if (aboveID == Greece.greekFire.blockID) {
+    				int newMeta = world.getBlockMetadata(x, checkY+1, z) + quantity;
+    				if (newMeta > 7) {
+    					newMeta -= 7;
+    					//world.setBlock(x, checkY+1, z, Greece.ash.blockID, 7, 2);
+    					//if (world.getBlockId(x, checkY+2, z) == 0) {
+    						world.setBlock(x, checkY+1, z, Greece.greekFire.blockID, 7, 2);
+    					//}
+    				} else {
+    					world.setBlockMetadataWithNotify(x, checkY+1, z, newMeta, 2);
+    				}
     			}
     			break;
     		}
@@ -163,13 +210,16 @@ public class GreekFire extends BlockFire
 
             if (!this.canPlaceBlockAt(world, x, y, z))
             {
+            	int ashLoad = world.getBlockMetadata(x, y, z);
                 world.setBlockToAir(x, y, z);
-                dropAsh(world, x, y, z);
+                dropAsh(world, x, y, z, ashLoad);
             }
 
             if (!flag && world.isRaining() && (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z) || world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1) || world.canLightningStrikeAt(x, y, z + 1)))
             {
+            	int ashLoad = world.getBlockMetadata(x, y, z);
                 world.setBlockToAir(x, y, z);
+                dropAsh(world, x, y, z, ashLoad);
             }
             else
             {
@@ -186,14 +236,16 @@ public class GreekFire extends BlockFire
                 {
                     if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) || l > 3)
                     {
+                    	int ashLoad = world.getBlockMetadata(x, y, z);
                         world.setBlockToAir(x, y, z);
-                    	dropAsh(world, x, y, z);
+                        dropAsh(world, x, y, z, ashLoad);
                     }
                 }
                 else if (!flag && !this.canBlockCatchFire(world, x, y - 1, z, UP) && l == 15 && random.nextInt(4) == 0)
                 {
+                	int ashLoad = world.getBlockMetadata(x, y, z);
                     world.setBlockToAir(x, y, z);
-                    dropAsh(world, x, y, z);
+                    dropAsh(world, x, y, z, ashLoad);
                 }
                 else
                 {
@@ -212,12 +264,14 @@ public class GreekFire extends BlockFire
                     this.tryToCatchBlockOnFire(world, x, y, z - 1, 300 + b0, random, l, SOUTH);
                     this.tryToCatchBlockOnFire(world, x, y, z + 1, 300 + b0, random, l, NORTH);
 
+                    //check every neighboring block...
                     for (int i1 = x - 1; i1 <= x + 1; ++i1)
                     {
                         for (int j1 = z - 1; j1 <= z + 1; ++j1)
                         {
                             for (int k1 = y - 1; k1 <= y + 4; ++k1)
                             {
+                            	//exclude our block
                                 if (i1 != x || k1 != y || j1 != z)
                                 {
                                     int l1 = 100;
@@ -240,7 +294,8 @@ public class GreekFire extends BlockFire
 
                                         if (j2 > 0 && random.nextInt(l1) <= j2 && (!world.isRaining() || !world.canLightningStrikeAt(i1, k1, j1)) && !world.canLightningStrikeAt(i1 - 1, k1, z) && !world.canLightningStrikeAt(i1 + 1, k1, j1) && !world.canLightningStrikeAt(i1, k1, j1 - 1) && !world.canLightningStrikeAt(i1, k1, j1 + 1))
                                         {
-                                            int k2 = l + random.nextInt(5) / 4;
+                                            //int k2 = l + random.nextInt(5) / 4;
+                                            int k2 = 0;
 
                                             if (k2 > 15)
                                             {
@@ -248,7 +303,7 @@ public class GreekFire extends BlockFire
                                             }
 
                                             world.setBlock(i1, k1, j1, this.blockID, k2, 3);
-                                            dropAsh(world, i1, k1, j1);
+                                            dropAsh(world, i1, k1, j1, 0);
                                         }
                                     }
                                 }
@@ -271,39 +326,57 @@ public class GreekFire extends BlockFire
         tryToCatchBlockOnFire(par1World, par2, par3, par4, par5, par6Random, par7, UP);
     }
 
-    private void tryToCatchBlockOnFire(World par1World, int par2, int par3, int par4, int par5, Random par6Random, int par7, ForgeDirection face)
+    private void tryToCatchBlockOnFire(World world, int x, int y, int z, int par5, Random par6Random, int par7, ForgeDirection face)
     {
         int j1 = 0;
-        Block block = Block.blocksList[par1World.getBlockId(par2, par3, par4)];
+        Block block = Block.blocksList[world.getBlockId(x, y, z)];
         if (block != null)
         {
-            j1 = block.getFlammability(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), face);
+            j1 = block.getFlammability(world, x, y, z, world.getBlockMetadata(x, y, z), face);
         }
 
         if (par6Random.nextInt(par5) < j1)
         {
-            boolean flag = par1World.getBlockId(par2, par3, par4) == Block.tnt.blockID;
+            boolean flag = world.getBlockId(x, y, z) == Block.tnt.blockID;
 
-            if (par6Random.nextInt(par7 + 10) < 5 && !par1World.canLightningStrikeAt(par2, par3, par4))
+            if (par6Random.nextInt(par7 + 10) < 5 && !world.canLightningStrikeAt(x, y, z))
             {
-                int k1 = par7 + par6Random.nextInt(5) / 4;
+                int k1 = 0;//par7;// + par6Random.nextInt(5) / 4;
 
                 if (k1 > 15)
                 {
                     k1 = 15;
                 }
 
-                par1World.setBlock(par2, par3, par4, this.blockID, k1, 3);
+                world.setBlock(x, y, z, this.blockID, k1, 3);
             }
             else
             {
-                par1World.setBlockToAir(par2, par3, par4);
+                world.setBlockToAir(x, y, z);
             }
 
             if (flag)
             {
-                Block.tnt.onBlockDestroyedByPlayer(par1World, par2, par3, par4, 1);
+                Block.tnt.onBlockDestroyedByPlayer(world, x, y, z, 1);
             }
+        } else if (world.getBlockId(x, y, z) == Block.skull.blockID) {
+        	TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        	if (tileEntity != null) {
+        		//If it is already charred, then return
+        		if (((TileEntitySkull)tileEntity).getSkullType() == 1) {
+        			return;
+        		}
+        	}
+        	
+        	world.setBlockToAir(x, y, z);
+        	world.setBlock(x, y, z, Block.skull.blockID, 1, 2);
+        	
+        	tileEntity = world.getBlockTileEntity(x, y, z);
+        	if (tileEntity != null) {
+        		((TileEntitySkull)tileEntity).setSkullType(1, "");
+        		world.rand.setSeed(x*y*z);
+        		((TileEntitySkull)tileEntity).setSkullRotation(world.rand.nextInt(8));
+        	}
         }
     }
 
@@ -385,11 +458,13 @@ public class GreekFire extends BlockFire
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    public void onNeighborBlockChange(World world, int x, int y, int z, int par5)
     {
-        if (!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !this.canNeighborBurn(par1World, par2, par3, par4))
+        if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z) && !this.canNeighborBurn(world, x, y, z))
         {
-            par1World.setBlockToAir(par2, par3, par4);
+        	int ashLoad = world.getBlockMetadata(x, y, z);
+            world.setBlockToAir(x, y, z);
+            dropAsh(world, x, y, z, ashLoad);
         }
     }
 

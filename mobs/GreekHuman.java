@@ -65,6 +65,7 @@ public class GreekHuman extends EntityMob
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, GreekGuard.class, 0, false));
         //this.moveForward = 0.8f;
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3);
         //this.moveStrafing = 0.8f;
@@ -105,7 +106,7 @@ public class GreekHuman extends EntityMob
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(40.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(1.0D);
         this.getAttributeMap().func_111150_b(field_110186_bp).setAttribute(this.rand.nextDouble() * ForgeDummyContainer.zombieSummonBaseChance);
     }
 
@@ -290,22 +291,23 @@ public class GreekHuman extends EntityMob
     {
     	//if (this.rand.nextFloat() < 0.15F * this.worldObj.getLocationTensionFactor(this.posX, this.posY, this.posZ))
     	//make the material leather
-        int i = 0;
-        float difficulty_threshold = this.worldObj.difficultySetting == 3 ? 0.1F : 0.25F;
 
-        if (this.rand.nextFloat() < 0.095F)
-        {
-        	//make the material iron
-            i = 3;
-        }
+        int materialIndex = 0; // 0 is leather in this context
+        float difficulty_threshold = this.worldObj.difficultySetting == 3 ? 0.6F : 0.8F;
 
-        for (int j = 3; j >= 0; --j)
+        for (int j = 3; j <= 4; ++j)
         {
+            /*if (this.rand.nextFloat() < 0.1F)
+            {
+            	//make the material iron (3)
+                materialIndex = 3;
+            }*/
+        	
         	//get the current item in the inventory slot
-            ItemStack itemstack = this.func_130225_q(j);
+            ItemStack itemstack = this.func_130225_q(j-1);
 
             //Stop giving them armor at a random point determined by difficulty
-            if (j < 3 && this.rand.nextFloat() < difficulty_threshold)
+            if (this.rand.nextFloat() < difficulty_threshold)
             {
                 break;
             }
@@ -313,24 +315,33 @@ public class GreekHuman extends EntityMob
             //if the current slot is empty...
             if (itemstack == null)
             {
-                Item item = getArmorItemForSlot(j + 1, i);
+                Item item = getArmorItemForSlot(j, materialIndex);
 
                 if (item != null)
                 {
-                    this.setCurrentItemOrArmor(j + 1, new ItemStack(item));
+                    this.setCurrentItemOrArmor(j, new ItemStack(item));
                 }
             }
         }
 
         //if (this.rand.nextFloat() < (this.worldObj.difficultySetting == 3 ? 0.05F : 0.01F))
-        i = this.rand.nextInt(3);
-
-        if (i == 0)
-        {
-            this.setCurrentItemOrArmor(0, new ItemStack(Item.swordIron));
-        }
-        else {
-        	this.setCurrentItemOrArmor(0, new ItemStack(Item.axeIron));
+        int i = this.rand.nextInt(5);
+        
+        switch (i) {
+        case 0:
+        	this.setCurrentItemOrArmor(0, new ItemStack(Item.axeStone));
+        	break;
+        case 1:
+        	this.setCurrentItemOrArmor(0, new ItemStack(Greece.spear));
+        	break;
+        case 2:
+        	this.setCurrentItemOrArmor(0, new ItemStack(Item.swordStone));
+        	break;
+        case 3:
+        	this.setCurrentItemOrArmor(0, new ItemStack(Greece.spearCopper));
+        	break;
+        case 4:
+        	this.setCurrentItemOrArmor(0, new ItemStack(Greece.bronzeAxe));
         }
     }
 

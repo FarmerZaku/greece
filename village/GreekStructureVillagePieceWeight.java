@@ -4,7 +4,7 @@ import net.minecraft.world.gen.structure.StructureVillagePieceWeight;
 
 public class GreekStructureVillagePieceWeight extends StructureVillagePieceWeight
 {
-    /** The Class object for the represantation of this village piece. */
+    /** The Class object for the representation of this village piece. */
     public Class villagePieceClass;
     public final int villagePieceWeight;
     public int villagePiecesSpawned;

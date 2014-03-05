@@ -10,6 +10,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import mod.greece.mobs.GreekArcher;
+import mod.greece.mobs.GreekGuard;
 import mod.greece.mobs.GreekHuman;
 import mod.greece.village.GreekMapGenVillage;
 import mod.greece.village.GreekStructureVillagePieces;
@@ -48,7 +49,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -115,7 +115,7 @@ public class Greece {
 		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(1.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
 		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
 		public final static Block greekFire = new GreekFire(517).setUnlocalizedName("greekFire").setTextureName("Greece:greekFire");
-		public final static Block ash = new GreekAsh(518).setUnlocalizedName("greekAsh").setTextureName("Greece:greek_ash");
+		public final static Block ash = new GreekAsh(518).setUnlocalizedName("ash").setTextureName("Greece:greek_ash");
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
@@ -323,7 +323,7 @@ public class Greece {
                 
                 //GREEK FIRE
                 GameRegistry.registerBlock(greekFire, "greekFire");
-                LanguageRegistry.addName(greekFire, "Fire");
+                LanguageRegistry.addName(greekFire, "Greek Fire");
                 
                 //ASH
                 GameRegistry.registerBlock(ash, "ash");
@@ -544,6 +544,9 @@ public class Greece {
 	           	
 	           	
                 //------------ENTITIES---------------
+	           	registerEntity(GreekGuard.class, "Guard", 0xef00af, 0x000fa0);
+                LanguageRegistry.instance().addStringLocalization("entity.GreekGuard.name", "Guard");
+	           	
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Bandit");
                 
@@ -554,6 +557,7 @@ public class Greece {
                 EntityRegistry.registerModEntity(GreekEntityJavelin.class, "Javelin", 
                 		cpw.mods.fml.common.registry.EntityRegistry.findGlobalUniqueEntityId(), this, 64, 1, true);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekJavelin.name", "Javelin");
+                
                 registerEntity(GreekVillager.class, "Demesman", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekVillager.name", "Demesman");
                 

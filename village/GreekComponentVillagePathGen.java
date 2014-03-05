@@ -68,7 +68,7 @@ public class GreekComponentVillagePathGen extends GreekComponentVillageRoadPiece
             }
         }
 
-        if (flag && par3Random.nextInt(3) > 0)
+        //if (flag && par3Random.nextInt(3) > 0)
         {
             switch (this.coordBaseMode)
             {
@@ -86,7 +86,7 @@ public class GreekComponentVillagePathGen extends GreekComponentVillageRoadPiece
             }
         }
 
-        if (flag && par3Random.nextInt(3) > 0)
+        //if (flag && par3Random.nextInt(3) > 0)
         {
             switch (this.coordBaseMode)
             {

@@ -1,19 +1,13 @@
 package mod.greece;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 
-import cpw.mods.fml.common.registry.VillagerRegistry;
+import mod.greece.mobs.GreekHuman;
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,14 +15,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class GreekVillager extends EntityVillager {
 	/** This villager's current customer. */
@@ -49,12 +44,13 @@ public class GreekVillager extends EntityVillager {
 	
 	public GreekVillager(World par1World) {
 		super(par1World);
+		this.tasks.addTask(1, new EntityAIAvoidEntity(this, GreekHuman.class, 8.0F, 0.6D, 0.6D));
 	}
 	
 	public GreekVillager(World par1World, int professionID) {
 		super(par1World);
         this.setProfession(professionID);
-        
+        this.tasks.addTask(1, new EntityAIAvoidEntity(this, GreekHuman.class, 8.0F, 0.6D, 0.6D));        
 	}
 	
 	@Override
@@ -436,6 +432,16 @@ public class GreekVillager extends EntityVillager {
             	for (int checkY = posY-1; checkY > posY-20; --checkY) {
             		if (this.worldObj.getBlockId(posX, checkY, posZ) != 0) {
             			this.worldObj.setBlock(posX, checkY+1, posZ, Block.skull.blockID, 1, 2);
+            			TileEntity tileEntity = this.worldObj.getBlockTileEntity(posX, checkY+1, posZ);
+            			if (tileEntity != null) {
+            				if (blockID == 0) {
+            					((TileEntitySkull)tileEntity).setSkullType(0, "");
+            				} else {
+            					((TileEntitySkull)tileEntity).setSkullType(1, "");
+            				}
+            				this.worldObj.rand.setSeed(posX*(checkY+1)*posZ);
+    		        		((TileEntitySkull)tileEntity).setSkullRotation(this.worldObj.rand.nextInt(8));
+            			}
             			return;
             		}
             	}
@@ -446,6 +452,10 @@ public class GreekVillager extends EntityVillager {
             				blockID = this.worldObj.getBlockId(checkX, checkY, checkZ);
             				if (blockID != 0 && this.worldObj.getBlockId(checkX, checkY+1, checkZ) == 0) {
             					this.worldObj.setBlock(checkX, checkY+1, checkZ, Block.skull.blockID, 1, 2);
+            					TileEntity tileEntity = this.worldObj.getBlockTileEntity(posX, checkY+1, posZ);
+                    			if (tileEntity != null) {
+                    				((TileEntitySkull)tileEntity).setSkullRotation(this.rand.nextInt(8));
+                    			}
             					return;
             				}
             			}
