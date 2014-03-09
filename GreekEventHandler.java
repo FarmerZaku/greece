@@ -4,9 +4,7 @@ import java.util.Random;
 
 import mod.greece.mobs.GreekArcher;
 import mod.greece.mobs.GreekHuman;
-import mod.greece.mobs.RenderHuman;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.entity.Entity;
+import mod.greece.village.GreekMapGenVillage;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -20,7 +18,8 @@ import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.event.terraingen.InitMapGenEvent;
+import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
 
 public class GreekEventHandler {
 	public static int ignoreFOVChanges = 0;
@@ -129,6 +128,15 @@ public class GreekEventHandler {
     	} else if (ignoreFOVChanges > 0) {
     		ignoreFOVChanges--;
     		event.newfov = 1.0f;
+    	}
+    }
+    
+    @ForgeSubscribe
+    public void onTerrainGen(InitMapGenEvent event) {
+    	System.out.println(event.type);
+    	if (event.type == EventType.VILLAGE) {
+    		System.out.println("Replacing villages");
+    		event.newGen = new GreekMapGenVillage();
     	}
     }
 }

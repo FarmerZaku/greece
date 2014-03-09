@@ -11,10 +11,13 @@ import java.util.EnumSet;
 import java.util.List;
 
 import mod.greece.mobs.GreekArcher;
+import mod.greece.mobs.GreekGuard;
 import mod.greece.mobs.GreekHuman;
+import mod.greece.village.GreekMapGenVillage;
+import mod.greece.village.GreekStructureVillagePieces;
+import mod.greece.village.GreekStructureVillageStart;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -31,6 +34,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,14 +52,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
- 
+
 @Mod(modid="Greece", name="Ancient Greece Mod", version="0.0.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class Greece {
@@ -115,7 +117,8 @@ public class Greece {
 		public final static Block silverBlock = new GreekBlock(512, Material.iron, 512).setHardness(5f).setStepSound(Block.soundMetalFootstep).setUnlocalizedName("silverBlock").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:silverBlock");
 		public final static Block mudbrick = new GreekBlock(513, Material.rock, 513).setHardness(1.5f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("mudbrick").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick");
 		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
-				//new int[] {crushedSilver, crushedCopper, crushedTin});
+		public final static Block greekFire = new GreekFire(517).setUnlocalizedName("greekFire").setTextureName("Greece:greekFire");
+		public final static Block ash = new GreekAsh(518).setUnlocalizedName("ash").setTextureName("Greece:greek_ash");
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
@@ -147,7 +150,7 @@ public class Greece {
 		public final static Item bronzeIngot = new BronzeIngot(6000);
 		public final static Item bronzeSword = new GreekSword(6001, bronze, 0.07f, 2.5, 1, 9, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
-		public final static Item spear = new GreekSword(6002, bronze, 0.04f, 3.1, 1, 7, 15)
+		public final static Item spear = new GreekWeaponThrowable(6002, bronze, 0.04f, 3.1, 1, 7, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
 		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
@@ -198,6 +201,10 @@ public class Greece {
         	//for (int i = 0; i < 7; ++i) {
         	//	VillagerRegistry.instance().registerVillageTradeHandler(i, new TradeHandler());
         	//}
+        	MapGenStructureIO.func_143034_b(GreekStructureVillageStart.class, "GreekVillage");
+        	GreekStructureVillagePieces.func_143016_a();
+            GameRegistry.registerWorldGenerator(new GreekMapGenVillage());
+    		MinecraftForge.TERRAIN_GEN_BUS.register(new GreekEventHandler());
         }
        
         @EventHandler
@@ -273,6 +280,7 @@ public class Greece {
                 		'x', straw, 'y', Item.stick);
                 GameRegistry.addRecipe(new ItemStack(thatchSlope, 4), "x  ", "yx ", "yyx",
                 		'x', Item.reed, 'y', Item.stick);
+                thatchSlope.setBurnProperties(thatchSlope.blockID, 5, 5);
                 
                 //THATCH
                 GameRegistry.registerBlock(thatch, "thatch");
@@ -282,6 +290,7 @@ public class Greece {
                 		'x', straw, 'y', Item.stick);
                 GameRegistry.addRecipe(new ItemStack(thatch, 4), "xxx", "yyy",
                 		'x', Item.reed, 'y', Item.stick);
+                thatchSlope.setBurnProperties(thatch.blockID, 5, 5);
                 
                 //MUDBRICK
                 GameRegistry.registerBlock(mudbrick, "mudbrick");
@@ -313,6 +322,14 @@ public class Greece {
                 MinecraftForge.setBlockHarvestLevel(crusher, "pick", 0);
                 GameRegistry.addRecipe(new ItemStack(crusher), "xyx", "yyy", "yyy",
                 		'x', Item.stick, 'y', Block.cobblestone);
+                
+                //GREEK FIRE
+                GameRegistry.registerBlock(greekFire, "greekFire");
+                LanguageRegistry.addName(greekFire, "Greek Fire");
+                
+                //ASH
+                GameRegistry.registerBlock(ash, "ash");
+                LanguageRegistry.addName(ash, "Ash");
                 
                 //---------REGISTER ITEMS---------
                 //SARD ITEM
@@ -529,6 +546,9 @@ public class Greece {
 	           	
 	           	
                 //------------ENTITIES---------------
+	           	registerEntity(GreekGuard.class, "Guard", 0xef00af, 0x000fa0);
+                LanguageRegistry.instance().addStringLocalization("entity.GreekGuard.name", "Guard");
+	           	
                 registerEntity(GreekHuman.class, "Bandit", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekHuman.name", "Bandit");
                 
@@ -539,6 +559,7 @@ public class Greece {
                 EntityRegistry.registerModEntity(GreekEntityJavelin.class, "Javelin", 
                 		cpw.mods.fml.common.registry.EntityRegistry.findGlobalUniqueEntityId(), this, 64, 1, true);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekJavelin.name", "Javelin");
+                
                 registerEntity(GreekVillager.class, "Demesman", 0xefaf00, 0xaa00aa);
                 LanguageRegistry.instance().addStringLocalization("entity.GreekVillager.name", "Demesman");
                 
@@ -751,6 +772,8 @@ public class Greece {
         	// this determines where you can spawn... I think.
         	WorldChunkManager.allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, forestHills, limeCliffsBiome, graniteMountainsBiome, tinIslesBiome, korinthiaBiome));
         	MapGenVillage.villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {forest, plains, forestHills,
+           			limeCliffsBiome, korinthiaBiome, BiomeGenBase.desert});
+        	GreekMapGenVillage.villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {forest, plains, forestHills,
            			limeCliffsBiome, korinthiaBiome, BiomeGenBase.desert});
         }
        

@@ -1,25 +1,22 @@
 package mod.greece;
 
-import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.Icon;
@@ -201,6 +198,7 @@ public class GreekSword extends ItemSword {
 	     * @param player The Player using the item
 	     * @param count The amount of time in tick the item has been used for continuously
 	     */
+		
 		@Override
 	    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int count)
 	    {
@@ -238,6 +236,11 @@ public class GreekSword extends ItemSword {
 			}
 	        
 	        //The following was replaced using a forge hook in GreekEventHandler
+	        /*ObfuscationReflectionHelper.setPrivateValue(InventoryPlayer.class, player.inventory, new Callable<Integer>() {
+	        	public Integer call() {
+	        		return 128;
+	        	}
+	        }, "getInventoryStackLimit", "func_70297_j");*/
 	        //ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 1f, "fovModifierHand", "field_78507_R");
 	    }
 	}
