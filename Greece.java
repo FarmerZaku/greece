@@ -16,6 +16,7 @@ import mod.greece.village.GreekMapGenVillage;
 import mod.greece.village.GreekStructureVillagePieces;
 import mod.greece.village.GreekStructureVillageStart;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHalfSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,6 +27,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -142,6 +144,8 @@ public class Greece {
 		public final static Block olivePress = new GreekBlockPress(609, Material.rock, 609, olives.itemID).setHardness(4.0f).setUnlocalizedName("olivePress");
 		public final static Block roofTiles = new GreekBlock(610, Material.clay, 506).setHardness(2.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("roofTiles").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:roof_tiles");
 		public final static Block roofTilesSlope = new ThatchSlope(611, roofTiles, 0).setTextureName("Greece:roof_tiles").setHardness(2.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("roofTilesSlope").setCreativeTab(CreativeTabs.tabBlock);
+		public final static Block roofTilesSlab = new GreekBlockSlab(612, false, Material.clay).setTextureName("Greece:roof_tiles").setHardness(2.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("roofTilesSlab");
+		public final static Block roofTilesSlabDouble = new GreekBlockSlab(613, true, Material.clay).setTextureName("Greece:roof_tiles").setHardness(2.0f).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("roofTilesSlabDouble");
 		
 		//---------ITEMS - Mills---------
 		public final static Item bronzeIngot = new BronzeIngot(6000);
@@ -160,6 +164,7 @@ public class Greece {
 		public final static Item amphora = new GreekItem(6011, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_empty").setUnlocalizedName("amphora");
 		public final static Item oliveOil = new GreekItem(6012, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_oil").setUnlocalizedName("oliveOil");
 		public final static Item wine = new GreekItem(6013, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_wine").setUnlocalizedName("wine");
+		public final static Item roofTile = new GreekItem(6014, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":roof_tile").setUnlocalizedName("roof_tile");
 		
 		
 		//---------EVENT HANDLERS - Mills---------
@@ -191,7 +196,6 @@ public class Greece {
 				new int[] {0, 0, 0},
 				new int[] {1, 1, 1},
 				new int[] {silverCrushed.itemID, copperCrushed.itemID, tinCrushed.itemID}, 1).setUnlocalizedName("crusher");
-		
 		
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {        	
@@ -571,6 +575,7 @@ public class Greece {
                 //        BiomeGenBase.mushroomIsland, BiomeGenBase.mushroomIslandShore, BiomeGenBase.ocean, BiomeGenBase.plains, BiomeGenBase.river, BiomeGenBase.swampland);
                 
         		
+        		
         		//---------REGISTER BLOCKS - Mills---------
                 // MARBLE
                 GameRegistry.registerBlock(marble, "marble");
@@ -636,12 +641,29 @@ public class Greece {
                 		'x', marble, 'y', new ItemStack(chisel, 1, OreDictionary.WILDCARD_VALUE));
                 
                 // ROOF TILES
+                GameRegistry.registerItem(roofTile, "roofTile");
+                LanguageRegistry.addName(roofTile, "Roof Tile");
+                GameRegistry.addSmelting(Item.clay.itemID, new ItemStack(roofTile), 1);
                 GameRegistry.registerBlock(roofTiles, "roofTiles");
                 LanguageRegistry.addName(roofTiles, "Roof Tiles");
                 //MinecraftForge.setBlockHarvestLevel(roofTiles, "pickAxe", 0);
                 
                 GameRegistry.registerBlock(roofTilesSlope, "roofTilesSlope");
                 LanguageRegistry.addName(roofTilesSlope, "Sloped Roof Tiles");
+                GameRegistry.registerBlock(roofTilesSlab, "roofTilesSlab");
+                LanguageRegistry.addName(roofTilesSlab, "Roof Tiles Slab");
+                GameRegistry.registerBlock(roofTilesSlabDouble, "roofTilesSlabDouble");
+                
+                GameRegistry.addRecipe(new ItemStack(roofTiles, 1), "xxx", "xxx", "xxx",
+                		'x', roofTile);
+                GameRegistry.addRecipe(new ItemStack(roofTilesSlope, 1), "x  ", "xx ", "xxx",
+                		'x', roofTile);
+                GameRegistry.addRecipe(new ItemStack(roofTilesSlope, 4), "x  ", "xx ", "xxx",
+                		'x', roofTiles);
+                GameRegistry.addRecipe(new ItemStack(roofTilesSlab, 1), "xxx", "xxx",
+                		'x', roofTile);
+                GameRegistry.addRecipe(new ItemStack(roofTiles, 4), "xxx", "xxx",
+                		'x', roofTiles);
        
                 //---------REGISTER ITEMS - Mills---------
                 // BRONZE INGOT
@@ -772,6 +794,11 @@ public class Greece {
            			limeCliffsBiome, korinthiaBiome, BiomeGenBase.desert});
         	GreekMapGenVillage.villageSpawnBiomes = Arrays.asList(new BiomeGenBase[] {forest, plains, forestHills,
            			limeCliffsBiome, korinthiaBiome, BiomeGenBase.desert});
+        	
+        	// allow stackable slabs
+        		// template:
+        		// Item.itemsList[YourSingleSlab.blockID] = (new ItemSlab(YourSingleSlab.blockID - 256, (BlockHalfSlab)YourSingleSlab, (BlockHalfSlab)YourDoubleSlab, false)).setUnlocalizedName("YourSlabName");
+        	Item.itemsList[roofTilesSlab.blockID] = (new ItemSlab(roofTilesSlab.blockID - 256, (BlockHalfSlab)roofTilesSlab, (BlockHalfSlab)roofTilesSlabDouble, false)).setUnlocalizedName("roofTilesSlabCombined");
         }
        
         public void registerEntity(Class<? extends Entity> entityClass, String entityName, int bkEggColor, int fgEggColor) {
