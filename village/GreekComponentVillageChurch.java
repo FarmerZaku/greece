@@ -3,6 +3,7 @@ package mod.greece.village;
 import java.util.List;
 import java.util.Random;
 
+import mod.greece.Greece;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.ComponentVillageChurch;
@@ -44,7 +45,16 @@ public class GreekComponentVillageChurch extends GreekComponentVillage
             this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 12 - 1, 0);
         }
 
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 1, 3, 3, 7, 0, 0, false);
+        // Mills's hazardous attempts
+        this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 2, 0, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 3, 0, 8, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 4, 0, 8, par3StructureBoundingBox);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 1, 4, 5, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 2, 0, 1, 5, 4, 1, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 5, 0, 2, 5, 4, 5, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 5, 2, 4, 5, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        
+        /*this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 1, 3, 3, 7, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 5, 1, 3, 9, 3, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 3, 0, 8, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 0, 3, 10, 0, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
@@ -114,7 +124,7 @@ public class GreekComponentVillageChurch extends GreekComponentVillage
                 this.clearCurrentPositionBlocksUpwards(par1World, k, 12, j, par3StructureBoundingBox);
                 this.fillCurrentPositionBlocksDownwards(par1World, Block.cobblestone.blockID, 0, k, -1, j, par3StructureBoundingBox);
             }
-        }
+        }*/
 
         this.spawnVillagers(par1World, par3StructureBoundingBox, 2, 1, 2, 1);
         return true;
