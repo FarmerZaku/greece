@@ -43,6 +43,10 @@ public class RenderHuman extends RenderBiped {
 				model = new ResourceLocation("greece", "/textures/mobs/orator.png");
 				return model;
 			}
+			else if (y == 7) {
+				model = new ResourceLocation("greece", "/textures/mobs/money_changer.png");
+				return model;
+			}		
 			else
 				model = new ResourceLocation("greece", "/textures/mobs/demesman.png");
 				return model;

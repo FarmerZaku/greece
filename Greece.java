@@ -702,14 +702,14 @@ public class Greece {
                 // DRACHMA
                 GameRegistry.registerItem(drachma, "drachma");
                 LanguageRegistry.addName(drachma, "Drachma");
-                GameRegistry.addShapelessRecipe(new ItemStack(drachma, 4), new ItemStack(silverIngot, 4));
-                GameRegistry.addShapelessRecipe(new ItemStack(drachma, 1), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol)); // 6 obols
+                GameRegistry.addShapelessRecipe(new ItemStack(drachma, 1), new ItemStack(silverIngot));
+                GameRegistry.addShapelessRecipe(new ItemStack(drachma, 1), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol), new ItemStack(obol)); // 6 obols to 1 drachma
                 
                 // OBOL
                 GameRegistry.registerItem(obol, "obol");
                 LanguageRegistry.addName(obol, "Obol");
                 GameRegistry.addShapelessRecipe(new ItemStack(obol, 6), new ItemStack(silverIngot));
-                GameRegistry.addShapelessRecipe(new ItemStack(obol, 6), new ItemStack(drachma));
+                GameRegistry.addShapelessRecipe(new ItemStack(obol, 6), new ItemStack(drachma)); // 1 drachma to 6 obols
                 
                 // MARBLE EYE
                 GameRegistry.registerItem(marbleEye, "marbleEye");
