@@ -46,13 +46,31 @@ public class GreekComponentVillageChurch extends GreekComponentVillage
         }
 
         // Mills's hazardous attempts
-        this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 2, 0, 8, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 3, 0, 8, par3StructureBoundingBox);
-        this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 4, 0, 8, par3StructureBoundingBox);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 1, 4, 5, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 2, 0, 1, 5, 4, 1, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 5, 0, 2, 5, 4, 5, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 5, 2, 4, 5, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        //this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 2, 0, 8, par3StructureBoundingBox);
+        
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 1, 3, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 2, 0, 0, 5, 3, 0, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 3, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 2, 0, 4, 4, 3, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        
+        //this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 1, 0, par3StructureBoundingBox);
+        //this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 2, 0, par3StructureBoundingBox);
+        this.placeDoorAtCurrentPosition(par1World, par3StructureBoundingBox, par2Random, 1, 0, 2, this.getMetadataWithOffset(Block.doorWood.blockID, 1));
+
+        /*if (this.getBlockIdAtCurrentPosition(par1World, 2, 0, -1, par3StructureBoundingBox) == 0 && this.getBlockIdAtCurrentPosition(par1World, 2, -1, -1, par3StructureBoundingBox) != 0)
+        {
+            this.placeBlockAtCurrentPosition(par1World, Block.stairsCobblestone.blockID, this.getMetadataWithOffset(Block.stairsCobblestone.blockID, 3), 2, 0, -1, par3StructureBoundingBox);
+        }*/
+
+       /*for (int j = 0; j < 9; ++j)
+        {
+            for (int k = 0; k < 5; ++k)
+            {
+                this.clearCurrentPositionBlocksUpwards(par1World, k, 12, j, par3StructureBoundingBox);
+                this.fillCurrentPositionBlocksDownwards(par1World, Block.cobblestone.blockID, 0, k, -1, j, par3StructureBoundingBox);
+            }
+        }*/
+        
         
         /*this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 1, 1, 3, 3, 7, 0, 0, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 5, 1, 3, 9, 3, 0, 0, false);

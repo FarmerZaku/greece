@@ -78,7 +78,7 @@ public class GreekVillager extends EntityVillager {
         //addBlacksmithItem(merchantrecipelist, Item.bread.itemID, this.rand, 0.9F);
         
         
-        switch(this.getProfession()) {
+        switch(this.getProfession()) { // change # of different villagers in GreekEventHandler: professionID.nextInt(n)
 		case 0: // FARMER
 			// villager selling
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 6), new ItemStack(Item.wheat, 1)));
@@ -129,7 +129,13 @@ public class GreekVillager extends EntityVillager {
 		case 6: // CARPENTER
 			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 20),
 				new ItemStack(Item.bed, 1))); // to buy
-			break;	
+			break;		
+		case 7: // MONEY CHANGER
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.obol, 6),
+				new ItemStack(Greece.drachma, 1))); // to buy
+			merchantrecipelist.add(new MerchantRecipe(new ItemStack(Greece.drachma, 1),
+					new ItemStack(Greece.obol, 6))); // to buy
+			break;
 		default:
 			break;
 		}
