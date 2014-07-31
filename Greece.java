@@ -165,6 +165,10 @@ public class Greece {
 		public final static Item oliveOil = new GreekItem(6012, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_oil").setUnlocalizedName("oliveOil");
 		public final static Item wine = new GreekItem(6013, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_wine").setUnlocalizedName("wine");
 		public final static Item roofTile = new GreekItem(6014, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":roof_tile").setUnlocalizedName("roof_tile");
+		public final static Item fryingPanUnfired = new GreekItem(6015, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_unfired").setUnlocalizedName("fryingPanUnfired");
+		public final static Item fryingPanCeramic = new GreekItem(6016, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_ceramic").setUnlocalizedName("fryingPanCeramic");
+		public final static Item fryingPanBronze = new GreekItem(6017, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_bronze").setUnlocalizedName("fryingPanBronze");
+		public final static Item pancakes = new GreekItem(6018, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_bronze").setUnlocalizedName("pancakes");
 		
 		
 		//---------EVENT HANDLERS - Mills---------
@@ -748,6 +752,19 @@ public class Greece {
                 // WINE
                 GameRegistry.registerItem(wine, "wine");
                 LanguageRegistry.addName(wine, "Wine");
+                
+                // FRYING PANS
+                GameRegistry.registerItem(fryingPanUnfired, "fryingPanUnfired");
+                LanguageRegistry.addName(fryingPanUnfired, "Unfired Frying Pan");
+                GameRegistry.addRecipe(new ItemStack(fryingPanUnfired), " aa", "bba", " aa",
+                		'a', Item.clay, 'b', Item.stick);
+                GameRegistry.addSmelting(fryingPanUnfired.itemID, new ItemStack(fryingPanCeramic), 1);
+                GameRegistry.registerItem(fryingPanCeramic, "fryingPanCeramic");
+                LanguageRegistry.addName(fryingPanCeramic, "Ceramic Frying Pan");
+                GameRegistry.registerItem(fryingPanBronze, "fryingPanBronze");
+                LanguageRegistry.addName(fryingPanBronze, "Bronze Frying Pan");
+                GameRegistry.addRecipe(new ItemStack(fryingPanBronze), " aa", "bba", " aa",
+                		'a', bronzeIngot, 'b', Item.stick);
                 
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
