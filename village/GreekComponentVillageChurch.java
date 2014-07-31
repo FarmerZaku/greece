@@ -5,8 +5,10 @@ import java.util.Random;
 
 import mod.greece.Greece;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.ComponentVillageChurch;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
@@ -47,15 +49,30 @@ public class GreekComponentVillageChurch extends GreekComponentVillage
 
         // Mills's hazardous attempts
         //this.placeBlockAtCurrentPosition(par1World, Greece.marble.blockID, 0, 2, 0, 8, par3StructureBoundingBox);
-        
+        // walls
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 1, 3, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 2, 0, 0, 5, 3, 0, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 3, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 5, 0, 1, 5, 3, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
         this.fillWithBlocks(par1World, par3StructureBoundingBox, 2, 0, 4, 4, 3, 4, Block.cobblestone.blockID, Block.cobblestone.blockID, false);
+        // roof
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 2, 3, 1, 4, 3, 3, Block.woodSingleSlab.blockID, Block.cobblestone.blockID, false);
         
-        //this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 1, 0, par3StructureBoundingBox);
-        //this.placeBlockAtCurrentPosition(par1World, 0, 0, 2, 2, 0, par3StructureBoundingBox);
         this.placeDoorAtCurrentPosition(par1World, par3StructureBoundingBox, par2Random, 1, 0, 2, this.getMetadataWithOffset(Block.doorWood.blockID, 1));
+        this.placeBlockAtCurrentPosition(par1World, Block.chest.blockID, 0, 4, 0, 1, par3StructureBoundingBox);
+        TileEntity chest = par1World.getBlockTileEntity(4,0,1);
+        if (chest instanceof TileEntityChest){
+        	//((IInventory) tileEntity).getInvName();
+        	//IInventory chest = new IInventory(tileEntity);
+        	//((IInventory) chest).setInventorySlotContents(0, new ItemStack(Greece.spear));
+        	((TileEntityChest) chest).setInventorySlotContents(0, new ItemStack(Greece.spear));
+        }
+        
+        // ladder
+        int i = this.getMetadataWithOffset(Block.ladder.blockID, 4);
+        this.placeBlockAtCurrentPosition(par1World, Block.ladder.blockID, i, 4, 1, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Block.ladder.blockID, i, 4, 1, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Block.ladder.blockID, i, 4, 2, 2, par3StructureBoundingBox);
+        this.placeBlockAtCurrentPosition(par1World, Block.ladder.blockID, i, 4, 3, 2, par3StructureBoundingBox);
 
         /*if (this.getBlockIdAtCurrentPosition(par1World, 2, 0, -1, par3StructureBoundingBox) == 0 && this.getBlockIdAtCurrentPosition(par1World, 2, -1, -1, par3StructureBoundingBox) != 0)
         {
