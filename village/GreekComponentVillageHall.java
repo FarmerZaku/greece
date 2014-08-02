@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 import mod.greece.Greece;
+import mod.greece.mobs.GreekGuard;
 import net.minecraft.block.Block;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.ComponentVillage;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 
@@ -125,6 +126,23 @@ public class GreekComponentVillageHall extends GreekComponentVillage
             }
         }
 
+        //Sorry, I know this is messy. Just want to add in some guards to halls before I go to bed...
+        for (int i1 = 0; i1 < 3; ++i1)
+        {
+            int j1 = this.getXWithOffset(4 + i1, 2);
+            int k1 = this.getYWithOffset(1);
+            int l1 = this.getZWithOffset(4 + i1, 2);
+
+            if (!par3StructureBoundingBox.isVecInside(j1, k1, l1))
+            {
+                break;
+            }
+
+            //EntityVillager entityvillager = new EntityVillager(par1World, this.getVillagerType(i1));
+            GreekGuard guard = new GreekGuard(par1World);
+            guard.setLocationAndAngles((double)j1 + 0.5D, (double)k1, (double)l1 + 0.5D, 0.0F, 0.0F);
+            par1World.spawnEntityInWorld(guard);
+        }
         this.spawnVillagers(par1World, par3StructureBoundingBox, 4, 1, 2, 2);
         return true;
     }

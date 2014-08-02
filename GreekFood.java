@@ -6,8 +6,8 @@ import net.minecraft.item.ItemFood;
 
 public class GreekFood extends ItemFood {
 
-	public GreekFood(int par1, int par2, float par3, boolean par4) {
-		super(par1, par2, par3, par4);
+	public GreekFood(int id, int healAmount, float saturation, boolean wolvesLike) {
+		super(id, healAmount, saturation, wolvesLike);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 
