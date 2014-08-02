@@ -169,7 +169,8 @@ public class Greece {
 		public final static Item fryingPanUnfired = new GreekItem(6015, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_unfired").setUnlocalizedName("fryingPanUnfired");
 		public final static Item fryingPanCeramic = new GreekTool(6016, clay, 20).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_ceramic").setUnlocalizedName("fryingPanCeramic");
 		public final static Item fryingPanBronze = new GreekTool(6017, bronze, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_bronze").setUnlocalizedName("fryingPanBronze");
-		public final static Item pancakes = new GreekItem(6018, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_bronze").setUnlocalizedName("pancakes");
+		public final static Item hotCoals = new GreekItem(6018).setTextureName(GreeceInfo.NAME.toLowerCase() + ":hot_coals").setUnlocalizedName("hotCoals");
+		public final static Item triobol = new GreekItemCoin(6019, "triobol").setTextureName(GreeceInfo.NAME.toLowerCase() + ":coinTriobol").setUnlocalizedName("triobol");
 		
 		
 		//---------EVENT HANDLERS - Mills---------
@@ -732,7 +733,9 @@ public class Greece {
                 LanguageRegistry.addName(bakingCover, "Baking Cover");
                 GameRegistry.addSmelting(unfiredBakingCover.itemID, new ItemStack(bakingCover), 1);
                 GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Item.wheat, Item.wheat);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), hotCoals, Item.wheat, Item.wheat);
                 GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), dough);
+                GameRegistry.addShapelessRecipe(new ItemStack(Item.bread, 1), new ItemStack(bakingCover, 1, OreDictionary.WILDCARD_VALUE), hotCoals, dough);
                 
                 // AMPHORA
                 GameRegistry.registerItem(unfiredAmphora, "unfiredAmphora");
@@ -767,13 +770,27 @@ public class Greece {
                 GameRegistry.addRecipe(new ItemStack(fryingPanBronze), " aa", "bba", " aa",
                 		'a', bronzeIngot, 'b', Item.stick);
                 
+                // "SHORTCUT" ITEMS
+                GameRegistry.registerItem(hotCoals, "hotCoals"); // used in cooking
+                LanguageRegistry.addName(hotCoals, "Hot Coals");
+                GameRegistry.addSmelting(Item.coal.itemID, new ItemStack(hotCoals), 8);
+                GameRegistry.addShapelessRecipe(new ItemStack(hotCoals, 4), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE));
+                GameRegistry.addShapelessRecipe(new ItemStack(hotCoals, 8), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), Block.torchWood);
+                
+                GameRegistry.registerItem(triobol, "triobol"); // makes currency conversion easier.
+                LanguageRegistry.addName(triobol, "Triobol");
+                GameRegistry.addShapelessRecipe(new ItemStack(drachma, 1), triobol, triobol); // 2 triobols -> 1 drachma
+                GameRegistry.addShapelessRecipe(new ItemStack(obol, 3), triobol); // 1 triobol -> 3 obols
+                
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
                 LanguageRegistry.addName(olives, "Olives");
                 GameRegistry.registerItem(pancake, "pancake");
                 LanguageRegistry.addName(pancake, "Pancake");
                 GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanCeramic, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), oliveOil, Item.bucketMilk, basketFlour);
+                GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanCeramic, 1, OreDictionary.WILDCARD_VALUE), hotCoals, oliveOil, Item.bucketMilk, basketFlour);
                 GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanBronze, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), oliveOil, Item.bucketMilk, basketFlour);
+                GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanBronze, 1, OreDictionary.WILDCARD_VALUE), hotCoals, oliveOil, Item.bucketMilk, basketFlour);
                 
                 //---------MISC - Mills---------
                 GameRegistry.registerCraftingHandler(chiselCrafting);
