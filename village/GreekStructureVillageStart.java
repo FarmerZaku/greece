@@ -26,12 +26,9 @@ public class GreekStructureVillageStart extends StructureStart
         List list1 = componentvillagestartpiece.field_74930_j;
         List list2 = componentvillagestartpiece.field_74932_i;
         int l;
-        int counter = 0;
 
         while (!list1.isEmpty() || !list2.isEmpty())
         {
-        	counter++;
-        	System.out.println(counter);
             StructureComponent structurecomponent;
 
             if (list1.isEmpty())

@@ -1,6 +1,7 @@
 package mod.greece.client;
  
 import mod.greece.CommonProxy;
+import mod.greece.Greece;
 import mod.greece.GreekEntityJavelin;
 import mod.greece.GreekRenderJavelin;
 import mod.greece.GreekVillager;
@@ -16,6 +17,9 @@ public class ClientProxy extends CommonProxy {
         @Override
         public void registerRenderers() {
                 // This is for rendering entities and so forth later on
+        	//RenderingRegistry.registerBlockHandler(new GreekVineRenderer());        	
+        	Greece.vineBlockModelID=RenderingRegistry.getNextAvailableRenderId();
+        	RenderingRegistry.registerBlockHandler(Greece.vineBlockModelID, new GreekVineRenderer());
         	//ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySlope.class, new TileEntitySlopeRenderer());
         	//MinecraftForgeClient.registerItemRenderer(Greece.thatchSlope.blockID, new ItemSlopeRenderer());
         	RenderingRegistry.registerEntityRenderingHandler(GreekHuman.class, new RenderHuman(new ModelBiped(), 0.5f));

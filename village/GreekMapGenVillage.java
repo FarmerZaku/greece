@@ -61,8 +61,8 @@ public class GreekMapGenVillage extends MapGenVillage implements IWorldGenerator
     	//return true;
         int oldX = x;
         int oldZ = z;
-        int xSpacing = 20;
-        int zSpacing = 20;
+        int xSpacing = 16; //make these 4 for a chaotic infinite city with buildings on/in buildings. 3 is even taller / more chaotic 
+        int zSpacing = 16;
 
         if (x < 0)
         {
@@ -111,7 +111,7 @@ public class GreekMapGenVillage extends MapGenVillage implements IWorldGenerator
     protected StructureStart getStructureStart(int par1, int par2)
     {
     	System.out.println("Starting Village Gen");
-        return new GreekStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType+100);
+        return new GreekStructureVillageStart(this.worldObj, this.rand, par1, par2, this.terrainType+20);
     }
 
 	@Override

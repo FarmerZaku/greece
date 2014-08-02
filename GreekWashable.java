@@ -33,7 +33,8 @@ public class GreekWashable extends Item {
             if (mop.typeOfHit == EnumMovingObjectType.TILE) {
                 //player.addChatMessage("Hit a tile");
             	int blockID = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
-            	if (blockID == Block.waterMoving.blockID || blockID == Block.waterStill.blockID) {
+            	//BUG: the mop never hits waterMoving for some reason, so can only function on still water
+            	if (blockID == Block.waterStill.blockID) {
             		//world.setBlock(mop.blockX, mop.blockY, mop.blockZ, Greece.plasteredBlock.blockID, newMeta, 2);
             		/*System.out.println(blockID);
             		System.out.println(Greece.plasteredBlock.blockID);
@@ -53,12 +54,14 @@ public class GreekWashable extends Item {
     					}
     				}
     				if (hasSpace) {
-    					player.inventory.addItemStackToInventory(new ItemStack(dropID, 10, 0));
+    					player.inventory.addItemStackToInventory(new ItemStack(dropID, 1, 0));
     				} else {
     					player.dropPlayerItem(new ItemStack(dropID, 1, 0));
     				}
     				
     				player.inventory.consumeInventoryItem(itemStack.itemID);
+            	} else {
+            		//player.addChatMessage("Hit: " + blockID);
             	}
                 //player.addChatMessage("Something strange happened");
             }

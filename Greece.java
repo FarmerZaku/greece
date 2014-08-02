@@ -99,6 +99,7 @@ public class Greece {
 		public final static Item copperCrushed = new GreekWashable(5030, copperWashed.itemID).setTextureName("Greece:copperCrushed").setUnlocalizedName("copperCrushed");
 		public final static Item tinCrushed = new GreekWashable(5031, tinWashed.itemID).setTextureName("Greece:tinCrushed").setUnlocalizedName("tinCrushed");
 		public final static Item silverCrushed = new GreekWashable(5032, silverWashed.itemID).setTextureName("Greece:silverCrushed").setUnlocalizedName("silverCrushed");
+		public static Item grapes = new GreekFood(5033, 4, 1f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":grapes").setUnlocalizedName("grapes");
 		
 		//---------BLOCKS - Matthew ---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
@@ -116,9 +117,11 @@ public class Greece {
 		public final static Block mudbrickWet = new GreekAgingBlock(514, Material.clay, 513, 14, true, true).setHardness(0.5f).setStepSound(Block.soundGravelFootstep).setUnlocalizedName("mudbrickWet").setCreativeTab(CreativeTabs.tabBlock).setTextureName("Greece:mudbrick_wet");
 		public final static Block greekFire = new GreekFire(517).setUnlocalizedName("greekFire").setTextureName("Greece:greekFire");
 		public final static Block ash = new GreekAsh(518).setUnlocalizedName("ash").setTextureName("Greece:greek_ash");
+		public final static Block grapevine = new GreekGrapevine(519).setUnlocalizedName("grapevine").setTextureName("Greece:grapevine");
 		
 		//---------EVENT HANDLERS---------
 		OreManager oreManager = new OreManager(); // Matthew's ore generator
+		public static int vineBlockModelID;
 		
 		//---------FOOD - Mills---------
 		public static Item olives = new GreekFood(6500, 2, 0.5f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":olives").setUnlocalizedName("olives");
@@ -329,6 +332,10 @@ public class Greece {
                 GameRegistry.registerBlock(ash, "ash");
                 LanguageRegistry.addName(ash, "Ash");
                 
+                //GRAPEVINE
+                GameRegistry.registerBlock(grapevine, "grapevine");
+                LanguageRegistry.addName(grapevine, "Grapevine");
+                
                 //---------REGISTER ITEMS---------
                 //SARD ITEM
                 LanguageRegistry.addName(sard, "Sard");
@@ -477,14 +484,16 @@ public class Greece {
                 //3 Grass = 1 Straw
                 GameRegistry.addShapelessRecipe(new ItemStack(straw), new ItemStack(Block.tallGrass), new ItemStack(Block.grass), new ItemStack(Block.grass));
                 //Temporary bread recipe to allow the seeds. We'll probably want to include flour-making and baking in the future
-                GameRegistry.addRecipe(new ItemStack(Item.bread), "xxx",
-                		'x', Item.seeds);
+                //GameRegistry.addRecipe(new ItemStack(Item.bread), "xxx",
+                		//'x', Item.seeds);
                 
                 //EMPTY BASKET
                 LanguageRegistry.addName(basketEmpty, "Basket");
                 GameRegistry.registerItem(basketEmpty, "basketEmpty");
                 GameRegistry.addRecipe(new ItemStack(basketEmpty), "x x", "x x", " x ",
                 		'x', Item.reed);
+                GameRegistry.addRecipe(new ItemStack(basketEmpty), "x x", "x x", " x ",
+                		'x', straw);
                 
                 //GRAIN BASKET
                 LanguageRegistry.addName(basketGrain, "Grain Basket");
@@ -509,6 +518,10 @@ public class Greece {
                 //FLOUR AMPHORA
                 LanguageRegistry.addName(amphoraFlour, "Flour Amphora");
                 GameRegistry.registerItem(amphoraFlour, "amphoraFlour");
+                
+                //GRAPES
+                LanguageRegistry.addName(grapes, "Grapes");
+                GameRegistry.registerItem(grapes, "Grapes");
                 
                 //DOUGH
                 LanguageRegistry.addName(dough, "Dough");
