@@ -772,7 +772,8 @@ public class Greece {
                 LanguageRegistry.addName(olives, "Olives");
                 GameRegistry.registerItem(pancake, "pancake");
                 LanguageRegistry.addName(pancake, "Pancake");
-                GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanCeramic, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), oliveOil);
+                GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanCeramic, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), oliveOil, Item.bucketMilk, basketFlour);
+                GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanBronze, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), oliveOil, Item.bucketMilk, basketFlour);
                 
                 //---------MISC - Mills---------
                 GameRegistry.registerCraftingHandler(chiselCrafting);
