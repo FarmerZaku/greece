@@ -794,6 +794,7 @@ public class Greece {
                 LanguageRegistry.addName(triobol, "Triobol");
                 GameRegistry.addShapelessRecipe(new ItemStack(drachma, 1), triobol, triobol); // 2 triobols -> 1 drachma
                 GameRegistry.addShapelessRecipe(new ItemStack(obol, 3), triobol); // 1 triobol -> 3 obols
+                GameRegistry.addShapelessRecipe(new ItemStack(triobol, 1), obol, obol, obol); // 1 triobol -> 3 obols
                 
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
