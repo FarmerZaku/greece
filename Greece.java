@@ -124,6 +124,7 @@ public class Greece {
 		
 		//---------FOOD - Mills---------
 		public static Item olives = new GreekFood(6500, 2, 0.5f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":olives").setUnlocalizedName("olives");
+		public static Item pancake = new GreekFood(6501, 2, 4, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":pancake").setUnlocalizedName("pancake");
 		
 		//---------BLOCKS - Mills---------
 		public final static Block marble = new GreekOre(600, Material.rock, 600).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble").setUnlocalizedName("marble");
@@ -153,21 +154,21 @@ public class Greece {
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":bronze_sword").setUnlocalizedName("bronzeSword");
 		public final static Item spear = new GreekWeaponThrowable(6002, bronze, 0.04f, 3.1, 1, 7, 15)
 			.setTextureName(GreeceInfo.NAME.toLowerCase() + ":spear").setUnlocalizedName("spear");
-		public final static Item chisel = new GreekItem(6003, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
+		public final static Item chisel = new GreekTool(6003, bronze, 12).setTextureName(GreeceInfo.NAME.toLowerCase() + ":chisel").setUnlocalizedName("chisel");
 		public final static Item silverIngot = new GreekItem(6004).setTextureName(GreeceInfo.NAME.toLowerCase() + ":silver_ingot").setUnlocalizedName("silverIngot");
 		public final static Item drachma = new GreekItemCoin(6005, "drachma");
 		public final static Item obol = new GreekItemCoin(6006, "obol");
 		public final static Item marbleEye = new GreekItem(6007).setTextureName(GreeceInfo.NAME.toLowerCase() + ":marble_eye").setUnlocalizedName("marbleEye");
 		public final static Item unfiredBakingCover = new GreekItem(6008).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover_unfired").setUnlocalizedName("unfiredBakingCover");
-		public final static Item bakingCover = new GreekItem(6009, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
+		public final static Item bakingCover = new GreekTool(6009, clay, 15).setTextureName(GreeceInfo.NAME.toLowerCase() + ":baking_cover").setUnlocalizedName("bakingCover");
 		public final static Item unfiredAmphora = new GreekItem(6010, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_unfired").setUnlocalizedName("unfiredAmphora");
 		public final static Item amphora = new GreekItem(6011, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_empty").setUnlocalizedName("amphora");
 		public final static Item oliveOil = new GreekItem(6012, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_oil").setUnlocalizedName("oliveOil");
 		public final static Item wine = new GreekItem(6013, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":amphora_wine").setUnlocalizedName("wine");
 		public final static Item roofTile = new GreekItem(6014, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":roof_tile").setUnlocalizedName("roof_tile");
 		public final static Item fryingPanUnfired = new GreekItem(6015, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_unfired").setUnlocalizedName("fryingPanUnfired");
-		public final static Item fryingPanCeramic = new GreekItem(6016, clay).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_ceramic").setUnlocalizedName("fryingPanCeramic");
-		public final static Item fryingPanBronze = new GreekItem(6017, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_bronze").setUnlocalizedName("fryingPanBronze");
+		public final static Item fryingPanCeramic = new GreekTool(6016, clay, 20).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_ceramic").setUnlocalizedName("fryingPanCeramic");
+		public final static Item fryingPanBronze = new GreekTool(6017, bronze, 10).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_bronze").setUnlocalizedName("fryingPanBronze");
 		public final static Item pancakes = new GreekItem(6018, bronze).setTextureName(GreeceInfo.NAME.toLowerCase() + ":frying_pan_bronze").setUnlocalizedName("pancakes");
 		
 		
@@ -769,6 +770,9 @@ public class Greece {
                 // REGISTER FOOD
                 GameRegistry.registerItem(olives, "olives");
                 LanguageRegistry.addName(olives, "Olives");
+                GameRegistry.registerItem(pancake, "pancake");
+                LanguageRegistry.addName(pancake, "Pancake");
+                GameRegistry.addShapelessRecipe(new ItemStack(pancake, 1), new ItemStack(fryingPanCeramic, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Item.coal, 1, OreDictionary.WILDCARD_VALUE), oliveOil);
                 
                 //---------MISC - Mills---------
                 GameRegistry.registerCraftingHandler(chiselCrafting);
