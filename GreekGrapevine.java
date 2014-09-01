@@ -24,7 +24,7 @@ public class GreekGrapevine extends BlockVine {
 		setHardness(1.0f);
 		setStepSound(Block.soundGrassFootstep);
 		setUnlocalizedName("greekGrapevine");
-		setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(CreativeTabs.tabDecorations);
 		setTickRandomly(false);
 	}
 	
@@ -53,9 +53,11 @@ public class GreekGrapevine extends BlockVine {
     			}
     		}
     	}
+    	//if we weren't near dirt or other vines, cannot place...
     	if (!flag) {
     		return false;
     	}
+    	
         switch (side)
         {
             case 1:
@@ -102,8 +104,13 @@ public class GreekGrapevine extends BlockVine {
 					y_dir_to_check = 0;
 				}
 				
+				//x_bias and z_bias refer to the direction in which the vine is being supported. So if there's a -1 x bias,
+				//then the block that lies at (x-1, y, z) is the one on which the vine is growing. We use this to determine
+				//where the vine can spread and what orientation the vine will be in when it does spread.
+				//if there is an x_bias then z_bias will be 0, and vice-versa.
 				int x_bias = 0;
 				int z_bias = 0;
+				//logical and with 3 gets us the first two bits, which are the two we use to specify vine orientation
 				this_meta = this_meta & 3;
 				if (this_meta == 0) {
 					z_bias = 1;
@@ -115,10 +122,16 @@ public class GreekGrapevine extends BlockVine {
 					x_bias = 1;
 				}
 				
+				
+				//here's where we keep track of the direction in which we're checking to see if we can grow a new vine piece.
 				int z_dir_to_check = 0;
 				int x_dir_to_check = 0;
 				
+				//only try to grow to the sides if we're not already growing up or down
 				if (y_dir_to_check == 0) {
+					//messy, but there's only a few combinations we'll be checking when growing sideways
+					//essentially, for each vine orientation we only want to check to the left, right, on the right side of the
+					//support block and on the left side of the support block, when looking at the vine head-on.
 					if (x_bias != 0) {
 						x_dir_to_check = random.nextInt(2) * x_bias;
 					} else {
@@ -139,6 +152,7 @@ public class GreekGrapevine extends BlockVine {
 					}		
 				}
 				
+				//the world coordinates of the block we're trying to place the vine piece at
 				int check_x = x + x_dir_to_check;
 				int check_y = y + y_dir_to_check;
 				int check_z = z + z_dir_to_check;
@@ -153,18 +167,25 @@ public class GreekGrapevine extends BlockVine {
 	//				}
 	//			}
 	//			
-				//check if can grow there
+				//check if can grow there (i.e. there's only air there and there's an appropriate surface)
 				if (world.getBlockId(check_x, check_y, check_z) == 0) {
 					if (y_dir_to_check != 0 || check_x == x || check_z == z) {
+						//check if the surface can support a vine (i.e. is solid basically)
+						//we can use the bias here to determine which surface the vine would be capable of growing
+						//onto given its orientation.
+						//In this specific case, the vine is checking to see if it can grow either straight down, up, or sideways
 						if (canBePlacedOn(world.getBlockId(check_x+x_bias, check_y, check_z+z_bias))) {
 							//System.out.println("growin' flat like");
 							world.setBlock(check_x, check_y, check_z, this.blockID, this_meta, 2);
 							world.scheduleBlockUpdate(check_x, check_y, check_z, this.blockID, this.tickRate()*2);
-							world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate()*2);
 						}
 					} else {
+						//check to see if the vine can wrap around and grow around the corner, using the same block
+						//as the parent vine piece as support.
 						if (canBePlacedOn(world.getBlockId(x+x_bias, y, z+z_bias))) {
 							//System.out.println("growin' 'round corner");
+							
+							//use the bias to determine what orientation the new piece will be
 							int dir_meta = 0;
 							if (x_bias != 0) {
 								if (z_dir_to_check == -1) {
@@ -181,7 +202,6 @@ public class GreekGrapevine extends BlockVine {
 							}
 							world.setBlock(check_x, check_y, check_z, this.blockID, dir_meta, 2);
 							world.scheduleBlockUpdate(check_x, check_y, check_z, this.blockID, this.tickRate()*2);
-							world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate()*2);
 						}
 					}
 				}
