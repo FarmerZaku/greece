@@ -26,6 +26,7 @@ public class GreekGrapevine extends BlockVine {
 		setUnlocalizedName("greekGrapevine");
 		setCreativeTab(CreativeTabs.tabDecorations);
 		setTickRandomly(false);
+		setBurnProperties(this.blockID, 30, 60);
 	}
 	
 	public int tickRate() {

@@ -101,7 +101,7 @@ public class Greece {
 		public final static Item copperCrushed = new GreekWashable(5030, copperWashed.itemID).setTextureName("Greece:copperCrushed").setUnlocalizedName("copperCrushed");
 		public final static Item tinCrushed = new GreekWashable(5031, tinWashed.itemID).setTextureName("Greece:tinCrushed").setUnlocalizedName("tinCrushed");
 		public final static Item silverCrushed = new GreekWashable(5032, silverWashed.itemID).setTextureName("Greece:silverCrushed").setUnlocalizedName("silverCrushed");
-		public static Item grapes = new GreekFood(5033, 4, 1f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":grapes").setUnlocalizedName("grapes");
+		public static Item grapes = new GreekFood(5033, 2, 0.5f, false).setTextureName(GreeceInfo.NAME.toLowerCase() + ":grapes").setUnlocalizedName("grapes");
 		
 		//---------BLOCKS - Matthew ---------
 		public final static Block sardOre = new GreekOre(501, Material.rock, Greece.sard.itemID).setTextureName("Greece:sard_ore");
