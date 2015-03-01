@@ -71,12 +71,7 @@ public class GreekSword extends ItemSword {
 	        return true;
 	    }
 	    
-	    /**
-	     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-	     */
-	    @Override
-	    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int chargeVal)
-	    {	
+	    public void removeSpeedBuff(ItemStack itemStack, EntityPlayer player) {
 	    	GreekEventHandler.ignoreFOVChanges=2;
 			//After the player stops using the item, remove our temporary speed boost. See the onItemRickClick for more
 	    	//explanation...
@@ -103,9 +98,26 @@ public class GreekSword extends ItemSword {
 	        if(atinst.getModifier(speedID) != null)
 			{
 	        	atinst.removeModifier(mod);
-			}    	
+			}  
+	    }
+	    
+	    /*@Override
+	    public boolean onDroppedByPlayer(ItemStack itemStack, EntityPlayer player)
+	    {
+	 		this.removeSpeedBuff(itemStack, player);
+	 		player.clearItemInUse();
+	 		return super.onDroppedByPlayer(itemStack, player);
+	    }*/
+	    
+	    /**
+	     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
+	     */
+	    @Override
+	    public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int chargeVal)
+	    {	
+	    	removeSpeedBuff(itemStack, player);
 	        
-	        //Make sure the player is dead (i.e. They haven't died while charging up a swing)
+	        //Make sure the player isn't dead (i.e. They haven't died while charging up a swing)
 	    	if (player.isDead) {
 	    		return;
 	    	}
@@ -199,48 +211,5 @@ public class GreekSword extends ItemSword {
 	     * @param count The amount of time in tick the item has been used for continuously
 	     */
 		
-		@Override
-	    public void onUsingItemTick(ItemStack itemStack, EntityPlayer player, int count)
-	    {
-			//System.out.println("Time: " + count);
-			//To prevent the massive slowdown that accompanies using an item, I boost the player's speed while they are using the
-	        //weapon. This is not as simple as increasing their speed, rather you have to create and apply an attribute modifier.
-	        //Thanks to Draco18s for the example code!
-	        
-	        //If the item doesn't have a tag compound already, make one
-	        if (itemStack.stackTagCompound == null) {
-	        	itemStack.stackTagCompound = new NBTTagCompound();
-	        }
-	        
-	        //Try to grab the attribute modifier ID (speedID) from the tag compound. If that field doesn't yet exist, create it
-	        //by getting a new random attribute modifier ID.
-	        String uu = itemStack.stackTagCompound.getString("SpeedUUID");
-			UUID speedID;
-			if(uu.equals("")) {
-				speedID = UUID.randomUUID();
-				itemStack.stackTagCompound.setString("SpeedUUID", speedID.toString());
-			}
-			else {
-				speedID = UUID.fromString(uu);
-			}
-	        
-			//Get the attribute modifiers applied to the player. If they already have the attribute modifier that we want to
-			//create, then don't bother applying the attribute modifier.
-	        AttributeInstance atinst = player.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
-	        //The third parameter is a float that is a speed multiplier I believe
-	        AttributeModifier mod = new AttributeModifier(speedID,"SpeedBoostComponent",3f,2);
-	        if(atinst.getModifier(speedID) == null)
-			{
-	        	//itemStack.stackTagCompound.setBoolean("Waiting", true);
-	        	atinst.applyModifier(mod);
-			}
-	        
-	        //The following was replaced using a forge hook in GreekEventHandler
-	        /*ObfuscationReflectionHelper.setPrivateValue(InventoryPlayer.class, player.inventory, new Callable<Integer>() {
-	        	public Integer call() {
-	        		return 128;
-	        	}
-	        }, "getInventoryStackLimit", "func_70297_j");*/
-	        //ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 1f, "fovModifierHand", "field_78507_R");
-	    }
+		
 	}

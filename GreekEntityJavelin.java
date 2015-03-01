@@ -266,7 +266,7 @@ public class GreekEntityJavelin extends EntityArrow implements IProjectile
             {
                 Entity entity1 = (Entity)list.get(l);
 
-                if (entity1.canBeCollidedWith() && (entity1 != this.sourceEntity || this.ticksInAir >= 5))
+                if (entity1.canBeCollidedWith() && (entity1 != this.sourceEntity || this.ticksInAir >= 10))
                 {
                 	//System.out.println("l, " + this.sourceEntity + ", " + entity1);
                     f1 = 0.3F;
@@ -558,7 +558,7 @@ public class GreekEntityJavelin extends EntityArrow implements IProjectile
         if (!this.worldObj.isRemote && this.inGround && this.arrowShake <= 0)
         {
             boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
-
+            System.out.println("Picking up: " + toPickup.getTagCompound());
             if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(toPickup))
             {
                 flag = false;

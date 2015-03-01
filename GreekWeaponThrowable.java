@@ -28,6 +28,8 @@ public class GreekWeaponThrowable extends GreekSword {
 	@Override
    public boolean onDroppedByPlayer(ItemStack itemStack, EntityPlayer player)
    {
+		//this.removeSpeedBuff(itemStack, player);
+		//player.clearItemInUse();
 		if (itemStack.stackTagCompound == null) {
 			itemStack.stackTagCompound = new NBTTagCompound();
 		}
@@ -82,9 +84,10 @@ public class GreekWeaponThrowable extends GreekSword {
 			if (itemStack.stackTagCompound != null) {
 				dropTime = itemStack.stackTagCompound.getInteger("dropTime");
 			}
-			itemStack.stackTagCompound.setInteger("dropTime", 0);
+			itemStack.stackTagCompound = null;
 			if (dropTime <= 5) {
-				((EntityPlayer)entity).dropPlayerItemWithRandomChoice(itemStack, false);
+				ItemStack dropStack = new ItemStack(itemStack.getItem(),1);
+				((EntityPlayer)entity).dropPlayerItemWithRandomChoice(dropStack, false);
 			} else {
 				//System.out.println("Charge Capacity: " + throwChargeCapacity);
 				//System.out.println("Charge: " + dropTime);
@@ -95,7 +98,7 @@ public class GreekWeaponThrowable extends GreekSword {
 				float damage = speed * (float)this.maxDamage;
 				System.out.println("Gonna damage " + damage);
 				EntityPlayer player = (EntityPlayer)entity;
-				ItemStack toDrop = new ItemStack(itemStack.getItem());
+				ItemStack toDrop = new ItemStack(itemStack.getItem(),1,0);
 				boolean breakOnHit = false;
 				//This is presuming more damaging weapons break less frequently
 				if (world.rand.nextInt(maxDamage) < 1) {
@@ -119,5 +122,6 @@ public class GreekWeaponThrowable extends GreekSword {
 				((EntityPlayer)entity).destroyCurrentEquippedItem();
 			}
 		}
+		itemStack.setItemDamage(0);
 	}
 }
